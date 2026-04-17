@@ -3,55 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ARSENAL | SOUND METAMORPHOSIS</title>
+    <title>EL ARSENAL | THE ARSENAL</title>
     <style>
-        :root { --red: #ff0000; --gold: #ffcc00; }
+        :root { --red: #ff0000; --gold: #ffcc00; --dark: #0a0a0a; }
         body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; text-align: center; }
-        .bunker-rack { max-width: 1000px; margin: 0 auto; background: #1a1a1a; border: 5px solid #333; border-radius: 12px; box-shadow: 0 0 60px rgba(255, 0, 0, 0.4); padding: 20px; }
-        h1 { font-size: 2.5rem; color: var(--red); margin: 10px 0; letter-spacing: -2px; }
-        .lcd-monitor { background: #050505; border: 2px solid #222; padding: 15px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 20px; border-radius: 4px; font-size: 0.8rem; min-height: 80px; border-left: 5px solid var(--red); }
-        .module-box { background: #080808; padding: 15px; border: 1px solid #1a1a1a; margin-bottom: 15px; }
-        label { display: block; font-size: 0.7rem; color: var(--gold); margin-bottom: 8px; }
-        input[type="file"] { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 10px; }
-        .detonate-btn { width: 100%; background: #150000; border: 4px solid var(--red); color: var(--red); font-size: 1.5rem; padding: 20px; opacity: 0.2; font-weight: bold; transition: 0.5s; }
-        .detonate-btn.active { opacity: 1; background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); cursor: pointer; }
-        .pentagram { margin-top: 30px; opacity: 0.3; width: 100px; height: 100px; cursor: pointer; display: inline-block; }
-        .pentagram svg { fill: var(--red); width: 100%; height: 100%; }
+        .bunker-rack { max-width: 600px; margin: 20px auto; background: #1a1a1a; border: 5px solid #333; border-radius: 12px; box-shadow: 0 0 70px rgba(255, 0, 0, 0.8); padding: 25px; border-top: 8px solid var(--red); position: relative; }
+        h1 { font-size: 2.2rem; color: var(--red); margin: 0; letter-spacing: -1px; text-shadow: 2px 2px #000; }
+        h2 { font-size: 0.8rem; color: #888; margin-bottom: 20px; letter-spacing: 2px; line-height: 1.4; }
+        .lcd-monitor { background: #050505; border: 2px solid #222; padding: 15px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 20px; border-radius: 4px; font-size: 0.7rem; min-height: 190px; border-left: 5px solid var(--red); overflow-y: auto; box-shadow: inset 0 0 15px #000; }
+        .module { background: var(--dark); padding: 15px; border: 1px solid #222; margin-bottom: 12px; text-align: left; border-radius: 4px; }
+        label { display: block; font-size: 0.6rem; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
+        select, input, .pay-btn { width: 100%; background: #000; border: 1px solid #444; color: #fff; padding: 12px; box-sizing: border-box; font-weight: bold; }
+        .multi-pay { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
+        .pay-btn { font-size: 0.65rem; cursor: pointer; border: none; border-radius: 3px; transition: 0.3s; padding: 15px 5px; }
+        .mxn { background: #009ee3; } .usd { background: #2e7d32; } .eur { background: #1565c0; }
+        .detonate-btn { width: 100%; background: #150000; border: 4px solid var(--red); color: var(--red); font-size: 1.8rem; padding: 25px; opacity: 0.1; font-weight: bold; cursor: not-allowed; transition: 0.5s; margin-top: 10px; text-shadow: 0 0 10px var(--red); }
+        .detonate-btn.active { opacity: 1; background: var(--red); color: #000; box-shadow: 0 0 40px var(--red); cursor: pointer; }
+        .pentagram { margin: 20px 0; opacity: 0.15; width: 55px; cursor: pointer; display: inline-block; transition: 0.5s; }
+        .pentagram svg { fill: var(--red); }
+        .legal { margin-top: 25px; font-size: 0.52rem; color: #555; text-align: justify; text-transform: none; border-top: 1px solid #222; padding-top: 12px; line-height: 1.3; }
     </style>
 </head>
-<body>
+<body onload="checkVPN()">
 
-<div class="bunker-rack">
+<div class="bunker-rack" id="mainBunker">
     <h1>EL ARSENAL</h1>
-    <div class="lcd-monitor" id="log-screen">> SYSTEM_READY...</div>
-    <div class="module-box">
-        <label>CARGAR TRACK</label>
-        <input type="file" id="trackUpload">
+    <h2>LA METAMORFOSIS DEL SONIDO<br>THE SOUND METAMORPHOSIS</h2>
+
+    <div class="lcd-monitor" id="log-screen">
+        > CADENERO: ESCANEANDO PERÍMETRO...<br>
+        > VERIFICANDO INTEGRIDAD DE CONEXIÓN...
     </div>
-    <button id="finalDetonator" class="detonate-btn" disabled>DETONAR MÁSTER</button>
+
+    <div class="module">
+        <label>I. CALIBRACIÓN QUIRÚRGICA (15 GÉNEROS MAESTROS)</label>
+        <select id="genre">
+            <option>1. ROCK ANALÓGICO (MARSHALL JCM)</option>
+            <option>2. METAL EXTREMO (HIGH GAIN BULBS)</option>
+            <option>3. PUNK ROCK (RAW POWER)</option>
+            <option>4. INDIE / ALTERNATIVO (VINTAGE)</option>
+            <option>5. BLUES / JAZZ (WARM TUBE)</option>
+            <option>6. POP MAINSTREAM (SHINE)</option>
+            <option>7. HIP-HOP OLD SCHOOL (THUMP)</option>
+            <option>8. TRAP / DRILL (SUB POWER 808)</option>
+            <option>9. REGGAETÓN (PUNCHY & CLEAR)</option>
+            <option>10. R&B / SOUL (SILKY)</option>
+            <option>11. TECHNO / INDUSTRIAL (COLD)</option>
+            <option>12. HOUSE / DANCE (DRIVE)</option>
+            <option>13. CORRIDOS (BRIGHT BASS/TAMA)</option>
+            <option>14. CUMBIA / SALSA (ANALOG PERCUSSION)</option>
+            <option>15. ACÚSTICO / VOZ PURA (SHURE SM7B)</option>
+        </select>
+    </div>
+
+    <div class="module">
+        <label>II. CARGAR PISTA (FULL DYNAMIC RANGE)</label>
+        <input type="file" id="trackUpload" accept="audio/*">
+    </div>
+
+    <div id="payment-area">
+        <label>III. ACTIVACIÓN DE EQUIPO (MULTIDIVISA)</label>
+        <div class="multi-pay">
+            <button class="pay-btn mxn" onclick="window.open('TU_LINK_MXN')">$100 MXN</button>
+            <button class="pay-btn usd" onclick="window.open('TU_LINK_USD')">$5 USD</button>
+            <button class="pay-btn eur" onclick="window.open('TU_LINK_EUR')">€5 EUR</button>
+        </div>
+    </div>
     
+    <button id="finalDetonator" class="detonate-btn" disabled>DETONAR</button>
+
     <div class="pentagram" onclick="abrirBunker()">
         <svg viewBox="0 0 512 512"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/></svg>
+    </div>
+
+    <div class="legal">
+        <b>AVISO DE PRIVACIDAD:</b> EL ARSENAL protege tus archivos. Se eliminan automáticamente tras el proceso. <b>TÉRMINOS:</b> Prohibido VPN (el cadenero te banea). El máster es analógico, quirúrgico y de alta fidelidad. <b>© 2026 EL ARSENAL. LA METAMORFOSIS DEL SONIDO. ALL RIGHTS RESERVED.</b>
     </div>
 </div>
 
 <script>
+    const screen = document.getElementById('log-screen');
+
+    async function checkVPN() {
+        try {
+            const res = await fetch('https://ipapi.co/json/');
+            const data = await res.json();
+            if (data.proxy || data.hosting) {
+                document.getElementById('mainBunker').innerHTML = "<h1 style='color:red; margin-top:50px;'>ACCESO BLOQUEADO</h1><p>EL CADENERO DETECTÓ VPN/PROXY. EL ACCESO AL ARSENAL ESTÁ RESTRINGIDO.</p>";
+            } else { 
+                screen.innerHTML += "<br>> CADENERO: LIMPIO. SIN VPN DETECTADA."; 
+            }
+        } catch(e) { screen.innerHTML += "<br>> SEGURIDAD: MODO BÚNKER ACTIVADO."; }
+    }
+
     function abrirBunker() {
         let p = prompt("LLAVE MAESTRA:");
-        if (p === null) return;
-        
-        // Esta línea hace que no importe si pones mayúsculas o espacios locos al inicio/final
-        let entrada = p.trim(); 
-        
-        if(entrada === "Abre esta m***** 666") {
-            document.getElementById('finalDetonator').disabled = false;
-            document.getElementById('finalDetonator').classList.add('active');
-            document.getElementById('log-screen').innerHTML = "> GOD_MODE: ACTIVADO.<br>> SALUDOS, ERICK.";
-            document.getElementById('log-screen').style.color = "#ff0000";
-            alert("ACCESO TOTAL: BIENVENIDO AL BÚNKERT");
-        } else {
-            alert("CLAVE ERRÓNEA. RECUERDA: Abre esta m***** 666");
+        if(p && p.trim() === "Abre esta m***** 666") {
+            const btn = document.getElementById('finalDetonator');
+            btn.disabled = false;
+            btn.classList.add('active');
+            btn.onclick = () => detonar();
+            document.getElementById('payment-area').style.display = 'none';
+            screen.innerHTML = `> ACCESO: ERICK<br>> CADENA: SHURE -> MARSHALL -> TAMA -> AMPEG MACIZO.<br>> STATUS: LISTO PARA LA METAMORFOSIS.`;
+            screen.style.color = "#ff0000";
         }
+    }
+
+    function detonar() {
+        const file = document.getElementById('trackUpload').files[0];
+        if (!file) return alert("SUBE EL TRACK");
+        screen.innerHTML += `<br>> CALIBRANDO HI-HATS & PLATILLOS TAMA...`;
+        screen.innerHTML += `<br>> AJUSTANDO ATAQUE QUIRÚRGICO...`;
+        screen.innerHTML += `<br>> ELIMINANDO SONIDOS GORDOS Y LENTOS...`;
+        screen.innerHTML += `<br>> PROCESANDO CON EL ARSENAL COMPLETO...`;
+        setTimeout(() => alert("¡METAMORFOSIS COMPLETADA! BRILLO DE PLATILLOS LISTO."), 1500);
     }
 </script>
 </body>
