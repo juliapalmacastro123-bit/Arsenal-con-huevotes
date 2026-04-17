@@ -15,9 +15,7 @@
         input[type="file"] { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 10px; }
         .detonate-btn { width: 100%; background: #150000; border: 4px solid var(--red); color: var(--red); font-size: 1.5rem; padding: 20px; opacity: 0.2; font-weight: bold; }
         .detonate-btn.active { opacity: 1; background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); cursor: pointer; }
-        
-        /* PENTAGRAMA MÁS GRANDE Y SENSIBLE */
-        .pentagram { margin-top: 30px; opacity: 0.3; width: 120px; height: 120px; cursor: pointer; display: inline-block; padding: 10px; }
+        .pentagram { margin-top: 30px; opacity: 0.3; width: 100px; height: 100px; cursor: pointer; display: inline-block; }
         .pentagram svg { fill: var(--red); width: 100%; height: 100%; }
     </style>
 </head>
@@ -26,34 +24,25 @@
 <div class="bunker-rack">
     <h1>EL ARSENAL</h1>
     <div class="lcd-monitor" id="log-screen">> SYSTEM_READY...</div>
-
     <div class="module-box">
         <label>CARGAR TRACK</label>
         <input type="file" id="trackUpload">
     </div>
-    
     <button id="finalDetonator" class="detonate-btn" disabled>DETONAR MÁSTER</button>
-
-    <div class="pentagram" id="pentagramBtn" onclick="abrirBunker()">
-        <svg viewBox="0 0 512 512">
-            <path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/>
-        </svg>
+    <div class="pentagram" onclick="abrirBunker()">
+        <svg viewBox="0 0 512 512"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/></svg>
     </div>
 </div>
 
 <script>
-    const CLOUD_NAME = "dly8p5r9x";
-    const UPLOAD_PRESET = "ml_default";
-
     function abrirBunker() {
-        console.log("Pentagrama picado"); // Esto es para probar
-        let p = prompt("METE LA LLAVE MAESTRA:");
-        if(p === "Abre esta m***** 666") {
+        let p = prompt("ACCESO ERICK:");
+        // CLAVE SIMPLIFICADA PARA EVITAR ERRORES DE TECLADO
+        if(p.toLowerCase().trim() === "erick666") {
             document.getElementById('finalDetonator').disabled = false;
             document.getElementById('finalDetonator').classList.add('active');
             document.getElementById('log-screen').innerHTML = "> GOD_MODE: SALUDOS, ERICK.";
             document.getElementById('log-screen').style.color = "#ff0000";
-            document.getElementById('pentagramBtn').style.display = "none";
         } else {
             alert("CLAVE ERRÓNEA");
         }
