@@ -6,22 +6,25 @@
     <title>THE ARSENAL | SOUND METAMORPHOSIS</title>
     <style>
         :root { --red: #ff0000; --gold: #ffcc00; }
-        body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-transform: uppercase; }
-        .bunker-rack { max-width: 1000px; margin: 0 auto; background: #1a1a1a; border: 5px solid #333; border-radius: 12px; box-shadow: 0 0 60px rgba(255, 0, 0, 0.4); padding: 40px; position: relative; }
-        header { border-bottom: 3px solid var(--red); padding-bottom: 20px; margin-bottom: 30px; }
-        h1 { font-size: 5rem; color: var(--red); margin: 0; letter-spacing: -5px; }
-        .tagline { font-size: 1rem; color: #fff; letter-spacing: 5px; }
-        .lcd-monitor { background: #0a0a0a; border: 2px solid #222; padding: 20px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 30px; border-radius: 4px; font-size: 0.8rem; height: 120px; overflow-y: auto; }
-        .hardware-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
-        .slot { background: #111; border-top: 3px solid var(--red); padding: 12px; font-size: 0.75rem; }
-        .ops-center { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .module-box { background: #080808; padding: 25px; border: 1px solid #1a1a1a; }
+        body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
+        .bunker-rack { max-width: 1000px; margin: 0 auto; background: #1a1a1a; border: 5px solid #333; border-radius: 12px; box-shadow: 0 0 60px rgba(255, 0, 0, 0.4); padding: 20px; position: relative; }
+        header { border-bottom: 3px solid var(--red); padding-bottom: 10px; margin-bottom: 20px; text-align: center;}
+        h1 { font-size: 3rem; color: var(--red); margin: 0; letter-spacing: -2px; }
+        .lcd-monitor { background: #0a0a0a; border: 2px solid #222; padding: 15px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 20px; border-radius: 4px; font-size: 0.75rem; height: 100px; overflow-y: auto; }
+        .ops-center { display: flex; flex-direction: column; gap: 15px; position: relative; }
+        .module-box { background: #080808; padding: 15px; border: 1px solid #1a1a1a; }
         label { display: block; font-size: 0.65rem; color: var(--gold); margin-bottom: 8px; }
-        select, input, .action-btn { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; cursor: pointer; font-weight: bold; }
-        .btn-pay { border: 2px solid #009ee3; color: #009ee3; }
-        .detonate-btn { grid-column: span 2; background: #150000; border: 4px solid var(--red); color: var(--red); font-size: 2.5rem; padding: 30px; opacity: 0.15; cursor: not-allowed; transition: 0.4s; }
-        .detonate-btn.active { opacity: 1; cursor: pointer; background: var(--red); color: #000; box-shadow: 0 0 40px var(--red); }
-        .legal { margin-top: 30px; font-size: 0.65rem; color: #444; text-align: justify; border-top: 1px solid #222; padding-top: 20px; text-transform: none; }
+        .action-btn, input, select { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 15px; box-sizing: border-box; font-weight: bold; }
+        .detonate-btn { background: #150000; border: 4px solid var(--red); color: var(--red); font-size: 1.5rem; padding: 20px; opacity: 0.2; cursor: not-allowed; position: relative; z-index: 2;}
+        .detonate-btn.active { opacity: 1; cursor: pointer; background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); }
+        
+        /* EL PENTAGRAMA OCULTO */
+        .occult-trigger { position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; z-index: 1; opacity: 0.05; transition: 0.5s; cursor: pointer;}
+        .occult-trigger:hover { opacity: 0.3; }
+        .occult-trigger svg { width: 100%; height: 100%; fill: var(--red); }
+        
+        /* EL INPUT INVISIBLE DE ERICK */
+        #erickKey { position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); width: 1px; height: 1px; opacity: 0; border: none; }
     </style>
 </head>
 <body>
@@ -29,74 +32,65 @@
 <div class="bunker-rack">
     <header>
         <h1>EL ARSENAL</h1>
-        <div class="tagline">SOUND METAMORPHOSIS (LA METAMORFOSIS DEL SONIDO)</div>
     </header>
 
     <div class="lcd-monitor" id="log-screen">> SYSTEM_READY: ESPERANDO SEÑAL...</div>
 
-    <div class="hardware-stack">
-        <div class="slot">🎙️ SHURE SM7B <br> <small style="color:var(--red)">ACTIVE</small></div>
-        <div class="slot">🎸 MARSHALL JCM800 <br> <small style="color:var(--red)">ACTIVE</small></div>
-        <div class="slot">🎸 AMPEG POWER BASS <br> <small style="color:var(--red)">ACTIVE</small></div>
-    </div>
-
     <div class="ops-center">
         <div class="module-box">
-            <label>1. PAGO (PAYMENT)</label>
-            <select id="cur"><option>MXN ($100)</option><option>USD ($10)</option></select>
-            <button class="action-btn btn-pay" onclick="initPay()">PAGAR MÁSTER (CONFIRM & PAY)</button>
-        </div>
-        <div class="module-box">
-            <label>2. CARGAR (UPLOAD)</label>
+            <label>1. CARGAR TRACK (UPLOAD)</label>
             <input type="file" id="trackUpload">
-            <button class="action-btn" style="border-color:var(--gold);color:var(--gold)" onclick="detonar('trial')">PRUEBA 90s (FREE TRIAL)</button>
         </div>
+        
         <button id="finalDetonator" class="detonate-btn" disabled>DETONAR MÁSTER</button>
-    </div>
 
-    <div class="legal">
-        <b>PROPERTY:</b> TUS ROLAS SON TUYAS. EL ARSENAL NO RECLAMA DERECHOS. (YOU OWN 100% OF YOUR MUSIC).
+        <div class="occult-trigger" onclick="showKeyInput()">
+            <svg viewBox="0 0 512 512">
+                <path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/>
+            </svg>
+        </div>
+        
+        <input type="text" id="erickKey" placeholder="CLAVE" oninput="checkKey(this.value)">
     </div>
 </div>
 
 <script>
-    const CLOUD_NAME = "dly8p5r9x"; // Tu cuenta de Cloudinary vinculada
-    const UPLOAD_PRESET = "ml_default"; 
+    const CLOUD_NAME = "dly8p5r9x";
+    const UPLOAD_PRESET = "ml_default";
     const screen = document.getElementById('log-screen');
 
-    function initPay() {
-        window.open('https://www.mercadopago.com.mx/checkout/v1/redirect?pref_id=ARSENAL_PRO');
-        setTimeout(() => {
+    function showKeyInput() {
+        document.getElementById('erickKey').focus();
+    }
+
+    function checkKey(val) {
+        if(val === "Abre esta m***** 666") {
             const btn = document.getElementById('finalDetonator');
             btn.disabled = false;
             btn.classList.add('active');
-            btn.onclick = () => detonar('full');
-            screen.innerHTML += "<br>> PAGO CONFIRMADO. MOTOR DESBLOQUEADO.";
-        }, 3000);
+            btn.onclick = () => detonar();
+            screen.innerHTML += "<br>> GOD_MODE_ACTIVE: SALUDOS, ERICK.";
+            screen.style.color = "#ff0000";
+            document.querySelector('.occult-trigger').style.display = 'none';
+        }
     }
 
-    async function detonar(type) {
+    async function detonar() {
         const file = document.getElementById('trackUpload').files[0];
-        if (!file) return alert("SUBE TU ROLA (UPLOAD FIRST)");
-
-        screen.innerHTML += `<br>> INICIANDO METAMORFOSIS (${type.toUpperCase()})...`;
-        screen.innerHTML += "<br>> APLICANDO CADENA MARSHALL/AMPEG/SHURE/PAISTE...";
-
+        if (!file) return alert("SUBE TU ROLA");
+        screen.innerHTML += "<br>> INICIANDO METAMORFOSIS QUIRÚRGICA...";
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_preset", UPLOAD_PRESET);
-        if(type === 'trial') formData.append("duration", "90");
-
         try {
             const resp = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`, { method: "POST", body: formData });
             const data = await resp.json();
             if (data.secure_url) {
-                screen.innerHTML += `<br>> <a href="${data.secure_url}" target="_blank" style="color:#0f0;font-weight:bold;">[ DESCARGAR MÁSTER PROFESIONAL ]</a>`;
-                alert("MÉTODOS COMPLETADOS. DESCARGA TU AUDIO.");
+                screen.innerHTML += `<br>> <a href="${data.secure_url}" target="_blank" style="color:#0f0">[ DESCARGAR MÁSTER ]</a>`;
+                alert("LISTO. DESCARGA TU AUDIO.");
             }
-        } catch (e) { screen.innerHTML += "<br>> ERROR EN EL MOTOR."; }
+        } catch (e) { screen.innerHTML += "<br>> ERROR."; }
     }
 </script>
 </body>
-                                                                                                 </html>
-                                                                                                 
+</html>
