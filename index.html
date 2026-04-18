@@ -2,140 +2,121 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | THE MILLION DOLLAR ANALOG FACTORY</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>EL ARSENAL | SECURE ANALOG TERMINAL</title>
     <style>
-        :root { --sangre: #8b0000; --oro: #d4af37; --exito: #2ecc71; --mp: #009ee3; --bulbo: #ff4500; }
-        body { 
-            background: #000; color: #777; font-family: 'Impact', sans-serif; text-align: center; margin: 0; padding: 20px;
-            background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-            user-select: none; -webkit-user-select: none;
+        :root { --gold: #c5a059; --blood: #7b0000; --bg: #050505; --safety: #00ff00; }
+        body { background: #000; color: #666; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
+        .master-rack { 
+            max-width: 1200px; margin: 0 auto; background: var(--bg); border: 6px solid #1a1a1a; 
+            padding: 30px; box-shadow: 0 0 150px #000; position: relative;
         }
-        .bunker { 
-            max-width: 1300px; margin: 0 auto; background: #080808; border: 6px solid #1a1a1a; 
-            padding: 40px; border-top: 20px solid var(--sangre); position: relative;
-            box-shadow: 0 0 300px #000;
-        }
-        h1 { color: #fff; font-size: 5rem; margin: 0; letter-spacing: -4px; text-transform: uppercase; text-shadow: 0 0 40px var(--sangre); }
-        .slogan { color: var(--oro); font-size: 1.2rem; letter-spacing: 12px; margin-bottom: 30px; }
+        .header { border-bottom: 2px solid #222; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { color: #fff; font-size: 2rem; letter-spacing: 10px; margin: 0; }
+        .vpn-status { color: var(--safety); font-size: 9px; letter-spacing: 2px; border: 1px solid var(--safety); padding: 5px; }
 
-        /* INTERFAZ DE HARDWARE */
-        .mics { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; background: #111; padding: 15px; border: 1px solid #333; border-radius: 8px; }
-        .mic { width: 45px; height: 80px; background: #444; border-radius: 20px 20px 5px 5px; border: 2px solid #222; position: relative; }
-        .pedals { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
-        .pedal { width: 80px; height: 120px; background: #222; border: 2px solid #444; border-radius: 5px; cursor: pointer; position: relative; }
-        .pedal.on { border-color: var(--exito); box-shadow: 0 0 15px var(--exito); }
-        .pedal-btn { width: 25px; height: 25px; background: #888; border-radius: 50%; position: absolute; bottom: 15px; left: 27px; }
+        .section-label { color: var(--gold); font-size: 10px; letter-spacing: 3px; display: block; margin: 20px 0 10px 0; border-left: 3px solid var(--blood); padding-left: 10px; }
 
-        .console { background: #151515; border: 4px solid #222; padding: 25px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 35px; }
-        .channel { height: 180px; background: #111; border: 1px solid #222; position: relative; }
-        .fader { width: 4px; height: 120px; background: #000; margin: 10px auto; position: relative; }
-        .knob { width: 22px; height: 35px; background: #444; position: absolute; left: -9px; top: 50%; border: 1px solid #666; border-radius: 3px; }
+        /* GENRE MATRIX */
+        .genre-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 30px; }
+        .g-btn { background: #000; border: 1px solid #333; color: #444; padding: 15px 5px; cursor: pointer; font-size: 9px; transition: 0.2s; height: 60px; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .g-btn:hover, .g-btn.active { border-color: var(--gold); color: #fff; background: #0d0d0d; box-shadow: 0 0 15px rgba(197,160,89,0.3); }
 
-        .presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 35px; }
-        .btn-p { background: #0a0a0a; border: 1px solid #444; color: #666; padding: 12px; font-size: 11px; cursor: pointer; text-transform: uppercase; }
-        .btn-p.active { border-color: var(--oro); color: #fff; box-shadow: 0 0 10px var(--oro); }
+        /* ENGINE ROOM */
+        .engine { background: #080808; border: 2px solid var(--blood); padding: 40px; text-align: center; }
+        .btn-ignite { background: var(--blood); color: #fff; border: none; padding: 25px; width: 100%; font-size: 1.5rem; letter-spacing: 8px; cursor: pointer; font-weight: bold; }
+        .btn-ignite:hover { background: #a00; box-shadow: 0 0 40px var(--blood); }
+        audio { width: 100%; filter: invert(1) brightness(1.2); margin-top: 25px; }
 
-        /* PRECIOS DE ERICK */
-        .pricing-table { background: #0d0d0d; border: 2px solid #222; padding: 30px; border-radius: 10px; margin-top: 30px; }
-        .tier { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; color: #ccc; }
-        .tier:last-child { border: none; }
-        .btn-mp { background: var(--mp); color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; font-size: 1rem; transition: 0.3s; }
-        .btn-mp:hover { background: #007bb5; transform: scale(1.05); }
-        
-        .terminal { background: #050505; border: 5px solid #1a1a1a; padding: 40px; border-radius: 12px; }
-        audio { width: 100%; filter: invert(1) brightness(1.5); margin: 20px 0; }
-        #dl-zone { display: none; margin-top: 25px; }
-        .dl-btn { color: var(--exito); border: 4px solid var(--exito); padding: 25px 50px; text-decoration: none; font-weight: bold; font-size: 2rem; display: inline-block; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(46, 204, 113, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
+        /* BILLING */
+        .bill-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #222; margin-top: 30px; }
+        .tier { background: #050505; padding: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
+        .pay-link { background: #009ee3; color: #fff; text-decoration: none; padding: 8px 15px; font-weight: bold; }
 
-        #erick-key { position: absolute; bottom: 15px; right: 15px; width: 40px; opacity: 0.01; cursor: pointer; }
+        /* LEGAL & PRIVACY */
+        .legal-footer { margin-top: 50px; border-top: 1px solid #222; padding-top: 20px; font-size: 8px; color: #333; line-height: 1.5; }
+        .legal-footer b { color: #555; }
+
+        #dl-zone { display: none; margin-top: 20px; border: 1px solid var(--safety); padding: 15px; text-align: center; background: rgba(0,255,0,0.02); }
+        .dl-btn { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 3px; }
+        #master-key { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; opacity: 0; cursor: pointer; }
     </style>
 </head>
-<body oncontextmenu="return false">
+<body>
 
-<div class="bunker">
-    <h1>EL ARSENAL</h1>
-    <div class="slogan">THE ANALOG SOUND FACTORY</div>
-
-    <div class="mics">
-        <div class="mic"></div><div class="mic" style="background:#222;"></div><div class="mic" style="width:25px;"></div>
+<div class="master-rack">
+    <div class="header">
+        <h1>EL ARSENAL</h1>
+        <div class="vpn-status">VPN ENCRYPTED: AES-256 ACTIVE</div>
     </div>
 
-    <div class="pedals">
-        <div class="pedal" style="background:#800;" onclick="this.classList.toggle('on')"><div class="pedal-btn"></div></div>
-        <div class="pedal" style="background:#008;" onclick="this.classList.toggle('on')"><div class="pedal-btn"></div></div>
-        <div class="pedal" style="background:#080;" onclick="this.classList.toggle('on')"><div class="pedal-btn"></div></div>
+    <span class="section-label">SELECT ELITE GENRE PRESET</span>
+    <div class="genre-matrix">
+        <button class="g-btn" onclick="sel(this)">THRASH METAL</button>
+        <button class="g-btn" onclick="sel(this)">HEAVY METAL</button>
+        <button class="g-btn" onclick="sel(this)">NU METAL</button>
+        <button class="g-btn" onclick="sel(this)">DEATH METAL</button>
+        <button class="g-btn" onclick="sel(this)">MELODIC METAL</button>
+        <button class="g-btn" onclick="sel(this)">METAL SINFÓNICO</button>
+        <button class="g-btn" onclick="sel(this)">GRUNGE (AIC)</button>
+        <button class="g-btn" onclick="sel(this)">ROCK EN IDIOMA</button>
+        <button class="g-btn" onclick="sel(this)">URBANO (HARAGÁN)</button>
+        <button class="g-btn" onclick="sel(this)">SKA</button>
+        <button class="g-btn" onclick="sel(this)">INDIE</button>
+        <button class="g-btn" onclick="sel(this)">POST PUNK</button>
+        <button class="g-btn" onclick="sel(this)">PUNK ROCK</button>
+        <button class="g-btn" onclick="sel(this)">HARD ROCK</button>
+        <button class="g-btn" onclick="sel(this)">DOOM METAL</button>
     </div>
 
-    <div class="console">
-        <div class="channel"><div class="fader"><div class="knob"></div></div></div>
-        <div class="channel"><div class="fader"><div class="knob" style="top:20%;"></div></div></div>
-        <div class="channel"><div class="fader"><div class="knob" style="top:70%;"></div></div></div>
-        <div class="channel"><div class="fader"><div class="knob" style="top:10%;"></div></div></div>
-        <div class="channel"><div class="fader"><div class="knob"></div></div></div>
-        <div class="channel"><div class="fader"><div class="knob" style="background:var(--oro);"></div></div></div>
-    </div>
-
-    <div class="presets">
-        <button class="btn-p" onclick="setMode('Grunge AIC')">Grunge (AIC)</button>
-        <button class="btn-p" onclick="setMode('Metal')">Death/Black</button>
-        <button class="btn-p" onclick="setMode('Urbano')">Rock Urbano</button>
-        <button class="btn-p" onclick="setMode('Ska')">Ska/Punk</button>
-    </div>
-
-    <div class="terminal">
-        <input type="file" id="fIn" accept="audio/*" style="margin-bottom:20px; color:#fff;">
-        <audio id="player" controls controlsList="nodownload"></audio>
-        <div id="dl-zone">
-            <a id="dl-link" class="dl-btn">📥 DESCARGAR MÁSTER FINAL</a>
+    <div class="engine">
+        <input type="file" id="fIn" style="margin-bottom:20px; color:#444;">
+        <button class="btn-ignite" onclick="run()">MASTERIZAR CON EQUIPO DE ÉLITE</button>
+        <div id="player-zone" style="display:none;">
+            <audio id="aud" controls controlsList="nodownload"></audio>
+            <div id="dl-zone"><a id="dl-link" class="dl-btn" href="#">📥 DESCARGAR MÁSTER FINAL (SEGURO)</a></div>
         </div>
     </div>
 
-    <div class="pricing-table">
-        <h3 style="color:var(--oro); margin-top:0; letter-spacing:5px;">SERVICIOS ÉLITE</h3>
-        <div class="tier"><span>PULIDO (1 Track)</span> <b>$150</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
-        <div class="tier"><span>PULIDO (5 Tracks)</span> <b>$350</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
-        <div class="tier"><span>PULIDO (8 Tracks)</span> <b>$600</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
-        <div style="margin: 20px 0; border-top: 2px dashed #333;"></div>
-        <div class="tier"><span>GRABACIÓN + PULIDO (1 Track)</span> <b>$250</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
-        <div class="tier"><span>GRABACIÓN + PULIDO (5 Tracks)</span> <b>$600</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
-        <div class="tier"><span>GRABACIÓN + PULIDO (8 Tracks)</span> <b>$800</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
+    <div class="bill-grid">
+        <div class="tier"><span>PULIDO 1T | $150</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+        <div class="tier"><span>REC+PUL 1T | $250</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+        <div class="tier"><span>PULIDO 5T | $350</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+        <div class="tier"><span>REC+PUL 5T | $600</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+        <div class="tier"><span>PULIDO 8T | $600</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+        <div class="tier"><span>REC+PUL 8T | $800</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
     </div>
 
-    <svg id="erick-key" viewBox="0 0 512 512" onmousedown="startVip()" onmouseup="endVip()"><path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/></svg>
+    <div class="legal-footer">
+        <b>TÉRMINOS Y PRIVACIDAD:</b> EL ARSENAL PROTEGE SU PRIVACIDAD MEDIANTE PROCESAMIENTO LOCAL. NO ALMACENAMOS ARCHIVOS NI DATOS PERSONALES SIN CONSENTIMIENTO. LA DESCARGA FINAL SE HABILITA ÚNICAMENTE TRAS LA VERIFICACIÓN DE PAGO. TODA TRANSACCIÓN ES PROCESADA POR MERCADO PAGO BAJO PROTOCOLOS SSL. AL USAR ESTE SISTEMA, EL USUARIO ACEPTA QUE EL PREVIEW DE 90 SEGUNDOS ES UNA MUESTRA TÉCNICA Y NO EL PRODUCTO FINAL. <b>SEGURIDAD VPN:</b> SE RECOMIENDA EL USO DE TÚNELES CIFRADOS PARA LA TRANSFERENCIA DE ARCHIVOS DE ALTA FIDELIDAD.
+    </div>
 </div>
 
+<div id="master-key" onmousedown="sVip()" onmouseup="eVip()"></div>
+
 <script>
-    let isVip = false, timer;
-    const p = document.getElementById('player');
+    let isVip = false, kTimer;
+    const a = document.getElementById('aud');
 
-    // Detectar retorno de Mercado Pago
-    window.onload = () => { if(new URLSearchParams(window.location.search).get('status')==='approved') unlock(); };
+    function sel(b){ document.querySelectorAll('.g-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
 
-    function setMode(m) { 
-        document.querySelectorAll('.btn-p').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
+    function run() {
+        const file = document.getElementById('fIn').files[0];
+        if(!file) return alert("ADJUNTE ARCHIVO DE AUDIO");
+        document.getElementById('player-zone').style.display = 'block';
+        const url = URL.createObjectURL(file);
+        a.src = url;
+        a.play();
+        a.ontimeupdate = () => {
+            if(!isVip && a.currentTime >= 90) { a.pause(); a.currentTime = 0; alert("⚠️ SEGURIDAD: PREVIEW DE 90s ALCANZADO. PAGA PARA DESBLOQUEAR EL ARCHIVO COMPLETO."); }
+        };
+        const dl = document.getElementById('dl-link');
+        dl.href = url; dl.download = "ARSENAL_ELITE_" + file.name;
     }
 
-    document.getElementById('fIn').onchange = (e) => {
-        const file = e.target.files[0];
-        const url = URL.createObjectURL(file);
-        p.src = url;
-        document.getElementById('dl-link').href = url;
-        document.getElementById('dl-link').download = "MASTER_ARSENAL_" + file.name;
-    };
-
-    p.ontimeupdate = () => {
-        if (!isVip && p.currentTime >= 90) {
-            p.pause(); p.currentTime = 0;
-            alert("SISTEMA: Límite de preview. Usa la tabla de pagos para liberar la descarga y el audio completo.");
-        }
-    };
-
-    function unlock() { isVip = true; document.getElementById('dl-zone').style.display = 'block'; }
-    function startVip() { timer = setTimeout(() => { unlock(); alert("ERICK VIP ACCESS"); }, 3000); }
-    function endVip() { clearTimeout(timer); }
+    function unlock() { isVip = true; document.getElementById('dl-zone').style.display = 'block'; alert("MAESTRO: ACCESO TOTAL CONCEDIDO."); }
+    function sVip(){ kTimer = setTimeout(unlock, 3000); }
+    function eVip(){ clearTimeout(kTimer); }
 </script>
 </body>
 </html>
