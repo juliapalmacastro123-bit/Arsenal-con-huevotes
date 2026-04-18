@@ -3,27 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | VOX & GEAR UNIT</title>
+    <title>EL ARSENAL | HEAVY GEAR UNIT</title>
     <style>
-        :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #151515; }
+        :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #111; }
         body { background: #000; color: var(--acero); font-family: 'Impact', sans-serif; text-align: center; padding: 20px; user-select: none; }
-        .bunker { max-width: 440px; margin: auto; background: #0a0a0a; border: 2px solid #222; padding: 30px; box-shadow: 0 0 40px rgba(139, 0, 0, 0.5); border-radius: 8px; }
-        h1 { color: var(--sangre); font-style: italic; font-size: 2.5rem; letter-spacing: -1px; margin: 0; }
+        .bunker { max-width: 440px; margin: auto; background: #0a0a0a; border: 2px solid #222; padding: 30px; box-shadow: 0 0 50px rgba(139, 0, 0, 0.6); border-radius: 10px; }
+        h1 { color: var(--sangre); font-style: italic; font-size: 2.6rem; letter-spacing: -1px; margin: 0; }
         .sub { font-size: 0.6rem; letter-spacing: 3px; color: #444; margin-bottom: 15px; }
-        
         .consola { background: #000; padding: 10px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 15px; color: #555; }
-        
         .gear-panel { background: #111; border: 1px solid #222; padding: 15px; margin-bottom: 15px; text-align: left; border-top: 2px solid var(--sangre); }
         .label-gear { font-size: 9px; color: var(--sangre); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; display: block; }
-        
         select, input[type="range"] { width: 100%; background: #050505; color: #fff; border: 1px solid #333; margin: 5px 0; padding: 8px; font-family: monospace; font-size: 0.8rem; }
-        
-        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; box-shadow: 0 5px 0 #500; }
-        .btn-war:active { transform: translateY(3px); box-shadow: 0 2px 0 #500; }
-        
+        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; }
         .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; border-radius: 4px; }
         .monto { color: var(--sangre); font-weight: bold; }
-        
         audio { width: 100%; margin: 15px 0; filter: invert(1) hue-rotate(320deg); }
         #descarga { display: none; border: 1px solid var(--sangre); padding: 15px; background: #1a0000; margin-top: 15px; }
     </style>
@@ -31,41 +24,46 @@
 <body oncontextmenu="return false">
 <div class="bunker">
     <h1>EL ARSENAL</h1>
-    <div class="sub">BY ERICK SLAYER3866 | VOX & DELAY UNIT</div>
+    <div class="sub">BY ERICK SLAYER3866 | MULTI-GENRE UNIT</div>
 
-    <div class="consola">> VPN & PROXY SHIELD: ON<br>> ANALYZING VOICE FREQUENCIES...<br>> <span style="color:var(--sangre);">VOX DEPURE & DELAY READY</span></div>
+    <div class="consola">> VPN SECURE...<br>> GENRE CALIBRATION READY...<br>> <span style="color:var(--sangre);">ARSENAL CARGADO CON TODO EL GEAR</span></div>
 
     <div class="gear-panel">
-        <span class="label-gear">VOICE & INSTRUMENT GEAR:</span>
+        <span class="label-gear">GÉNERO A PULIR (VOZ + MÚSICA):</span>
+        <select id="genero">
+            <option value="rock">ROCK CLÁSICO / HARD ROCK</option>
+            <option value="metal">HEAVY METAL / THRASH</option>
+            <option value="black">BLACK / DEATH METAL (DARK MÁSTER)</option>
+            <option value="blues">BLUES / SOUL (CALIDEZ)</option>
+            <option value="punk">PUNK / GRUNGE (RAW POWER)</option>
+            <option value="soda">STADIUM ROCK (TIPO SODA STEREO)</option>
+        </select>
+
+        <span class="label-gear" style="margin-top:10px;">STUDIO GEAR & MICS:</span>
         <select id="mic">
-            <option value="sm7b">SHURE SM7B (Voz con Presencia y Delay)</option>
-            <option value="sm57">SHURE SM57 (Guitarras Pesadas / Tarolas)</option>
-            <option value="u87">NEUMANN U87 (Claridad de Cristal)</option>
+            <option value="sm7b">SHURE SM7B (PRESENCIA PRO + DELAY)</option>
+            <option value="sm57">SHURE SM57 (ATAQUE DE GUITARRA/TAROLA)</option>
+            <option value="marshall">EMULADOR MARSHALL JCM800</option>
+            <option value="mesa">EMULADOR MESA BOOGIE (METAL ZONE)</option>
         </select>
-
-        <span class="label-gear" style="margin-top:10px;">VOX FX (DELAY/REVERB):</span>
-        <select id="fx">
-            <option value="pro">STUDIO DELAY + WARM REVERB (Recomendado)</option>
-            <option value="dry">DRY (Sin Efectos)</option>
-        </select>
-
+        
         <div style="display:flex; gap:10px; margin-top:10px;">
-            <div style="flex:1;"><span class="label-gear">AMPLITUDE</span><input type="range" id="gain" min="0" max="100" value="75"></div>
-            <div style="flex:1;"><span class="label-gear">DELAY DEPTH</span><input type="range" id="depth" min="0" max="100" value="40"></div>
+            <div style="flex:1;"><span class="label-gear">MASTER DRIVE</span><input type="range" min="0" max="100" value="70"></div>
+            <div style="flex:1;"><span class="label-gear">VOX DELAY</span><input type="range" min="0" max="100" value="45"></div>
         </div>
     </div>
 
-    <button id="recBtn" class="btn-war" style="background:#200; border-color:#500; font-size:0.8rem;" onclick="recStart()">● ARM MICS & DELAY</button>
-    <button id="stopBtn" class="btn-war" style="display:none; background:#fff; color:#000;" onclick="recStop()">■ CUT RECORDING</button>
+    <button id="recBtn" class="btn-war" style="background:#200; font-size:0.8rem;" onclick="recStart()">● ARM RECORDING (VOX + MICS)</button>
+    <button id="stopBtn" class="btn-war" style="display:none; background:#fff; color:#000;" onclick="recStop()">■ STOP</button>
     
     <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin:15px 0; font-size:10px; color:#444;">
-    <button class="btn-war" onclick="masterizar(false)">DETONAR MÁSTER PRO</button>
+    <button class="btn-war" onclick="masterizar(false)">DETONAR MÁSTER GLOBAL</button>
 
     <div id="lista-precios" style="margin-top:20px;"></div>
 
     <div id="resultado" style="display:none;">
         <audio id="player" controls controlsList="nodownload"></audio>
-        <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none;">📥 DOWNLOAD WAR MASTER (VOX FX)</a></div>
+        <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none;">📥 DOWNLOAD WAR MASTER</a></div>
     </div>
     
     <div id="key" style="margin-top:30px; color:#0a0a0a; cursor:pointer;">♫</div>
@@ -92,8 +90,8 @@
         }
 
         document.getElementById('lista-precios').innerHTML = `
-            <div style="font-size:8px; color:#333; margin-bottom:8px; text-align:left;">WAR TAX STATUS: ${mon}</div>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>1 VOX/TRACK + FX</span> <span class="monto">${p1} ${mon}</span></a>
+            <div style="font-size:8px; color:#333; margin-bottom:8px; text-align:left;">DETECTED REGION: ${mon}</div>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>1 TRACK + GÉNERO</span> <span class="monto">${p1} ${mon}</span></a>
             <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>8 TRACKS (ALBUM)</span> <span class="monto">${p8} ${mon}</span></a>`;
     }
 
@@ -116,12 +114,12 @@
         if(!p.src) return;
         updateUI(grab);
         document.getElementById('resultado').style.display='block'; p.play();
-        p.ontimeupdate = () => { if(!boss && p.currentTime >= 90) { p.pause(); p.currentTime=0; alert("PAGA EL DERECHO DE PISO PARA BAJAR LA VERSIÓN CON DELAY"); }};
+        p.ontimeupdate = () => { if(!boss && p.currentTime >= 90) { p.pause(); p.currentTime=0; alert("PAGA EL DERECHO DE PISO AL ARSENAL"); }};
         document.getElementById('linkD').href = p.src;
     }
 
     const k = document.getElementById('key');
-    k.onmousedown = () => { timer = setTimeout(() => { boss=true; document.getElementById('descarga').style.display='block'; alert("VOX UNLOCKED - BOSS MODE"); }, 3000); };
+    k.onmousedown = () => { timer = setTimeout(() => { boss=true; document.getElementById('descarga').style.display='block'; alert("MODO BOSS ACTIVADO"); }, 3000); };
     k.onmouseup = () => clearTimeout(timer);
 </script>
 </body>
