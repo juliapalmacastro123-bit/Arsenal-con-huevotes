@@ -3,126 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | SEGURIDAD TOTAL</title>
+    <title>EL ARSENAL | BÚNKER SUPREMO</title>
     <style>
-        :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #111; }
+        :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #111; --oro: #ffd700; --negro: #000; }
         body { background: #000; color: var(--acero); font-family: 'Impact', sans-serif; text-align: center; padding: 20px; user-select: none; }
-        .bunker { max-width: 440px; margin: auto; background: #0a0a0a; border: 2px solid #333; padding: 30px; box-shadow: 0 0 50px rgba(139, 0, 0, 0.7); border-radius: 5px; }
-        h1 { color: var(--sangre); font-style: italic; font-size: 2.8rem; letter-spacing: -2px; margin: 0; }
-        .sub { font-size: 0.6rem; letter-spacing: 4px; color: #555; margin-bottom: 15px; text-transform: uppercase; }
+        .bunker { max-width: 480px; margin: auto; background: #0a0a0a; border: 2px solid #333; padding: 25px; box-shadow: 0 0 70px rgba(139, 0, 0, 0.9); border-radius: 5px; position: relative;}
+        h1 { color: var(--sangre); font-style: italic; font-size: 3rem; letter-spacing: -2px; margin: 0; }
+        .sub { font-size: 0.65rem; letter-spacing: 5px; color: #666; margin-bottom: 20px; text-transform: uppercase; }
+        .consola { background: #000; padding: 12px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 20px; color: #777; }
         
-        /* SEGURIDAD & CONSOLA */
-        .consola { background: #000; padding: 10px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 15px; color: #666; }
+        .seccion-bunker { border: 1px solid #222; background: #111; padding: 15px; margin-bottom: 20px; border-radius: 4px; border-top: 2px solid var(--sangre);}
+        .titulo-seccion { font-size: 12px; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; border-bottom: 1px solid #333; padding-bottom: 5px;}
         
-        /* TÉRMINOS Y CONDICIONES */
-        .terms-box { background: #050505; border: 1px solid #222; padding: 10px; height: 80px; overflow-y: scroll; font-family: sans-serif; font-size: 10px; color: #555; text-align: left; margin-bottom: 15px; border-radius: 4px; }
-        
-        .gear-panel { background: #111; border: 1px solid #222; padding: 15px; margin-bottom: 15px; text-align: left; border-top: 2px solid var(--sangre); }
+        .panel-gear { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left;}
         .label-gear { font-size: 9px; color: var(--sangre); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; display: block; }
-        
         select { width: 100%; background: #050505; color: #fff; border: 1px solid #444; margin: 5px 0; padding: 10px; font-family: monospace; font-size: 0.85rem; }
-        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; }
         
-        /* PAGOS */
-        .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; border-radius: 4px; transition: 0.3s; }
-        .pago:hover { border-color: var(--sangre); background: #1a0000; }
+        .controles-gear { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border-top: 1px solid #222; padding-top: 10px;}
+        .controles-gear span { font-size: 8px; color: #666; text-transform: uppercase; display: block; text-align: center;}
+        .knob-gear { width: 35px; height: 35px; background: #000; border: 2px solid #444; border-radius: 50%; margin: 8px auto; cursor: pointer; position: relative;}
+        .knob-gear::after { content: ''; position: absolute; top: 2px; left: 50%; transform: translateX(-50%); width: 3px; height: 10px; background: #fff; border-radius: 1px;}
+        
+        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; box-shadow: 0 4px 0 #500; margin-top: 10px;}
+        .btn-war:active { transform: translateY(2px); box-shadow: 0 2px 0 #500; }
+        .btn-rec { background: #200; border-color: #500; font-size: 0.8rem; margin-bottom: 10px;}
+        
+        .btn-magia { background: var(--oro); color: var(--negro); border: 1px solid #bfa000; box-shadow: 0 4px 0 #8c7300; font-size: 1.2rem;}
+        .btn-magia:hover { background: #ffea00; }
+
+        .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; }
         .monto { color: var(--sangre); font-weight: bold; }
-        
         audio { width: 100%; margin: 15px 0; filter: invert(1) sepia(1) saturate(5) hue-rotate(320deg); }
-        #descarga { display: none; border: 1px solid var(--sangre); padding: 15px; background: #1a0000; margin-top: 15px; }
+        #descarga { display: none; border: 1px solid var(--sangre); padding: 15px; background: #1a0000; margin-top: 15px;}
+
+        /* EL PENTAGRAMA MAESTRO (Invisible para clientes) */
+        #pentagrama-key { 
+            position: absolute; bottom: 10px; right: 10px; 
+            width: 40px; height: 40px; 
+            cursor: pointer; opacity: 0.03; transition: 0.5s;
+            fill: #fff;
+        }
+        #pentagrama-key.active { opacity: 1; fill: #ff0000; filter: drop-shadow(0 0 10px #f00); }
     </style>
 </head>
 <body oncontextmenu="return false">
 <div class="bunker">
     <h1>EL ARSENAL</h1>
-    <div class="sub">BY ERICK SLAYER3866 | UNIDAD DE MÁSTER PROFESIONAL</div>
+    <div class="sub">BY ERICK SLAYER3866 | BÚNKER DE PODER</div>
+    <div class="consola">> VPN SHIELD: PROTECTED > MASTER ACCESS: HIDDEN<br>> <span style="color:var(--sangre);">ARSENAL LISTO PARA LA BATALLA</span></div>
 
-    <div class="consola">> VPN SHIELD: PROTECTED<br>> ENCRYPTION: 256-BIT AES<br>> <span style="color:var(--sangre);">CONEXIÓN SEGURA A MERCADO PAGO</span></div>
-
-    <div class="gear-panel">
-        <span class="label-gear">GÉNERO UNDERGROUND:</span>
-        <select id="genero">
-            <option value="ska">SKA / ROCK URBANO</option>
-            <option value="punk">PUNK / POST PUNK</option>
-            <option value="indie">INDIE / NEW WAVE</option>
-            <option value="hardcore">HARDCORE / NU METAL</option>
-            <option value="melodic">METAL MELÓDICO / THRASH</option>
-        </select>
-
-        <span class="label-gear" style="margin-top:10px;">PRO GEAR (SHURE/MARSHALL):</span>
-        <select id="mic">
-            <option value="sm7b">SHURE SM7B (VOX DEPTH)</option>
-            <option value="sm57">SHURE SM57 (LIRA BÉLICA)</option>
-        </select>
+    <div class="seccion-bunker">
+        <span class="titulo-seccion">1. GRABACIÓN PRO (QUE SE HAGAN BOLAS)</span>
+        <div class="panel-gear">
+            <div class="unit-gear">
+                <span class="label-gear">AMP / CABEZAL:</span>
+                <select id="amp">
+                    <option value="jcm800">MARSHALL JCM800</option>
+                    <option value="mesa">MESA BOOGIE RECTIFIER</option>
+                </select>
+            </div>
+            <div class="unit-gear">
+                <span class="label-gear">PEDALBOARD:</span>
+                <select id="pedal">
+                    <option value="zone">METAL ZONE MT-2</option>
+                    <option value="wah">CRYBABY WAH</option>
+                    <option value="delay">DIGITAL DELAY</option>
+                </select>
+            </div>
+            <div class="controles-gear">
+                <div><span>GAIN</span><div class="knob-gear" style="transform:rotate(45deg);"></div></div>
+                <div><span>BASS</span><div class="knob-gear" style="transform:rotate(10deg);"></div></div>
+                <div><span>MID</span><div class="knob-gear" style="transform:rotate(-5deg);"></div></div>
+                <div><span>TREBLE</span><div class="knob-gear" style="transform:rotate(20deg);"></div></div>
+            </div>
+        </div>
+        <button id="recBtn" class="btn-war btn-rec" onclick="recStart()">● GRABAR INSTRUMENTO/VOX</button>
+        <button id="stopBtn" class="btn-war btn-rec" style="display:none; background:#fff; color:#000;" onclick="recStop()">■ CORTE DE LÍNEA</button>
     </div>
 
-    <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin-bottom:15px; font-size:10px; color:#444;">
-    <button class="btn-war" onclick="masterizar()">DETONAR MÁSTER</button>
+    <div class="seccion-bunker">
+        <span class="titulo-seccion">2. SÓLO MÚSICA (MAGIA EXPRESS)</span>
+        <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin:10px 0; font-size:10px; color:#444;">
+        <button class="btn-war btn-magia" onclick="ejecutarMagia()">✨ SOLTAR MAGIA ✨</button>
+    </div>
 
+    <div id="lista-precios"></div>
     <div id="resultado" style="display:none;">
         <audio id="player" controls controlsList="nodownload"></audio>
-        
-        <div class="label-gear" style="margin-top:20px;">TÉRMINOS DE SERVICIO:</div>
-        <div class="terms-box">
-            1. El servicio de masterización es automático y definitivo. 
-            2. Queda prohibida la descarga sin pago previo. 
-            3. No se aceptan géneros ajenos al rock/metal. 
-            4. El tiempo de escucha gratuita es de 90 segundos. 
-            5. Erick Slayer3866 no se hace responsable por contenido explícito enviado por el cliente. 
-            6. Al pagar, el cliente acepta que el audio final cumple con sus expectativas.
-        </div>
-
-        <div id="lista-precios"></div>
         <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none; font-weight:bold;">📥 DESCARGAR MÁSTER FINAL</a></div>
     </div>
     
-    <div id="key" style="margin-top:35px; color:#0d0d0d; cursor:pointer;">♫</div>
+    <svg id="pentagrama-key" viewBox="0 0 512 512">
+        <path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/>
+    </svg>
 </div>
 
 <script>
-    let boss = false, timer;
+    let rec, chunks = [], boss = false, timer;
 
-    window.onload = () => {
-        // Bloqueo VPN simple
-        if(navigator.languages.length < 1) document.body.innerHTML = "SECURITY ALERT: ACCESS DENIED";
-    };
+    window.onload = () => updateUI(false);
 
-    function updateUI() {
+    function updateUI(grab) {
         const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        let mon = "MXN", p1 = "$300", p8 = "$1,800";
-
-        if (zona.includes("Europe")) { mon = "EUR"; p1 = "€40"; p8 = "€220"; }
-        else if (zona.includes("America") && !zona.includes("Mexico")) { mon = "USD"; p1 = "$45"; p8 = "$250"; }
+        let mon = "MXN", p1 = grab ? "$650" : "$300", p8 = grab ? "$2,150" : "$1,800";
+        if (zona.includes("Europe")) { mon = "EUR"; p1 = grab ? "€90" : "€40"; p8 = grab ? "€280" : "€220"; }
+        else if (zona.includes("America") && !zona.includes("Mexico")) { mon = "USD"; p1 = grab ? "$95" : "$45"; p8 = grab ? "$300" : "$250"; }
 
         document.getElementById('lista-precios').innerHTML = `
-            <div style="font-size:9px; color:#444; margin-bottom:8px; text-align:left;">DETECCIÓN DE MONEDA: ${mon}</div>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>PAGAR 1 TRACK</span> <span class="monto">${p1} ${mon}</span></a>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>PAGAR ÁLBUM (8)</span> <span class="monto">${p8} ${mon}</span></a>`;
+            <div style="font-size:8px; color:#333; margin-bottom:8px; text-align:left;">DETECCIÓN: ${mon}</div>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>1 TRACK + PLAN</span> <span class="monto">${p1} ${mon}</span></a>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>8 TRACKS (ALBUM)</span> <span class="monto">${p8} ${mon}</span></a>`;
     }
 
-    function masterizar() {
-        const p = document.getElementById('player');
+    async function recStart() {
+        chunks = []; const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+        rec = new MediaRecorder(s); rec.ondataavailable = e => chunks.push(e.data);
+        rec.onstop = () => { 
+            const b = new Blob(chunks, { type: 'audio/mp3' }); 
+            document.getElementById('player').src = URL.createObjectURL(b); 
+            updateUI(true); mostrarResultado(); 
+        };
+        rec.start(); document.getElementById('recBtn').style.display='none'; document.getElementById('stopBtn').style.display='block';
+    }
+    function recStop() { rec.stop(); document.getElementById('recBtn').style.display='block'; document.getElementById('stopBtn').style.display='none'; }
+
+    function ejecutarMagia() {
         const file = document.getElementById('inputAudio').files[0];
-        if(!file) return alert("SUBE TU ROLA PRIMERO");
-        
-        p.src = URL.createObjectURL(file);
-        updateUI();
+        if(!file) return alert("SUBE TU ROLA");
+        document.getElementById('player').src = URL.createObjectURL(file);
+        updateUI(false); mostrarResultado();
+    }
+
+    function mostrarResultado() {
+        const p = document.getElementById('player');
         document.getElementById('resultado').style.display='block';
         p.play();
-
-        p.ontimeupdate = () => {
-            if(!boss && p.currentTime >= 90) {
-                p.pause(); p.currentTime = 0;
-                alert("MUESTRA FINALIZADA. PAGA EL DERECHO DE PISO PARA DESBLOQUEAR.");
-            }
-        };
+        p.ontimeupdate = () => { if(!boss && p.currentTime >= 90) { p.pause(); p.currentTime=0; alert("DERECHO DE PISO: PAGA PARA BAJAR LA ROLA"); }};
         document.getElementById('linkD').href = p.src;
     }
 
-    // LLAVE MAESTRA
-    const k = document.getElementById('key');
-    k.onmousedown = () => { timer = setTimeout(() => { boss=true; document.getElementById('descarga').style.display='block'; alert("SISTEMA DESBLOQUEADO, JEFE."); }, 3000); };
-    k.onmouseup = () => clearTimeout(timer);
+    // LÓGICA DEL PENTAGRAMA MAESTRO
+    const penta = document.getElementById('pentagrama-key');
+    penta.onmousedown = () => { 
+        timer = setTimeout(() => { 
+            boss = true; 
+            penta.classList.add('active'); 
+            document.getElementById('descarga').style.display = 'block'; 
+            alert("SISTEMA DESBLOQUEADO, BIENVENIDO JEFE"); 
+        }, 3000); 
+    };
+    penta.onmouseup = () => clearTimeout(timer);
+    penta.ontouchstart = (e) => { e.preventDefault(); penta.onmousedown(); };
+    penta.ontouchend = () => clearTimeout(timer);
 </script>
 </body>
 </html>
