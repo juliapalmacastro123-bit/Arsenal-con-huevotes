@@ -3,122 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | THE ARSENAL</title>
+    <title>EL ARSENAL | LA METAMORFOSIS DEL ROCK</title>
     <style>
-        :root { --red: #ff0000; --gold: #ffcc00; --dark: #0a0a0a; }
+        :root { --diamond: #00f2ff; --gold: #ffcc00; --steel: #222; }
         body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; text-align: center; }
-        .bunker-rack { max-width: 600px; margin: 20px auto; background: #1a1a1a; border: 5px solid #333; border-radius: 12px; box-shadow: 0 0 70px rgba(255, 0, 0, 0.8); padding: 25px; border-top: 8px solid var(--red); position: relative; }
-        h1 { font-size: 2.2rem; color: var(--red); margin: 0; letter-spacing: -1px; text-shadow: 2px 2px #000; }
-        h2 { font-size: 0.8rem; color: #888; margin-bottom: 20px; letter-spacing: 2px; line-height: 1.4; }
-        .lcd-monitor { background: #050505; border: 2px solid #222; padding: 15px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 20px; border-radius: 4px; font-size: 0.7rem; min-height: 230px; border-left: 5px solid var(--red); overflow-y: auto; box-shadow: inset 0 0 15px #000; }
-        .module { background: var(--dark); padding: 15px; border: 1px solid #222; margin-bottom: 12px; text-align: left; border-radius: 4px; }
-        label { display: block; font-size: 0.6rem; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
-        select, input, .pay-btn { width: 100%; background: #000; border: 1px solid #444; color: #fff; padding: 12px; box-sizing: border-box; font-weight: bold; }
-        .multi-pay { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
-        .pay-btn { font-size: 0.65rem; cursor: pointer; border: none; border-radius: 3px; transition: 0.3s; padding: 15px 5px; }
-        .mxn { background: #009ee3; } .usd { background: #2e7d32; } .eur { background: #1565c0; }
-        .detonate-btn { width: 100%; background: #150000; border: 4px solid var(--red); color: var(--red); font-size: 1.8rem; padding: 25px; opacity: 0.1; font-weight: bold; cursor: not-allowed; transition: 0.5s; margin-top: 10px; text-shadow: 0 0 10px var(--red); }
-        .detonate-btn.active { opacity: 1; background: var(--red); color: #000; box-shadow: 0 0 40px var(--red); cursor: pointer; }
-        .pentagram { margin: 20px 0; opacity: 0.15; width: 55px; cursor: pointer; display: inline-block; transition: 0.5s; }
-        .pentagram svg { fill: var(--red); }
-        .legal { margin-top: 25px; font-size: 0.52rem; color: #555; text-align: justify; text-transform: none; border-top: 1px solid #222; padding-top: 12px; line-height: 1.3; }
+        .bunker-rack { 
+            max-width: 600px; margin: 20px auto; background: #0a0a0a; border: 2px solid #333; 
+            border-radius: 15px; box-shadow: 0 0 60px rgba(0, 242, 255, 0.3); 
+            padding: 30px; border-top: 8px solid var(--diamond);
+        }
+        h1 { font-size: 2.2rem; color: #fff; margin: 0; text-shadow: 0 0 20px var(--diamond); letter-spacing: 2px; }
+        h2 { font-size: 0.7rem; color: var(--diamond); margin-bottom: 25px; letter-spacing: 4px; font-weight: bold; }
+        .lcd-monitor { 
+            background: #000; border: 1px solid #1a1a1a; padding: 20px; color: var(--diamond); 
+            text-align: left; font-size: 0.85rem; min-height: 200px; margin-bottom: 25px; 
+            border-radius: 8px; box-shadow: inset 0 0 30px #001a1d; border-left: 5px solid var(--diamond);
+        }
+        .module { background: #0f0f0f; padding: 15px; border: 1px solid #222; margin-bottom: 15px; text-align: left; border-radius: 10px; }
+        label { display: block; font-size: 0.65rem; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
+        select, input, .pay-btn { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; font-weight: bold; border-radius: 5px; font-size: 0.85rem; outline: none; }
+        .multi-pay { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .pay-btn { font-size: 0.65rem; cursor: pointer; border: none; transition: 0.4s; }
+        .mxn { background: #1a1a1a; border: 1px solid #009ee3; color: #009ee3; }
+        .usd { background: #1a1a1a; border: 1px solid #2e7d32; color: #2e7d32; }
+        .eur { background: #1a1a1a; border: 1px solid #1565c0; color: #1565c0; }
+        .detonate-btn { 
+            width: 100%; background: #000; border: 2px solid #333; color: #333; 
+            font-size: 2rem; padding: 25px; font-weight: bold; cursor: not-allowed; transition: 0.6s; 
+        }
+        .detonate-btn.active { border-color: var(--diamond); color: var(--diamond); box-shadow: 0 0 40px var(--diamond); cursor: pointer; text-shadow: 0 0 10px var(--diamond); }
+        #result-area { margin-top: 25px; display: none; background: #050505; padding: 20px; border: 2px solid var(--diamond); border-radius: 12px; }
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg); margin-top: 15px; }
+        .author-seal { margin: 35px 0; opacity: 0.3; width: 65px; cursor: pointer; transition: 0.6s; display: inline-block; }
+        .author-seal:hover { opacity: 1; filter: drop-shadow(0 0 15px var(--diamond)); transform: scale(1.1); }
+        .privacy-box { background: #050505; border: 1px solid #1a1a1a; padding: 15px; margin-top: 25px; border-radius: 8px; text-align: justify; }
     </style>
 </head>
-<body onload="checkVPN()">
+<body onload="antiVPN()">
 
-<div class="bunker-rack" id="mainBunker">
+<div class="bunker-rack" id="bunker">
     <h1>EL ARSENAL</h1>
-    <h2>LA METAMORFOSIS DEL SONIDO<br>THE SOUND METAMORPHOSIS</h2>
+    <h2>LA METAMORFOSIS DEL ROCK</h2>
 
     <div class="lcd-monitor" id="log-screen">
-        > CADENERO: ESCANEANDO PERÍMETRO...<br>
-        > VERIFICANDO INTEGRIDAD DE CONEXIÓN...
+        > MANDO DE AUTOR: ESCANEANDO CASTA ARGENTINA...<br>
+        > STATUS: ESPERANDO LLAVE MAESTRA...
     </div>
 
     <div class="module">
-        <label>I. CALIBRACIÓN QUIRÚRGICA (15 GÉNEROS MAESTROS)</label>
-        <select id="genre">
-            <option>1. ROCK ANALÓGICO (MARSHALL JCM)</option>
-            <option>2. METAL EXTREMO (HIGH GAIN BULBS)</option>
-            <option>3. PUNK ROCK (RAW POWER)</option>
-            <option>4. INDIE / ALTERNATIVO (VINTAGE)</option>
-            <option>5. BLUES / JAZZ (WARM TUBE)</option>
-            <option>6. POP MAINSTREAM (SHINE)</option>
-            <option>7. HIP-HOP OLD SCHOOL (THUMP)</option>
-            <option>8. TRAP / DRILL (SUB POWER 808)</option>
-            <option>9. REGGAETÓN (PUNCHY & CLEAR)</option>
-            <option>10. R&B / SOUL (SILKY)</option>
-            <option>11. TECHNO / INDUSTRIAL (COLD)</option>
-            <option>12. HOUSE / DANCE (DRIVE)</option>
-            <option>13. CORRIDOS (BRIGHT BASS/TAMA)</option>
-            <option>14. CUMBIA / SALSA (ANALOG PERCUSSION)</option>
-            <option>15. ACÚSTICO / VOZ PURA (SHURE SM7B)</option>
+        <label>I. CALIBRACIÓN DE CASTA (15 GÉNEROS MAESTROS)</label>
+        <select id="genreSelect">
+            <option>1. ROCK EN TU IDIOMA (CAIFANES/SODA)</option>
+            <option>2. ROCK URBANO (BARRIO POWER)</option>
+            <option>3. POST-PUNK (DARK WAVE)</option>
+            <option>4. SKA (PUNCHY HORNS)</option>
+            <option>5. BLUES (WARM TUBE)</option>
+            <option>6. ROCK ANALÓGICO (MARSHALL JCM)</option>
+            <option>7. METAL EXTREMO (HIGH GAIN)</option>
+            <option>8. THRASH METAL (FAST ATTACK)</option>
+            <option>9. BLACK / DEATH (ACERO FRÍO)</option>
+            <option>10. HEAVY METAL (IRON POWER)</option>
+            <option>11. PUNK ROCK (RAW & REAL)</option>
+            <option>12. GRUNGE (LODO DE DIAMANTE)</option>
+            <option>13. INDUSTRIAL (STEEL PULSE)</option>
+            <option>14. HARD ROCK (STADIUM SOUND)</option>
+            <option>15. PSICODELIA (MUTACIÓN)</option>
         </select>
     </div>
 
     <div class="module">
-        <label>II. CARGAR PISTA (FULL DYNAMIC RANGE)</label>
-        <input type="file" id="trackUpload" accept="audio/*">
+        <label>II. CARGAR PROEZA (SÓLO ROCK & METAL)</label>
+        <input type="file" id="audioInput" accept="audio/*">
     </div>
 
-    <div id="payment-area">
-        <label>III. ACTIVACIÓN DE EQUIPO (TARIFA INTERNACIONAL)</label>
+    <div id="payment-box">
+        <label>III. TARIFA INTERNACIONAL ($20 USD/EUR)</label>
         <div class="multi-pay">
-            <button class="pay-btn mxn" onclick="window.open('TU_LINK_MXN')">$100 MXN</button>
-            <button class="pay-btn usd" onclick="window.open('TU_LINK_USD')">$20 USD</button>
-            <button class="pay-btn eur" onclick="window.open('TU_LINK_EUR')">20€ EUR</button>
+            <button class="pay-btn mxn">$100 MXN</button>
+            <button class="pay-btn usd">$20 USD</button>
+            <button class="pay-btn eur">20€ EUR</button>
         </div>
     </div>
     
-    <button id="finalDetonator" class="detonate-btn" disabled>DETONAR</button>
+    <button id="detonator" class="detonate-btn" disabled>DETONAR</button>
 
-    <div class="pentagram" onclick="abrirBunker()">
-        <svg viewBox="0 0 512 512"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/></svg>
+    <div id="result-area">
+        <label style="color:var(--diamond); font-weight:bold;">MUTACIÓN COMPLETADA:</label>
+        <audio id="masterPlayer" controls></audio>
+        <br><br>
+        <a id="downloadBtn" style="color:var(--gold); font-size:0.8rem; text-decoration:none; border:1px solid var(--gold); padding:8px; display:inline-block; border-radius:4px;">[ GUARDAR MÁSTER DIAMANTE ]</a>
     </div>
 
-    <div class="legal">
-        <b>AVISO DE PRIVACIDAD:</b> EL ARSENAL protege tus archivos. Se eliminan tras el máster. <b>TÉRMINOS:</b> Prohibido VPN (el cadenero te banea). El máster es analógico, quirúrgico y de alta fidelidad. <b>© 2026 EL ARSENAL. ALL RIGHTS RESERVED.</b>
+    <div class="privacy-box">
+        <p style="color: var(--gold); font-size: 0.6rem; font-weight: bold; margin-bottom: 5px;">🛡️ GARANTÍA DE BÚNKER (PRIVACIDAD):</p>
+        <p style="color: #666; font-size: 0.55rem; line-height: 1.2; margin: 0;">
+            TUS CANCIONES NO SE ALMACENAN. EL PROCESAMIENTO ES 100% LOCAL. RESPETAMOS TU OBRA Y TU CASTA. AL DETONAR, ACEPTAS QUE EL ARSENAL NO GUARDA COPIA DE TU PROEZA. MANDO DE AUTOR: ERICK.
+        </p>
+    </div>
+
+    <div class="author-seal" onclick="unlock()">
+        <svg viewBox="0 0 512 512" fill="#00f2ff"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/></svg>
     </div>
 </div>
 
 <script>
-    const screen = document.getElementById('log-screen');
+    const log = document.getElementById('log-screen');
+    let ctx, source, filter, saturator, compressor;
 
-    async function checkVPN() {
+    async function antiVPN() {
         try {
             const res = await fetch('https://ipapi.co/json/');
             const data = await res.json();
             if (data.proxy || data.hosting) {
-                document.getElementById('mainBunker').innerHTML = "<h1 style='color:red; margin-top:50px;'>ACCESO BLOQUEADO</h1><p>EL CADENERO DETECTÓ VPN/PROXY. EL ACCESO AL ARSENAL ESTÁ RESTRINGIDO.</p>";
-            } else { 
-                screen.innerHTML += "<br>> CADENERO: LIMPIO. SIN VPN DETECTADA."; 
+                document.getElementById('bunker').innerHTML = "<h1 style='color:red;'>BLOQUEO ANTI-VPN</h1><p>LA CASTA NO ADMITE TÚNELES DIGITALES.</p>";
+            } else {
+                log.innerHTML += "<br>> CADENERO: CONEXIÓN LIMPIA.";
             }
-        } catch(e) { screen.innerHTML += "<br>> SEGURIDAD: MODO BÚNKER ACTIVADO."; }
+        } catch(e) { log.innerHTML += "<br>> SEGURIDAD: MODO BÚNKER LOCAL ACTIVADO."; }
     }
 
-    function abrirBunker() {
-        let p = prompt("LLAVE MAESTRA:");
-        if(p && p.trim() === "Abre esta m***** 666") {
-            const btn = document.getElementById('finalDetonator');
-            btn.disabled = false;
-            btn.classList.add('active');
-            btn.onclick = () => detonar();
-            document.getElementById('payment-area').style.display = 'none';
-            screen.innerHTML = `> ACCESO AUTORIZADO: ERICK<br>> MICROFONEO: SHURE SM7B ACTIVADO.<br>> AMPLIFICACIÓN: MARSHALL & AMPEG CALIENTES.<br>> BATERÍA: TAMA (BRILLO QUIRÚRGICO).<br>> STATUS: LISTO PARA LA METAMORFOSIS.`;
-            screen.style.color = "#ff0000";
+    function unlock() {
+        if(prompt("LLAVE DE AUTOR:") === "Abre esta m***** 666") {
+            const btn = document.getElementById('detonator');
+            btn.disabled = false; btn.classList.add('active');
+            btn.onclick = startMutation;
+            document.getElementById('payment-box').style.display = 'none';
+            log.innerHTML = `> MANDO DE AUTOR: ACTIVADO<br>> CASTA: ERICK (FENÓMENO)<br>> STATUS: VIBRA DE DIAMANTE ONLINE.`;
+            log.style.color = "#00f2ff";
         }
     }
 
-    function detonar() {
-        const file = document.getElementById('trackUpload').files[0];
-        if (!file) return alert("SUBE EL TRACK");
-        screen.innerHTML += `<br>> CALENTANDO BULBOS DE EQUIPO REAL...`;
-        screen.innerHTML += `<br>> PROCESANDO CON SHURE SM7B...`;
-        screen.innerHTML += `<br>> AJUSTANDO HI-HATS Y PLATILLOS TAMA...`;
-        screen.innerHTML += `<br>> ELIMINANDO SONIDOS GORDOS Y LENTOS...`;
-        screen.innerHTML += `<br>> METAMORFOSIS COMPLETADA CON ÉXITO.`;
-        setTimeout(() => alert("¡METAMORFOSIS COMPLETADA! REVISA EL BRILLO."), 1500);
+    function startMutation() {
+        const file = document.getElementById('audioInput').files[0];
+        if(!file) return alert("SUBE TU PROEZA.");
+
+        log.innerHTML += `<br>> INICIANDO METAMORFOSIS DEL ROCK...`;
+        log.innerHTML += `<br>> FILTRO QUIRÚRGICO: ELIMINANDO TOSTADO...`;
+
+        const player = document.getElementById('masterPlayer');
+        const url = URL.createObjectURL(file);
+        player.src = url;
+        document.getElementById('downloadBtn').href = url;
+        document.getElementById('downloadBtn').download = "MASTER_DIAMANTE_" + file.name;
+
+        if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if(source) source.disconnect();
+        source = ctx.createMediaElementSource(player);
+        
+        // FILTRO DIAMANTE (14,200 Hz)
+        filter = ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(14200, ctx.currentTime); 
+
+        // CALOR MARSHALL
+        saturator = ctx.createWaveShaper();
+        saturator.curve = (n => {
+            let c = new Float32Array(n), x;
+            for(let i=0; i<n; i++) {
+                x = i * 2 / n - 1;
+                c[i] = (3 + 35) * x * 20 * (Math.PI/180) / (Math.PI + 35 * Math.abs(x));
+            }
+            return c;
+        })(44100);
+
+        // COMPRESIÓN TAMA POWER
+        compressor = ctx.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-18, ctx.currentTime);
+        compressor.ratio.setValueAtTime(12, ctx.currentTime);
+
+        source.connect(filter).connect(saturator).connect(compressor).connect(ctx.destination);
+
+        setTimeout(() => {
+            document.getElementById('result-area').style.display = 'block';
+            log.innerHTML += "<br>> MUTACIÓN COMPLETADA. TRUENA LA CASTA.";
+            player.play();
+        }, 2000);
     }
 </script>
 </body>
-</html>
+    </html>
+    
