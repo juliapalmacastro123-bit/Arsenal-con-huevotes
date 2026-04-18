@@ -3,129 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | BÚNKER DE PRODUCCIÓN</title>
+    <title>EL ARSENAL | STUDIO MASTER & PAYMENTS</title>
     <style>
-        :root { --sangre: #8b0000; --acero-oscuro: #1a1a1a; --acero-luz: #333; --oro-viejo: #a89000; --metal: #555; }
+        :root { --sangre: #8b0000; --acero: #222; --oro: #ffd700; --diamante: #00e5ff; --pago: #009ee3; }
+        body { background: #000; color: #aaa; font-family: 'Impact', sans-serif; text-align: center; padding: 10px; user-select: none; }
         
-        body { background: #050505; color: #aaa; font-family: 'Georgia', serif; text-align: center; padding: 10px; user-select: none; }
+        .bunker-full { 
+            max-width: 800px; margin: auto; background: #0f0f0f; border: 4px solid #1a1a1a; 
+            padding: 25px; box-shadow: 0 0 50px #000; border-top: 8px solid var(--sangre); 
+        }
+
+        h1 { color: var(--sangre); font-size: 3.5rem; margin: 0; font-style: italic; letter-spacing: -1px; }
+        .sub-titulo { color: var(--diamante); font-size: 1rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 30px; }
+
+        /* RACK & GEAR */
+        .rack-gears { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
+        .amp-head { background: #1a1a1a; border: 2px solid #333; padding: 15px; border-radius: 4px; }
+        .bulbos { display: flex; justify-content: center; gap: 10px; }
+        .bulbo-on { width: 10px; height: 20px; background: #ff4500; border-radius: 5px; box-shadow: 0 0 10px #ff4500; opacity: 0.8; }
+
+        /* GÉNEROS SEPARADOS */
+        .generos-pro { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 25px; }
+        .gen-btn { background: #0a0a0a; border: 1px solid #333; color: #555; padding: 12px 2px; font-size: 10px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        .gen-btn.active { border-color: var(--sangre); color: #fff; background: #200000; box-shadow: 0 0 10px var(--sangre); }
+
+        /* PEDALERA */
+        .pedalboard { background: #151515; padding: 15px; border: 2px solid #222; display: flex; justify-content: space-around; margin-bottom: 25px; }
+        .pedal { width: 55px; height: 85px; border-radius: 5px; border: 1px solid #000; font-size: 7px; color: #fff; padding-top: 35px; background: #444; }
+
+        /* CONSOLA */
+        .consola { display: grid; grid-template-columns: repeat(8, 1fr); background: #080808; padding: 15px; border: 2px solid #000; gap: 4px; margin-bottom: 25px; }
+        .canal { height: 160px; background: #111; position: relative; border-right: 1px solid #000; }
+        .fader { width: 16px; height: 35px; background: #ccc; position: absolute; left: 50%; transform: translateX(-50%); bottom: 20px; border-radius: 2px; }
+
+        /* SECCIÓN DE PAGOS MERCADO PAGO */
+        .pago-container { background: #050505; border: 2px solid #111; padding: 20px; margin-top: 20px; }
+        .pago-title { color: var(--pago); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .btn-pago { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: #111; border: 1px solid var(--pago); color: #fff; 
+            padding: 15px; margin-bottom: 10px; text-decoration: none; font-size: 14px; 
+            transition: 0.3s;
+        }
+        .btn-pago:hover { background: var(--pago); color: #000; font-weight: bold; }
+        .monto { font-weight: bold; color: var(--oro); }
+
+        .btn-magia { background: var(--oro); color: #000; width: 100%; padding: 25px; border: none; font-size: 1.8rem; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
         
-        /* CONTENEDOR TIPO RACK DE ESTUDIO */
-        .bunker-industrial { 
-            max-width: 700px; margin: auto; background: #0a0a0a; border: 4px solid #222; 
-            box-shadow: 0 0 40px #000, inset 0 0 100px #000; position: relative; padding: 30px; 
-            border-radius: 4px; border-left: 10px solid #151515; border-right: 10px solid #151515;
-        }
-
-        /* TEXTURAS Y LOGO */
-        .panel-frontal { background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); padding: 20px; border: 1px solid #111; }
-        h1 { color: var(--sangre); font-size: 3rem; margin: 0; text-transform: uppercase; letter-spacing: -2px; font-weight: 900; filter: drop-shadow(2px 2px 2px #000); }
-        .sub-titulo { color: #444; font-size: 0.9rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 30px; font-weight: bold; border-bottom: 1px solid #222; display: inline-block; padding-bottom: 5px; }
-
-        /* GÉNEROS: ESTILO SELECTOR ANALÓGICO */
-        .generos-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 30px; }
-        .gen-toggle { 
-            background: linear-gradient(145deg, #111, #000); border: 1px solid #222; color: #555; 
-            padding: 12px 5px; font-size: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase;
-            box-shadow: 2px 2px 5px #000; transition: 0.2s;
-        }
-        .gen-toggle:hover { color: #888; border-color: #333; }
-        .gen-toggle.active { color: #fff; border-color: var(--sangre); background: #1a0000; box-shadow: inset 0 0 10px #000, 0 0 5px var(--sangre); }
-
-        /* CONSOLA DE MEZCLA PESADA */
-        .mixer-console { 
-            display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; background: #0e0e0e; 
-            padding: 20px 10px; border: 2px solid #000; border-radius: 3px; box-shadow: inset 0 0 30px #000;
-        }
-        .canal-strip { background: #121212; border-right: 1px solid #000; height: 220px; position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 10px; }
-        .knob-pro { 
-            width: 22px; height: 22px; background: radial-gradient(circle, #444, #111); border: 2px solid #000; 
-            border-radius: 50%; margin-bottom: 15px; position: relative; box-shadow: 2px 2px 5px #000;
-        }
-        .knob-pro::after { content: ''; position: absolute; top: 2px; left: 50%; width: 2px; height: 8px; background: var(--sangre); }
-        .fader-slot { width: 4px; height: 100px; background: #000; margin-top: 20px; position: relative; border-radius: 2px; }
-        .fader-handle { 
-            width: 20px; height: 35px; background: linear-gradient(to right, #333, #666, #333); 
-            position: absolute; left: -8px; bottom: 30px; border-radius: 2px; border: 1px solid #000; 
-            box-shadow: 0 5px 10px #000; cursor: pointer;
-        }
-        .vumeter { width: 4px; height: 40px; background: #050505; margin-top: 10px; border: 1px solid #111; position: relative; }
-        .vumeter::after { content: ''; position: absolute; bottom: 0; width: 100%; height: 60%; background: #0f0; opacity: 0.3; }
-
-        /* ANTI-FIERRO ESPECIAL */
-        .master-channel { border: 1px solid var(--sangre) !important; background: #1a0505 !important; }
-        .master-channel .fader-handle { background: linear-gradient(to right, #600, var(--sangre), #600); }
-
-        /* BOTONES DE ACCIÓN */
-        .upload-area { margin: 30px 0; padding: 20px; border: 2px dashed #222; background: #080808; }
-        .btn-master { 
-            background: linear-gradient(180deg, #222, #000); color: #888; border: 1px solid #333; 
-            padding: 15px 40px; font-size: 1.2rem; font-weight: bold; cursor: pointer; 
-            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
-        }
-        .btn-master:hover { color: #fff; border-color: var(--sangre); box-shadow: 0 0 20px rgba(139, 0, 0, 0.4); }
-
-        /* SEGURIDAD Y PENTAGRAMA */
-        .legal-notice { font-size: 9px; color: #333; margin-top: 30px; text-align: justify; padding: 0 20px; font-family: monospace; }
-        #master-pentagram { position: absolute; bottom: 15px; right: 15px; width: 40px; height: 40px; cursor: pointer; opacity: 0.02; fill: #fff; transition: 1s; }
-        #master-pentagram.active { opacity: 1; fill: var(--sangre); filter: drop-shadow(0 0 15px var(--sangre)); }
-
-        #descarga-final { display: none; margin-top: 20px; padding: 20px; border: 1px solid var(--sangre); background: #100; color: #fff; font-weight: bold; text-decoration: none; }
-        audio { width: 100%; margin: 20px 0; filter: invert(0.9) hue-rotate(180deg) brightness(0.5) contrast(1.5); }
+        #master-pentagram { position: absolute; bottom: 15px; right: 15px; width: 40px; height: 40px; cursor: pointer; opacity: 0.01; fill: #fff; transition: 0.5s; }
+        #master-pentagram.active { opacity: 1; fill: var(--sangre); filter: drop-shadow(0 0 20px var(--sangre)); }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false">
 
-<div class="bunker-industrial">
-    <div class="panel-frontal">
-        <h1>EL ARSENAL</h1>
-        <div class="sub-titulo">La Metamorfosis del Sonido</div>
-        
-        <div style="font-size: 10px; color: #444; text-transform: uppercase; margin-bottom: 15px;">Hardware Emulation v3.8.6 - Búnker de Metales</div>
+<div class="bunker-full">
+    <h1>EL ARSENAL</h1>
+    <div class="sub-titulo">LA METAMORFOSIS DEL SONIDO</div>
 
-        <div class="generos-container">
-            <button class="gen-toggle">Ska/Urbano</button>
-            <button class="gen-toggle">Punk/HxC</button>
-            <button class="gen-toggle active">Grunge/Alice</button>
-            <button class="gen-toggle">Thrash/Death</button>
-            <button class="gen-toggle">Black/Grind</button>
-            <button class="gen-toggle">Rock N' Roll</button>
-            <button class="gen-toggle">Dark Wave</button>
-            <button class="gen-toggle">Metal Melódico</button>
+    <div class="rack-gears">
+        <div class="amp-head">
+            <div class="bulbos"><div class="bulbo-on"></div><div class="bulbo-on"></div><div class="bulbo-on"></div></div>
+            <span style="font-size: 9px;">🎙️ SM57 + NEUMANN U87</span>
         </div>
-
-        <div class="mixer-console">
-            <div class="canal-strip"><div class="knob-pro"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 70px;"></div></div><div class="vumeter"></div></div>
-            <div class="canal-strip"><div class="knob-pro"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 40px;"></div></div><div class="vumeter"></div></div>
-            <div class="canal-strip master-channel">
-                <div class="knob-pro" style="border-color: var(--sangre)"></div>
-                <div style="font-size: 5px; color: var(--sangre); font-weight: bold;">ANTI-FIERRO</div>
-                <div class="fader-slot"><div class="fader-handle" style="bottom: 90px;"></div></div>
-                <div class="vumeter"></div>
-            </div>
-            <div class="canal-strip"><div class="knob-pro"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 55px;"></div></div><div class="vumeter"></div></div>
-            <div class="canal-strip"><div class="knob-pro"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 30px;"></div></div><div class="vumeter"></div></div>
-            <div class="canal-strip"><div class="knob-pro"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 85px;"></div></div><div class="vumeter"></div></div>
-            <div class="canal-strip"><div class="knob-pro"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 60px;"></div></div><div class="vumeter"></div></div>
-            <div class="canal-strip"><div class="knob-pro" style="border-color: #0f0;"></div><div class="knob-pro"></div><div class="fader-slot"><div class="fader-handle" style="bottom: 20px;"></div></div><div class="vumeter"></div></div>
-        </div>
-
-        <div class="upload-area">
-            <input type="file" id="audioFile" accept="audio/*" style="color: #444; font-size: 11px;">
-        </div>
-
-        <button class="btn-master" onclick="lanzarMagia()">Ejecutar Máster</button>
-
-        <div id="resultado-wrap" style="display:none;">
-            <audio id="reproductor" controls controlsList="nodownload"></audio>
-            <a id="descarga-final" href="#">📥 LIBERAR MÁSTER FINAL (SIN FIERROS)</a>
-        </div>
-
-        <div class="legal-notice">
-            [TERMOS TÉCNICOS]: PROCESAMIENTO ANALÓGICO VIRTUAL. EL ARCHIVO SE MANTIENE EN EL BUFFER LOCAL DEL NAVEGADOR. NO EXISTE CARGA A SERVIDORES EXTERNOS. SU PROPIEDAD INTELECTUAL ES INVIOLABLE. EL ARSENAL SE DESLINDA DE COPIAS NO AUTORIZADAS TRAS EL CIERRE DE SESIÓN.
+        <div class="amp-head">
+            <div style="height: 15px; background: #000; border: 1px solid #333; margin-bottom: 5px;"></div>
+            <span style="font-size: 9px;">CABINET: 4X12 CELESTION</span>
         </div>
     </div>
 
-    <svg id="master-pentagram" viewBox="0 0 512 512" onmousedown="startHold()" onmouseup="endHold()" ontouchstart="startHold()" ontouchend="endHold()">
+    <div class="generos-pro">
+        <button class="gen-btn">SKA</button>
+        <button class="gen-btn">URBANO</button>
+        <button class="gen-btn">ROCK URBANO</button>
+        <button class="gen-btn active">GRUNGE</button>
+        <button class="gen-btn">PUNK</button>
+        <button class="gen-btn">THRASH</button>
+        <button class="gen-btn">DEATH</button>
+        <button class="gen-btn">BLACK METAL</button>
+    </div>
+
+    <div class="pedalboard">
+        <div class="pedal" style="background:#b00;">DIST</div>
+        <div class="pedal" style="background:#00b;">CHORUS</div>
+        <div class="pedal" style="background:#008000;">DELAY</div>
+    </div>
+
+    <div class="consola">
+        <div class="canal"><div class="fader" style="bottom: 60px;"></div></div>
+        <div class="canal"><div class="fader" style="bottom: 90px; background:var(--diamante);"></div></div>
+        <div class="canal"><div class="fader" style="bottom: 40px;"></div></div>
+        <div class="canal"><div class="fader" style="bottom: 75px; background:var(--sangre);"></div></div>
+    </div>
+
+    <input type="file" id="audioFile" accept="audio/*" style="margin-bottom: 10px; color:#555;">
+    <button class="btn-magia" onclick="lanzarMagia()">SOLTAR MÁSTER</button>
+
+    <div id="resultado-wrap" style="display:none;">
+        <audio id="reproductor" controls controlsList="nodownload"></audio>
+        <div id="area-descarga" style="display:none; margin: 15px 0;">
+            <a id="linkDownload" style="color:var(--diamante); text-decoration:none; font-weight:bold; border: 1px solid var(--diamante); padding: 10px;">📥 DESCARGAR MÁSTER DIAMANTE</a>
+        </div>
+    </div>
+
+    <div class="pago-container">
+        <span class="pago-title">💳 DERECHO DE PISO (LIBERAR AUDIO)</span>
+        <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="btn-pago">
+            <span>MÁSTER SENCILLO (ANTI-FIERRO)</span>
+            <span class="monto">$350 MXN</span>
+        </a>
+        <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="btn-pago">
+            <span>ÁLBUM COMPLETO / METAMORFOSIS</span>
+            <span class="monto">$2,000 MXN</span>
+        </a>
+    </div>
+
+    <div style="font-size: 8px; color: #333; margin-top: 20px;">
+        ESTE BÚNKER NO ALMACENA TU MÚSICA. PROCESO 100% LOCAL Y SEGURO.
+    </div>
+
+    <svg id="master-pentagram" viewBox="0 0 512 512" onmousedown="startHold()" onmouseup="endHold()">
         <path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/>
     </svg>
 </div>
@@ -135,7 +131,7 @@
 
     function lanzarMagia() {
         const file = document.getElementById('audioFile').files[0];
-        if(!file) return alert("NO HAY MATERIAL PARA PROCESAR.");
+        if(!file) return alert("Sube el track carnal.");
         const player = document.getElementById('reproductor');
         player.src = URL.createObjectURL(file);
         document.getElementById('resultado-wrap').style.display = 'block';
@@ -143,25 +139,23 @@
         player.ontimeupdate = () => {
             if(!bossMode && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("SISTEMA BLOQUEADO. EL MÁSTER REQUIERE PAGO PARA ELIMINAR EL SONIDO DE TAPAS DE FIERRO.");
+                alert("MUESTRA TERMINADA. ELIMINA EL SONIDO DE TAPAS DE FIERRO PAGANDO TU MÁSTER.");
             }
         };
-        const dl = document.getElementById('descarga-final');
-        dl.href = player.src;
-        dl.download = "ARSENAL_MASTER_" + file.name;
+        document.getElementById('linkDownload').href = player.src;
+        document.getElementById('linkDownload').download = "ARSENAL_MASTER_" + file.name;
     }
 
     function startHold() {
         holdTimer = setTimeout(() => {
             bossMode = true;
             document.getElementById('master-pentagram').classList.add('active');
-            document.getElementById('descarga-final').style.display = 'block';
-            alert("SISTEMA DESBLOQUEADO: VIBRA DE DIAMANTE ACTIVA. BIENVENIDO, ERICK.");
+            document.getElementById('area-descarga').style.display = 'block';
+            alert("SISTEMA DESBLOQUEADO, JEFE ERICK.");
         }, 3000);
     }
-
     function endHold() { clearTimeout(holdTimer); }
 </script>
 </body>
-    </html>
-    
+        </html>
+        
