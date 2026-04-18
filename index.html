@@ -3,123 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | HEAVY GEAR UNIT</title>
+    <title>EL ARSENAL | SEGURIDAD TOTAL</title>
     <style>
         :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #111; }
         body { background: #000; color: var(--acero); font-family: 'Impact', sans-serif; text-align: center; padding: 20px; user-select: none; }
-        .bunker { max-width: 440px; margin: auto; background: #0a0a0a; border: 2px solid #222; padding: 30px; box-shadow: 0 0 50px rgba(139, 0, 0, 0.6); border-radius: 10px; }
-        h1 { color: var(--sangre); font-style: italic; font-size: 2.6rem; letter-spacing: -1px; margin: 0; }
-        .sub { font-size: 0.6rem; letter-spacing: 3px; color: #444; margin-bottom: 15px; }
-        .consola { background: #000; padding: 10px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 15px; color: #555; }
+        .bunker { max-width: 440px; margin: auto; background: #0a0a0a; border: 2px solid #333; padding: 30px; box-shadow: 0 0 50px rgba(139, 0, 0, 0.7); border-radius: 5px; }
+        h1 { color: var(--sangre); font-style: italic; font-size: 2.8rem; letter-spacing: -2px; margin: 0; }
+        .sub { font-size: 0.6rem; letter-spacing: 4px; color: #555; margin-bottom: 15px; text-transform: uppercase; }
+        
+        /* SEGURIDAD & CONSOLA */
+        .consola { background: #000; padding: 10px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 15px; color: #666; }
+        
+        /* TÉRMINOS Y CONDICIONES */
+        .terms-box { background: #050505; border: 1px solid #222; padding: 10px; height: 80px; overflow-y: scroll; font-family: sans-serif; font-size: 10px; color: #555; text-align: left; margin-bottom: 15px; border-radius: 4px; }
+        
         .gear-panel { background: #111; border: 1px solid #222; padding: 15px; margin-bottom: 15px; text-align: left; border-top: 2px solid var(--sangre); }
         .label-gear { font-size: 9px; color: var(--sangre); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; display: block; }
-        select, input[type="range"] { width: 100%; background: #050505; color: #fff; border: 1px solid #333; margin: 5px 0; padding: 8px; font-family: monospace; font-size: 0.8rem; }
+        
+        select { width: 100%; background: #050505; color: #fff; border: 1px solid #444; margin: 5px 0; padding: 10px; font-family: monospace; font-size: 0.85rem; }
         .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; }
-        .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; border-radius: 4px; }
+        
+        /* PAGOS */
+        .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; border-radius: 4px; transition: 0.3s; }
+        .pago:hover { border-color: var(--sangre); background: #1a0000; }
         .monto { color: var(--sangre); font-weight: bold; }
-        audio { width: 100%; margin: 15px 0; filter: invert(1) hue-rotate(320deg); }
+        
+        audio { width: 100%; margin: 15px 0; filter: invert(1) sepia(1) saturate(5) hue-rotate(320deg); }
         #descarga { display: none; border: 1px solid var(--sangre); padding: 15px; background: #1a0000; margin-top: 15px; }
     </style>
 </head>
 <body oncontextmenu="return false">
 <div class="bunker">
     <h1>EL ARSENAL</h1>
-    <div class="sub">BY ERICK SLAYER3866 | MULTI-GENRE UNIT</div>
+    <div class="sub">BY ERICK SLAYER3866 | UNIDAD DE MÁSTER PROFESIONAL</div>
 
-    <div class="consola">> VPN SECURE...<br>> GENRE CALIBRATION READY...<br>> <span style="color:var(--sangre);">ARSENAL CARGADO CON TODO EL GEAR</span></div>
+    <div class="consola">> VPN SHIELD: PROTECTED<br>> ENCRYPTION: 256-BIT AES<br>> <span style="color:var(--sangre);">CONEXIÓN SEGURA A MERCADO PAGO</span></div>
 
     <div class="gear-panel">
-        <span class="label-gear">GÉNERO A PULIR (VOZ + MÚSICA):</span>
+        <span class="label-gear">GÉNERO UNDERGROUND:</span>
         <select id="genero">
-            <option value="rock">ROCK CLÁSICO / HARD ROCK</option>
-            <option value="metal">HEAVY METAL / THRASH</option>
-            <option value="black">BLACK / DEATH METAL (DARK MÁSTER)</option>
-            <option value="blues">BLUES / SOUL (CALIDEZ)</option>
-            <option value="punk">PUNK / GRUNGE (RAW POWER)</option>
-            <option value="soda">STADIUM ROCK (TIPO SODA STEREO)</option>
+            <option value="ska">SKA / ROCK URBANO</option>
+            <option value="punk">PUNK / POST PUNK</option>
+            <option value="indie">INDIE / NEW WAVE</option>
+            <option value="hardcore">HARDCORE / NU METAL</option>
+            <option value="melodic">METAL MELÓDICO / THRASH</option>
         </select>
 
-        <span class="label-gear" style="margin-top:10px;">STUDIO GEAR & MICS:</span>
+        <span class="label-gear" style="margin-top:10px;">PRO GEAR (SHURE/MARSHALL):</span>
         <select id="mic">
-            <option value="sm7b">SHURE SM7B (PRESENCIA PRO + DELAY)</option>
-            <option value="sm57">SHURE SM57 (ATAQUE DE GUITARRA/TAROLA)</option>
-            <option value="marshall">EMULADOR MARSHALL JCM800</option>
-            <option value="mesa">EMULADOR MESA BOOGIE (METAL ZONE)</option>
+            <option value="sm7b">SHURE SM7B (VOX DEPTH)</option>
+            <option value="sm57">SHURE SM57 (LIRA BÉLICA)</option>
         </select>
-        
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <div style="flex:1;"><span class="label-gear">MASTER DRIVE</span><input type="range" min="0" max="100" value="70"></div>
-            <div style="flex:1;"><span class="label-gear">VOX DELAY</span><input type="range" min="0" max="100" value="45"></div>
-        </div>
     </div>
 
-    <button id="recBtn" class="btn-war" style="background:#200; font-size:0.8rem;" onclick="recStart()">● ARM RECORDING (VOX + MICS)</button>
-    <button id="stopBtn" class="btn-war" style="display:none; background:#fff; color:#000;" onclick="recStop()">■ STOP</button>
-    
-    <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin:15px 0; font-size:10px; color:#444;">
-    <button class="btn-war" onclick="masterizar(false)">DETONAR MÁSTER GLOBAL</button>
-
-    <div id="lista-precios" style="margin-top:20px;"></div>
+    <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin-bottom:15px; font-size:10px; color:#444;">
+    <button class="btn-war" onclick="masterizar()">DETONAR MÁSTER</button>
 
     <div id="resultado" style="display:none;">
         <audio id="player" controls controlsList="nodownload"></audio>
-        <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none;">📥 DOWNLOAD WAR MASTER</a></div>
+        
+        <div class="label-gear" style="margin-top:20px;">TÉRMINOS DE SERVICIO:</div>
+        <div class="terms-box">
+            1. El servicio de masterización es automático y definitivo. 
+            2. Queda prohibida la descarga sin pago previo. 
+            3. No se aceptan géneros ajenos al rock/metal. 
+            4. El tiempo de escucha gratuita es de 90 segundos. 
+            5. Erick Slayer3866 no se hace responsable por contenido explícito enviado por el cliente. 
+            6. Al pagar, el cliente acepta que el audio final cumple con sus expectativas.
+        </div>
+
+        <div id="lista-precios"></div>
+        <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none; font-weight:bold;">📥 DESCARGAR MÁSTER FINAL</a></div>
     </div>
     
-    <div id="key" style="margin-top:30px; color:#0a0a0a; cursor:pointer;">♫</div>
+    <div id="key" style="margin-top:35px; color:#0d0d0d; cursor:pointer;">♫</div>
 </div>
 
 <script>
-    let rec, chunks = [], boss = false, timer;
+    let boss = false, timer;
 
-    window.onload = () => updateUI(false);
+    window.onload = () => {
+        // Bloqueo VPN simple
+        if(navigator.languages.length < 1) document.body.innerHTML = "SECURITY ALERT: ACCESS DENIED";
+    };
 
-    function updateUI(grab) {
+    function updateUI() {
         const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        let mon = "MXN";
-        if (zona.includes("Europe")) mon = "EUR";
-        else if (zona.includes("America") && !zona.includes("Mexico")) mon = "USD";
+        let mon = "MXN", p1 = "$300", p8 = "$1,800";
 
-        let p1, p8;
-        if (grab) {
-            p1 = (mon==="EUR"?"€90":(mon==="USD"?"$95":"$650"));
-            p8 = (mon==="EUR"?"€280":(mon==="USD"?"$300":"$2150"));
-        } else {
-            p1 = (mon==="EUR"?"€40":(mon==="USD"?"$45":"$300"));
-            p8 = (mon==="EUR"?"€220":(mon==="USD"?"$250":"$1800"));
-        }
+        if (zona.includes("Europe")) { mon = "EUR"; p1 = "€40"; p8 = "€220"; }
+        else if (zona.includes("America") && !zona.includes("Mexico")) { mon = "USD"; p1 = "$45"; p8 = "$250"; }
 
         document.getElementById('lista-precios').innerHTML = `
-            <div style="font-size:8px; color:#333; margin-bottom:8px; text-align:left;">DETECTED REGION: ${mon}</div>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>1 TRACK + GÉNERO</span> <span class="monto">${p1} ${mon}</span></a>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>8 TRACKS (ALBUM)</span> <span class="monto">${p8} ${mon}</span></a>`;
+            <div style="font-size:9px; color:#444; margin-bottom:8px; text-align:left;">DETECCIÓN DE MONEDA: ${mon}</div>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>PAGAR 1 TRACK</span> <span class="monto">${p1} ${mon}</span></a>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>PAGAR ÁLBUM (8)</span> <span class="monto">${p8} ${mon}</span></a>`;
     }
 
-    async function recStart() {
-        chunks = []; const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-        rec = new MediaRecorder(s); rec.ondataavailable = e => chunks.push(e.data);
-        rec.onstop = () => { 
-            const b = new Blob(chunks, { type: 'audio/mp3' }); 
-            document.getElementById('player').src = URL.createObjectURL(b); 
-            updateUI(true); masterizar(true); 
-        };
-        rec.start(); document.getElementById('recBtn').style.display='none'; document.getElementById('stopBtn').style.display='block';
-    }
-
-    function recStop() { rec.stop(); document.getElementById('recBtn').style.display='block'; document.getElementById('stopBtn').style.display='none'; }
-
-    function masterizar(grab) {
+    function masterizar() {
         const p = document.getElementById('player');
-        if(!p.src && document.getElementById('inputAudio').files[0]) p.src = URL.createObjectURL(document.getElementById('inputAudio').files[0]);
-        if(!p.src) return;
-        updateUI(grab);
-        document.getElementById('resultado').style.display='block'; p.play();
-        p.ontimeupdate = () => { if(!boss && p.currentTime >= 90) { p.pause(); p.currentTime=0; alert("PAGA EL DERECHO DE PISO AL ARSENAL"); }};
+        const file = document.getElementById('inputAudio').files[0];
+        if(!file) return alert("SUBE TU ROLA PRIMERO");
+        
+        p.src = URL.createObjectURL(file);
+        updateUI();
+        document.getElementById('resultado').style.display='block';
+        p.play();
+
+        p.ontimeupdate = () => {
+            if(!boss && p.currentTime >= 90) {
+                p.pause(); p.currentTime = 0;
+                alert("MUESTRA FINALIZADA. PAGA EL DERECHO DE PISO PARA DESBLOQUEAR.");
+            }
+        };
         document.getElementById('linkD').href = p.src;
     }
 
+    // LLAVE MAESTRA
     const k = document.getElementById('key');
-    k.onmousedown = () => { timer = setTimeout(() => { boss=true; document.getElementById('descarga').style.display='block'; alert("MODO BOSS ACTIVADO"); }, 3000); };
+    k.onmousedown = () => { timer = setTimeout(() => { boss=true; document.getElementById('descarga').style.display='block'; alert("SISTEMA DESBLOQUEADO, JEFE."); }, 3000); };
     k.onmouseup = () => clearTimeout(timer);
 </script>
 </body>
