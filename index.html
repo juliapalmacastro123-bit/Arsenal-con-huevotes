@@ -3,140 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | THE ULTIMATE ROCK & METAL BUNKIER</title>
+    <title>EL ARSENAL | THE MILLION DOLLAR ANALOG FACTORY</title>
     <style>
         :root { --sangre: #8b0000; --oro: #d4af37; --exito: #2ecc71; --mp: #009ee3; --bulbo: #ff4500; }
         body { 
-            background: #000; color: #666; font-family: 'Impact', sans-serif; text-align: center; padding: 10px;
+            background: #000; color: #777; font-family: 'Impact', sans-serif; text-align: center; margin: 0; padding: 20px;
             background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
             user-select: none; -webkit-user-select: none;
         }
-        .bunker-arsenal { 
-            max-width: 1250px; margin: 10px auto; background: #080808; border: 6px solid #222; 
+        .bunker { 
+            max-width: 1300px; margin: 0 auto; background: #080808; border: 6px solid #1a1a1a; 
             padding: 40px; border-top: 20px solid var(--sangre); position: relative;
             box-shadow: 0 0 300px #000;
         }
-        h1 { color: #fff; font-size: 5.5rem; margin: 0; letter-spacing: -4px; text-transform: uppercase; text-shadow: 0 0 40px var(--sangre); }
-        .slogan { color: var(--oro); font-size: 1.4rem; letter-spacing: 12px; margin-bottom: 30px; }
+        h1 { color: #fff; font-size: 5rem; margin: 0; letter-spacing: -4px; text-transform: uppercase; text-shadow: 0 0 40px var(--sangre); }
+        .slogan { color: var(--oro); font-size: 1.2rem; letter-spacing: 12px; margin-bottom: 30px; }
 
-        /* CONSOLA DE PRESETS ACTUALIZADA */
-        .preset-grid { 
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; 
-            margin-bottom: 35px; background: #111; padding: 25px; border: 2px solid #333; border-radius: 8px;
-        }
-        .btn-p { 
-            background: #050505; border: 1px solid #444; color: #888; padding: 15px 5px; 
-            font-size: 10px; cursor: pointer; text-transform: uppercase; transition: 0.2s;
-        }
-        .btn-p:hover, .btn-p.active { border-color: var(--oro); color: #fff; background: #1a1a1a; box-shadow: 0 0 15px var(--oro); }
-        .btn-aic { border: 1px solid var(--sangre); color: #aaa; } /* Estilo Alice in Chains */
+        /* INTERFAZ DE HARDWARE */
+        .mics { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; background: #111; padding: 15px; border: 1px solid #333; border-radius: 8px; }
+        .mic { width: 45px; height: 80px; background: #444; border-radius: 20px 20px 5px 5px; border: 2px solid #222; position: relative; }
+        .pedals { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .pedal { width: 80px; height: 120px; background: #222; border: 2px solid #444; border-radius: 5px; cursor: pointer; position: relative; }
+        .pedal.on { border-color: var(--exito); box-shadow: 0 0 15px var(--exito); }
+        .pedal-btn { width: 25px; height: 25px; background: #888; border-radius: 50%; position: absolute; bottom: 15px; left: 27px; }
 
-        /* RACKS ANALÓGICOS */
-        .studio-rack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
-        .unit { background: linear-gradient(180deg, #151515, #000); border: 2px solid #333; padding: 20px; text-align: left; position: relative; }
-        .unit h4 { color: #aaa; font-size: 10px; margin: 0 0 15px 0; border-bottom: 1px solid var(--sangre); text-transform: uppercase; letter-spacing: 2px; }
+        .console { background: #151515; border: 4px solid #222; padding: 25px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 35px; }
+        .channel { height: 180px; background: #111; border: 1px solid #222; position: relative; }
+        .fader { width: 4px; height: 120px; background: #000; margin: 10px auto; position: relative; }
+        .knob { width: 22px; height: 35px; background: #444; position: absolute; left: -9px; top: 50%; border: 1px solid #666; border-radius: 3px; }
+
+        .presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 35px; }
+        .btn-p { background: #0a0a0a; border: 1px solid #444; color: #666; padding: 12px; font-size: 11px; cursor: pointer; text-transform: uppercase; }
+        .btn-p.active { border-color: var(--oro); color: #fff; box-shadow: 0 0 10px var(--oro); }
+
+        /* PRECIOS DE ERICK */
+        .pricing-table { background: #0d0d0d; border: 2px solid #222; padding: 30px; border-radius: 10px; margin-top: 30px; }
+        .tier { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; color: #ccc; }
+        .tier:last-child { border: none; }
+        .btn-mp { background: var(--mp); color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; font-size: 1rem; transition: 0.3s; }
+        .btn-mp:hover { background: #007bb5; transform: scale(1.05); }
         
-        .valve { width: 14px; height: 30px; background: var(--bulbo); border-radius: 15px 15px 4px 4px; display: inline-block; opacity: 0.7; box-shadow: 0 0 20px var(--bulbo); animation: glow 2s infinite alternate; }
-        @keyframes glow { from { opacity: 0.3; } to { opacity: 1; } }
+        .terminal { background: #050505; border: 5px solid #1a1a1a; padding: 40px; border-radius: 12px; }
+        audio { width: 100%; filter: invert(1) brightness(1.5); margin: 20px 0; }
+        #dl-zone { display: none; margin-top: 25px; }
+        .dl-btn { color: var(--exito); border: 4px solid var(--exito); padding: 25px 50px; text-decoration: none; font-weight: bold; font-size: 2rem; display: inline-block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(46, 204, 113, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
 
-        .knob { width: 50px; height: 50px; border: 3px solid #333; border-radius: 50%; background: radial-gradient(circle, #222, #000); position: relative; margin: 10px auto; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .knob::before { content: ''; position: absolute; top: 6px; left: 50%; width: 3px; height: 14px; background: var(--oro); transform: translateX(-50%); }
-
-        .master-console { background: #050505; border: 4px solid #1a1a1a; padding: 50px; border-radius: 12px; box-shadow: inset 0 0 100px #000; }
-        .btn-ignite { 
-            background: linear-gradient(180deg, #444, #111); color: #fff; width: 100%; padding: 30px; 
-            border: 3px solid #555; font-size: 2.2rem; cursor: pointer; letter-spacing: 12px; text-transform: uppercase;
-            text-shadow: 0 0 20px var(--oro);
-        }
-
-        .privacy-shield { background: rgba(139,0,0,0.1); border: 1px solid #500; padding: 25px; font-size: 12px; color: #999; margin: 30px 0; text-align: justify; line-height: 1.7; }
-
-        .pay-terminal { background: #0d0d0d; border: 2px solid #222; padding: 35px; margin-top: 30px; border-radius: 8px; }
-        .btn-mp { background: var(--mp); color: #fff; text-decoration: none; padding: 20px 60px; display: inline-block; border-radius: 6px; font-weight: bold; font-size: 1.3rem; }
-
-        #output-zone { margin-top: 50px; display: none; }
-        audio { width: 100%; filter: invert(1) brightness(1.5); margin: 30px 0; }
-        .dl-final { color: var(--exito); border: 4px solid var(--exito); padding: 25px 60px; text-decoration: none; font-weight: bold; font-size: 1.8rem; text-transform: uppercase; display: inline-block; }
-
-        #erick-key { position: absolute; bottom: 20px; right: 20px; width: 60px; opacity: 0.01; fill: #fff; cursor: pointer; transition: 5s; z-index: 1000; }
-        #erick-key.active { opacity: 0.9; fill: var(--exito); }
+        #erick-key { position: absolute; bottom: 15px; right: 15px; width: 40px; opacity: 0.01; cursor: pointer; }
     </style>
 </head>
 <body oncontextmenu="return false">
 
-<div class="bunker-arsenal">
+<div class="bunker">
     <h1>EL ARSENAL</h1>
-    <div class="slogan">THE ANALOG ROCK & METAL HIERARCHY</div>
+    <div class="slogan">THE ANALOG SOUND FACTORY</div>
 
-    <div class="preset-grid">
-        <button class="btn-p" onclick="tune('Blues', 30, 20)">Blues</button>
-        <button class="btn-p" onclick="tune('Classic Rock', 60, 40)">Classic Rock</button>
-        <button class="btn-p" onclick="tune('Hard Rock', 95, 85)">Hard Rock</button>
-        <button class="btn-p btn-aic" onclick="tune('Grunge AIC', 185, 160)">Grunge (Alice in Chains)</button>
-        <button class="btn-p" onclick="tune('Heavy Metal', 140, 110)">Heavy Metal</button>
-        <button class="btn-p" onclick="tune('Thrash Metal', 180, 150)">Thrash Metal</button>
-        <button class="btn-p" onclick="tune('Death Metal', 225, 195)">Death Metal</button>
-        <button class="btn-p" onclick="tune('Black Metal', 255, 205)">Black Metal</button>
-        <button class="btn-p" onclick="tune('Ska Punk', 45, 125)">Ska Punk</button>
-        <button class="btn-p" onclick="tune('Rock Urbano', 115, 135)">Rock Urbano</button>
-        <button class="btn-p" onclick="tune('Nu Metal', 165, 215)">Nu Metal</button>
-        <button class="btn-p" onclick="tune('Indie Alt', 40, 65)">Indie Alt</button>
+    <div class="mics">
+        <div class="mic"></div><div class="mic" style="background:#222;"></div><div class="mic" style="width:25px;"></div>
     </div>
 
-    <div class="studio-rack">
-        <div class="unit"><h4>NEVE TUBE GAIN</h4><div class="valve"></div><div class="knob" id="k1"></div></div>
-        <div class="unit"><h4>CL 1B COMPRESSOR</h4><div class="valve"></div><div class="valve"></div><div class="knob" id="k2"></div></div>
-        <div class="unit"><h4>MANLEY ELITE EQ</h4><div class="valve"></div><div class="knob" id="k3"></div></div>
+    <div class="pedals">
+        <div class="pedal" style="background:#800;" onclick="this.classList.toggle('on')"><div class="pedal-btn"></div></div>
+        <div class="pedal" style="background:#008;" onclick="this.classList.toggle('on')"><div class="pedal-btn"></div></div>
+        <div class="pedal" style="background:#080;" onclick="this.classList.toggle('on')"><div class="pedal-btn"></div></div>
     </div>
 
-    <div class="master-console">
-        <input type="file" id="fIn" accept="audio/*" style="margin-bottom:30px; display:block; margin:auto;">
-        <button class="btn-ignite" onclick="fire()">ENCENDER ESTUDIO</button>
-        <div id="output-zone">
-            <audio id="player" controls controlsList="nodownload"></audio>
-            <div id="dl-box" style="display:none;"><a id="dl-l" class="dl-final">📥 DESCARGAR MÁSTER DIAMANTE</a></div>
+    <div class="console">
+        <div class="channel"><div class="fader"><div class="knob"></div></div></div>
+        <div class="channel"><div class="fader"><div class="knob" style="top:20%;"></div></div></div>
+        <div class="channel"><div class="fader"><div class="knob" style="top:70%;"></div></div></div>
+        <div class="channel"><div class="fader"><div class="knob" style="top:10%;"></div></div></div>
+        <div class="channel"><div class="fader"><div class="knob"></div></div></div>
+        <div class="channel"><div class="fader"><div class="knob" style="background:var(--oro);"></div></div></div>
+    </div>
+
+    <div class="presets">
+        <button class="btn-p" onclick="setMode('Grunge AIC')">Grunge (AIC)</button>
+        <button class="btn-p" onclick="setMode('Metal')">Death/Black</button>
+        <button class="btn-p" onclick="setMode('Urbano')">Rock Urbano</button>
+        <button class="btn-p" onclick="setMode('Ska')">Ska/Punk</button>
+    </div>
+
+    <div class="terminal">
+        <input type="file" id="fIn" accept="audio/*" style="margin-bottom:20px; color:#fff;">
+        <audio id="player" controls controlsList="nodownload"></audio>
+        <div id="dl-zone">
+            <a id="dl-link" class="dl-btn">📥 DESCARGAR MÁSTER FINAL</a>
         </div>
     </div>
 
-    <div class="privacy-shield">
-        🛡️ <b>PRIVACIDAD EL ARSENAL:</b> Procesamiento en RAM local. Cero almacenamiento externo. Tu música es tuya.
+    <div class="pricing-table">
+        <h3 style="color:var(--oro); margin-top:0; letter-spacing:5px;">SERVICIOS ÉLITE</h3>
+        <div class="tier"><span>PULIDO (1 Track)</span> <b>$150</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
+        <div class="tier"><span>PULIDO (5 Tracks)</span> <b>$350</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
+        <div class="tier"><span>PULIDO (8 Tracks)</span> <b>$600</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
+        <div style="margin: 20px 0; border-top: 2px dashed #333;"></div>
+        <div class="tier"><span>GRABACIÓN + PULIDO (1 Track)</span> <b>$250</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
+        <div class="tier"><span>GRABACIÓN + PULIDO (5 Tracks)</span> <b>$600</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
+        <div class="tier"><span>GRABACIÓN + PULIDO (8 Tracks)</span> <b>$800</b> <a href="https://mpago.la/1MKz4sq" class="btn-mp">LIBERAR</a></div>
     </div>
 
-    <div class="pay-terminal">
-        <a href="TU_LINK_DE_PAGO" target="_blank" class="btn-mp">PAGAR Y LIBERAR SESIÓN</a>
-    </div>
-
-    <svg id="erick-key" viewBox="0 0 512 512" onmousedown="s()" onmouseup="e()"><path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/></svg>
+    <svg id="erick-key" viewBox="0 0 512 512" onmousedown="startVip()" onmouseup="endVip()"><path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/></svg>
 </div>
 
 <script>
-    let ok = false, t;
+    let isVip = false, timer;
+    const p = document.getElementById('player');
+
+    // Detectar retorno de Mercado Pago
     window.onload = () => { if(new URLSearchParams(window.location.search).get('status')==='approved') unlock(); };
 
-    function tune(n, r1, r2) {
+    function setMode(m) { 
         document.querySelectorAll('.btn-p').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
-        document.getElementById('k1').style.transform = `rotate(${r1}deg)`;
-        document.getElementById('k2').style.transform = `rotate(${r2}deg)`;
-        document.getElementById('k3').style.transform = `rotate(${(r1+r2)/2.1}deg)`;
     }
 
-    function fire() {
-        const f = document.getElementById('fIn').files[0];
-        if(!f) return alert("SISTEMA: Carga el archivo.");
-        const p = document.getElementById('player');
-        p.src = URL.createObjectURL(f);
-        document.getElementById('output-zone').style.display = 'block';
-        if(ok) document.getElementById('dl-box').style.display = 'block';
-        p.play();
-        p.ontimeupdate = () => { if(!ok && p.currentTime >= 90) { p.pause(); p.currentTime = 0; alert("SISTEMA: Paga para liberar la sesión completa."); } };
-        document.getElementById('dl-l').href = p.src;
-        document.getElementById('dl-l').download = "MASTER_ARSENAL_" + f.name;
-    }
+    document.getElementById('fIn').onchange = (e) => {
+        const file = e.target.files[0];
+        const url = URL.createObjectURL(file);
+        p.src = url;
+        document.getElementById('dl-link').href = url;
+        document.getElementById('dl-link').download = "MASTER_ARSENAL_" + file.name;
+    };
 
-    function unlock() { ok = true; document.getElementById('dl-box').style.display = 'block'; }
-    function s() { t = setTimeout(() => { unlock(); document.getElementById('erick-key').classList.add('active'); alert("MAESTRO ERICK"); }, 3000); }
-    function e() { clearTimeout(t); }
+    p.ontimeupdate = () => {
+        if (!isVip && p.currentTime >= 90) {
+            p.pause(); p.currentTime = 0;
+            alert("SISTEMA: Límite de preview. Usa la tabla de pagos para liberar la descarga y el audio completo.");
+        }
+    };
+
+    function unlock() { isVip = true; document.getElementById('dl-zone').style.display = 'block'; }
+    function startVip() { timer = setTimeout(() => { unlock(); alert("ERICK VIP ACCESS"); }, 3000); }
+    function endVip() { clearTimeout(timer); }
 </script>
 </body>
 </html>
