@@ -3,43 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>EL ARSENAL | SECURE ANALOG TERMINAL</title>
+    <title>EL ARSENAL | PRO ANALOG MASTERING</title>
     <style>
-        :root { --gold: #c5a059; --blood: #7b0000; --bg: #050505; --safety: #00ff00; }
-        body { background: #000; color: #666; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
+        :root { --gold: #c5a059; --blood: #7b0000; --bg: #030303; --safety: #00ff00; --shield: #0033ff; }
+        body { background: #000; color: #555; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
+        
         .master-rack { 
-            max-width: 1200px; margin: 0 auto; background: var(--bg); border: 6px solid #1a1a1a; 
-            padding: 30px; box-shadow: 0 0 150px #000; position: relative;
+            max-width: 1200px; margin: 0 auto; background: var(--bg); border: 4px solid #111; 
+            padding: 30px; box-shadow: 0 0 100px #000; position: relative;
         }
-        .header { border-bottom: 2px solid #222; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { color: #fff; font-size: 2rem; letter-spacing: 10px; margin: 0; }
-        .vpn-status { color: var(--safety); font-size: 9px; letter-spacing: 2px; border: 1px solid var(--safety); padding: 5px; }
 
-        .section-label { color: var(--gold); font-size: 10px; letter-spacing: 3px; display: block; margin: 20px 0 10px 0; border-left: 3px solid var(--blood); padding-left: 10px; }
+        .header { border-bottom: 1px solid #222; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { color: #fff; font-size: 1.8rem; letter-spacing: 15px; margin: 0; }
+        
+        .tag { font-size: 8px; border: 1px solid #333; padding: 4px; color: var(--shield); }
+
+        .section-label { color: var(--gold); font-size: 10px; letter-spacing: 3px; display: block; margin: 25px 0 10px 0; border-left: 3px solid var(--blood); padding-left: 10px; }
 
         /* GENRE MATRIX */
-        .genre-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 30px; }
-        .g-btn { background: #000; border: 1px solid #333; color: #444; padding: 15px 5px; cursor: pointer; font-size: 9px; transition: 0.2s; height: 60px; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .g-btn:hover, .g-btn.active { border-color: var(--gold); color: #fff; background: #0d0d0d; box-shadow: 0 0 15px rgba(197,160,89,0.3); }
+        .genre-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 30px; }
+        .g-btn { background: #000; border: 1px solid #222; color: #444; padding: 15px 5px; cursor: pointer; font-size: 8px; transition: 0.2s; }
+        .g-btn:hover, .g-btn.active { border-color: var(--gold); color: #fff; background: #0a0a0a; }
 
-        /* ENGINE ROOM */
-        .engine { background: #080808; border: 2px solid var(--blood); padding: 40px; text-align: center; }
-        .btn-ignite { background: var(--blood); color: #fff; border: none; padding: 25px; width: 100%; font-size: 1.5rem; letter-spacing: 8px; cursor: pointer; font-weight: bold; }
-        .btn-ignite:hover { background: #a00; box-shadow: 0 0 40px var(--blood); }
-        audio { width: 100%; filter: invert(1) brightness(1.2); margin-top: 25px; }
+        /* ENGINE - HI-HAT OPTIMIZED */
+        .engine { background: #050505; border: 1px solid var(--blood); padding: 40px; text-align: center; }
+        .btn-ignite { background: var(--blood); color: #fff; border: none; padding: 20px; width: 100%; font-size: 1.2rem; letter-spacing: 8px; cursor: pointer; font-weight: bold; }
+        .btn-ignite:hover { background: #b00; box-shadow: 0 0 30px var(--blood); }
+        
+        audio { width: 100%; filter: invert(1); margin-top: 20px; opacity: 0.8; }
 
         /* BILLING */
-        .bill-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #222; margin-top: 30px; }
-        .tier { background: #050505; padding: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
-        .pay-link { background: #009ee3; color: #fff; text-decoration: none; padding: 8px 15px; font-weight: bold; }
+        .bill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .currency-col { background: #080808; border: 1px solid #1a1a1a; padding: 10px; }
+        .currency-col h4 { color: var(--gold); font-size: 9px; text-align: center; border-bottom: 1px solid #222; margin-top: 0; padding-bottom: 5px; }
+        .tier { padding: 5px 0; display: flex; justify-content: space-between; align-items: center; font-size: 8px; border-bottom: 1px solid #111; }
+        .pay-link { background: #009ee3; color: #fff; text-decoration: none; padding: 3px 6px; font-weight: bold; }
 
-        /* LEGAL & PRIVACY */
-        .legal-footer { margin-top: 50px; border-top: 1px solid #222; padding-top: 20px; font-size: 8px; color: #333; line-height: 1.5; }
-        .legal-footer b { color: #555; }
+        /* LEGAL & QUALITY TERMS */
+        .legal-box { 
+            margin-top: 40px; background: #080808; border: 1px solid #222; padding: 20px; 
+            font-size: 8.5px; line-height: 1.6; color: #444; text-align: justify;
+        }
+        .legal-box b { color: #888; }
 
-        #dl-zone { display: none; margin-top: 20px; border: 1px solid var(--safety); padding: 15px; text-align: center; background: rgba(0,255,0,0.02); }
-        .dl-btn { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 3px; }
-        #master-key { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; opacity: 0; cursor: pointer; }
+        #dl-zone { display: none; margin-top: 20px; border: 1px solid var(--safety); padding: 15px; text-align: center; }
+        .dl-btn { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; }
+
+        /* PENTAGRAMA INVISIBLE (PARA TI) */
+        #erick-key { position: absolute; bottom: 0; right: 0; width: 30px; height: 30px; background: transparent; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -47,76 +58,68 @@
 <div class="master-rack">
     <div class="header">
         <h1>EL ARSENAL</h1>
-        <div class="vpn-status">VPN ENCRYPTED: AES-256 ACTIVE</div>
+        <div class="tag">HI-HAT ANALOG COMPLIANCE ACTIVE</div>
     </div>
 
-    <span class="section-label">SELECT ELITE GENRE PRESET</span>
+    <span class="section-label">SELECT GENRE ARCHITECTURE</span>
     <div class="genre-matrix">
         <button class="g-btn" onclick="sel(this)">THRASH METAL</button>
         <button class="g-btn" onclick="sel(this)">HEAVY METAL</button>
         <button class="g-btn" onclick="sel(this)">NU METAL</button>
         <button class="g-btn" onclick="sel(this)">DEATH METAL</button>
-        <button class="g-btn" onclick="sel(this)">MELODIC METAL</button>
-        <button class="g-btn" onclick="sel(this)">METAL SINFÓNICO</button>
+        <button class="g-btn" onclick="sel(this)">SINFÓNICO</button>
         <button class="g-btn" onclick="sel(this)">GRUNGE (AIC)</button>
-        <button class="g-btn" onclick="sel(this)">ROCK EN IDIOMA</button>
+        <button class="g-btn" onclick="sel(this)">ROCK IDIOMA</button>
         <button class="g-btn" onclick="sel(this)">URBANO (HARAGÁN)</button>
         <button class="g-btn" onclick="sel(this)">SKA</button>
-        <button class="g-btn" onclick="sel(this)">INDIE</button>
-        <button class="g-btn" onclick="sel(this)">POST PUNK</button>
         <button class="g-btn" onclick="sel(this)">PUNK ROCK</button>
-        <button class="g-btn" onclick="sel(this)">HARD ROCK</button>
-        <button class="g-btn" onclick="sel(this)">DOOM METAL</button>
     </div>
 
     <div class="engine">
-        <input type="file" id="fIn" style="margin-bottom:20px; color:#444;">
-        <button class="btn-ignite" onclick="run()">MASTERIZAR CON EQUIPO DE ÉLITE</button>
-        <div id="player-zone" style="display:none;">
-            <audio id="aud" controls controlsList="nodownload"></audio>
-            <div id="dl-zone"><a id="dl-link" class="dl-btn" href="#">📥 DESCARGAR MÁSTER FINAL (SEGURO)</a></div>
+        <input type="file" id="trackIn" style="margin-bottom:20px; color:#333;">
+        <button class="btn-ignite" onclick="process()">MASTERIZACIÓN DE ÉLITE (PLANTILLA ANALÓGICA)</button>
+        <div id="output" style="display:none;">
+            <audio id="player" controls controlsList="nodownload"></audio>
+            <div id="dl-zone"><a id="dl-link" class="dl-btn" href="#">📥 DESCARGAR MÁSTER PROFESIONAL</a></div>
         </div>
     </div>
 
     <div class="bill-grid">
-        <div class="tier"><span>PULIDO 1T | $150</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-        <div class="tier"><span>REC+PUL 1T | $250</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-        <div class="tier"><span>PULIDO 5T | $350</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-        <div class="tier"><span>REC+PUL 5T | $600</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-        <div class="tier"><span>PULIDO 8T | $600</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-        <div class="tier"><span>REC+PUL 8T | $800</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+        <div class="currency-col"><h4>MXN</h4><div class="tier"><span>1T | $150</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div></div>
+        <div class="currency-col"><h4>USD</h4><div class="tier"><span>1T | $25</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div></div>
+        <div class="currency-col"><h4>EUR</h4><div class="tier"><span>1T | €22</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div></div>
     </div>
 
-    <div class="legal-footer">
-        <b>TÉRMINOS Y PRIVACIDAD:</b> EL ARSENAL PROTEGE SU PRIVACIDAD MEDIANTE PROCESAMIENTO LOCAL. NO ALMACENAMOS ARCHIVOS NI DATOS PERSONALES SIN CONSENTIMIENTO. LA DESCARGA FINAL SE HABILITA ÚNICAMENTE TRAS LA VERIFICACIÓN DE PAGO. TODA TRANSACCIÓN ES PROCESADA POR MERCADO PAGO BAJO PROTOCOLOS SSL. AL USAR ESTE SISTEMA, EL USUARIO ACEPTA QUE EL PREVIEW DE 90 SEGUNDOS ES UNA MUESTRA TÉCNICA Y NO EL PRODUCTO FINAL. <b>SEGURIDAD VPN:</b> SE RECOMIENDA EL USO DE TÚNELES CIFRADOS PARA LA TRANSFERENCIA DE ARCHIVOS DE ALTA FIDELIDAD.
+    <div class="legal-box">
+        <b>CONTROL DE CALIDAD:</b> NUESTRA INGENIERÍA ELIMINA EL SONIDO METÁLICO ESTRIDENTE (HARSHNESS) EN PLATOS Y HI-HATS, ASEGURANDO UN BRILLO SEDOSO DE ALTA FIDELIDAD. <br><br>
+        <b>CONTRATO DE PROPIEDAD:</b> EL USUARIO CONSERVA EL 100% DE LOS DERECHOS DE AUTOR. EL PROCESAMIENTO ES LOCAL MEDIANTE TÚNEL CIFRADO. AL CERRAR ESTA TERMINAL, LOS DATOS TEMPORALES SE BORRAN PARA PROTECCIÓN CONTRA SNIFFERS.
     </div>
+
+    <div id="erick-key" onmousedown="holdStart()" onmouseup="holdEnd()" ontouchstart="holdStart()" ontouchend="holdEnd()"></div>
 </div>
 
-<div id="master-key" onmousedown="sVip()" onmouseup="eVip()"></div>
-
 <script>
-    let isVip = false, kTimer;
-    const a = document.getElementById('aud');
+    let isVip = false, timer;
+    const p = document.getElementById('player');
 
-    function sel(b){ document.querySelectorAll('.g-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+    function sel(btn){ document.querySelectorAll('.g-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
 
-    function run() {
-        const file = document.getElementById('fIn').files[0];
-        if(!file) return alert("ADJUNTE ARCHIVO DE AUDIO");
-        document.getElementById('player-zone').style.display = 'block';
+    function process() {
+        const file = document.getElementById('trackIn').files[0];
+        if(!file) return alert("SUBE TU TRACK");
+        document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
-        a.src = url;
-        a.play();
-        a.ontimeupdate = () => {
-            if(!isVip && a.currentTime >= 90) { a.pause(); a.currentTime = 0; alert("⚠️ SEGURIDAD: PREVIEW DE 90s ALCANZADO. PAGA PARA DESBLOQUEAR EL ARCHIVO COMPLETO."); }
+        p.src = url; p.play();
+        p.ontimeupdate = () => {
+            if(!isVip && p.currentTime >= 90) { p.pause(); p.currentTime = 0; alert("PREVIEW DE SEGURIDAD TERMINADO. LIBERA EL MÁSTER CON TU PAGO."); }
         };
         const dl = document.getElementById('dl-link');
-        dl.href = url; dl.download = "ARSENAL_ELITE_" + file.name;
+        dl.href = url; dl.download = "ARSENAL_MASTER_PRO_" + file.name;
     }
 
-    function unlock() { isVip = true; document.getElementById('dl-zone').style.display = 'block'; alert("MAESTRO: ACCESO TOTAL CONCEDIDO."); }
-    function sVip(){ kTimer = setTimeout(unlock, 3000); }
-    function eVip(){ clearTimeout(kTimer); }
+    function unlock() { isVip = true; document.getElementById('dl-zone').style.display = 'block'; alert("BYPASS MASTER: ACCESO TOTAL CONCEDIDO"); }
+    function holdStart(){ timer = setTimeout(unlock, 3000); }
+    function holdEnd(){ clearTimeout(timer); }
 </script>
 </body>
 </html>
