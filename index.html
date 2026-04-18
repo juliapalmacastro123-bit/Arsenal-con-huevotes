@@ -3,158 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | BÚNKER SUPREMO</title>
+    <title>EL ARSENAL | LA METAMORFOSIS DEL SONIDO</title>
     <style>
-        :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #111; --oro: #ffd700; --negro: #000; }
+        :root { --sangre: #ff0000; --acero: #e0e0e0; --zinc: #050505; --oro: #ffd700; }
         body { background: #000; color: var(--acero); font-family: 'Impact', sans-serif; text-align: center; padding: 20px; user-select: none; }
-        .bunker { max-width: 480px; margin: auto; background: #0a0a0a; border: 2px solid #333; padding: 25px; box-shadow: 0 0 70px rgba(139, 0, 0, 0.9); border-radius: 5px; position: relative;}
-        h1 { color: var(--sangre); font-style: italic; font-size: 3rem; letter-spacing: -2px; margin: 0; }
-        .sub { font-size: 0.65rem; letter-spacing: 5px; color: #666; margin-bottom: 20px; text-transform: uppercase; }
-        .consola { background: #000; padding: 12px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 20px; color: #777; }
+        .bunker { max-width: 500px; margin: auto; background: var(--zinc); border: 2px solid #222; padding: 25px; box-shadow: 0 0 100px rgba(255, 0, 0, 0.3); position: relative; border-top: 6px solid var(--sangre); }
         
-        .seccion-bunker { border: 1px solid #222; background: #111; padding: 15px; margin-bottom: 20px; border-radius: 4px; border-top: 2px solid var(--sangre);}
-        .titulo-seccion { font-size: 12px; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; border-bottom: 1px solid #333; padding-bottom: 5px;}
-        
-        .panel-gear { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left;}
-        .label-gear { font-size: 9px; color: var(--sangre); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; display: block; }
-        select { width: 100%; background: #050505; color: #fff; border: 1px solid #444; margin: 5px 0; padding: 10px; font-family: monospace; font-size: 0.85rem; }
-        
-        .controles-gear { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border-top: 1px solid #222; padding-top: 10px;}
-        .controles-gear span { font-size: 8px; color: #666; text-transform: uppercase; display: block; text-align: center;}
-        .knob-gear { width: 35px; height: 35px; background: #000; border: 2px solid #444; border-radius: 50%; margin: 8px auto; cursor: pointer; position: relative;}
-        .knob-gear::after { content: ''; position: absolute; top: 2px; left: 50%; transform: translateX(-50%); width: 3px; height: 10px; background: #fff; border-radius: 1px;}
-        
-        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; box-shadow: 0 4px 0 #500; margin-top: 10px;}
-        .btn-war:active { transform: translateY(2px); box-shadow: 0 2px 0 #500; }
-        .btn-rec { background: #200; border-color: #500; font-size: 0.8rem; margin-bottom: 10px;}
-        
-        .btn-magia { background: var(--oro); color: var(--negro); border: 1px solid #bfa000; box-shadow: 0 4px 0 #8c7300; font-size: 1.2rem;}
-        .btn-magia:hover { background: #ffea00; }
+        h1 { color: var(--sangre); font-style: italic; font-size: 2.8rem; letter-spacing: -1px; margin: 0; line-height: 1.1; }
+        .sub-titulo { color: #fff; font-size: 1.2rem; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
+        .sub { font-size: 0.7rem; letter-spacing: 7px; color: #555; margin-bottom: 30px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 10px; }
 
-        .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; }
-        .monto { color: var(--sangre); font-weight: bold; }
-        audio { width: 100%; margin: 15px 0; filter: invert(1) sepia(1) saturate(5) hue-rotate(320deg); }
-        #descarga { display: none; border: 1px solid var(--sangre); padding: 15px; background: #1a0000; margin-top: 15px;}
+        .seccion-bunker { border: 1px solid #111; background: #080808; padding: 18px; margin-bottom: 25px; text-align: left; }
+        .titulo-seccion { font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; background: var(--sangre); width: fit-content; padding: 2px 8px; font-weight: bold; }
 
-        /* EL PENTAGRAMA MAESTRO (Invisible para clientes) */
-        #pentagrama-key { 
-            position: absolute; bottom: 10px; right: 10px; 
-            width: 40px; height: 40px; 
-            cursor: pointer; opacity: 0.03; transition: 0.5s;
-            fill: #fff;
+        .grid-gear { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        select { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.8rem; font-weight: bold; }
+        
+        .mixer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; background: #000; padding: 15px; border: 1px solid #1a1a1a; }
+        .knob-wrap { text-align: center; }
+        .knob { width: 48px; height: 48px; background: radial-gradient(circle, #222, #111); border: 3px solid #333; border-radius: 50%; margin: 5px auto; position: relative; }
+        .knob::before { content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 12px; background: var(--sangre); border-radius: 2px; }
+        .label-knob { font-size: 7px; color: #666; text-transform: uppercase; display: block; margin-top: 5px; }
+        .especial { color: var(--oro) !important; font-weight: bold; }
+
+        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 20px; border: none; font-size: 1.3rem; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        .btn-magia { background: var(--oro); color: #000; box-shadow: 0 6px 0 #8c7300; font-size: 1.4rem; margin-top: 15px; }
+
+        .pago-item { display: flex; justify-content: space-between; background: #0a0a0a; padding: 18px; border: 1px solid #111; margin-bottom: 8px; text-decoration: none; color: #fff; font-size: 0.85rem; }
+        .price { color: var(--sangre); font-weight: bold; }
+
+        #master-pentagram { 
+            position: absolute; bottom: 15px; right: 15px; 
+            width: 60px; height: 60px; 
+            cursor: pointer; opacity: 0.01; transition: 0.5s; 
+            fill: #fff; z-index: 999;
         }
-        #pentagrama-key.active { opacity: 1; fill: #ff0000; filter: drop-shadow(0 0 10px #f00); }
+        #master-pentagram.active { opacity: 1; fill: var(--sangre); filter: drop-shadow(0 0 30px #f00); }
+
+        audio { width: 100%; margin: 20px 0; filter: invert(1) hue-rotate(180deg); }
+        #descarga-final { display: none; padding: 25px; background: #100; border: 3px dashed var(--sangre); margin-top: 20px; }
     </style>
 </head>
 <body oncontextmenu="return false">
+
 <div class="bunker">
     <h1>EL ARSENAL</h1>
-    <div class="sub">BY ERICK SLAYER3866 | BÚNKER DE PODER</div>
-    <div class="consola">> VPN SHIELD: PROTECTED > MASTER ACCESS: HIDDEN<br>> <span style="color:var(--sangre);">ARSENAL LISTO PARA LA BATALLA</span></div>
+    <div class="sub-titulo">La metamorfosis del sonido</div>
+    <div class="sub">UNIT 3866 | MÁSTER QUIRÚRGICO</div>
 
     <div class="seccion-bunker">
-        <span class="titulo-seccion">1. GRABACIÓN PRO (QUE SE HAGAN BOLAS)</span>
-        <div class="panel-gear">
-            <div class="unit-gear">
-                <span class="label-gear">AMP / CABEZAL:</span>
-                <select id="amp">
-                    <option value="jcm800">MARSHALL JCM800</option>
-                    <option value="mesa">MESA BOOGIE RECTIFIER</option>
+        <span class="titulo-seccion">01. GÉNEROS & PROCESAMIENTO</span>
+        <div class="grid-gear">
+            <div>
+                <span style="font-size: 8px; color: #555;">ESTILO:</span>
+                <select id="gen">
+                    <option>SKA / ROCK URBANO</option>
+                    <option>PUNK / POST PUNK</option>
+                    <option>INDIE / DARK WAVE</option>
+                    <option>HARDCORE / NU METAL</option>
+                    <option>THRASH / METAL MELÓDICO</option>
+                    <option>DEATH / GRINDCORE</option>
+                    <option>ROCK N' ROLL / BLUES</option>
+                    <option>SURF / PSYCHOBILLY</option>
                 </select>
             </div>
-            <div class="unit-gear">
-                <span class="label-gear">PEDALBOARD:</span>
-                <select id="pedal">
-                    <option value="zone">METAL ZONE MT-2</option>
-                    <option value="wah">CRYBABY WAH</option>
-                    <option value="delay">DIGITAL DELAY</option>
+            <div>
+                <span style="font-size: 8px; color: #555;">EQUIPO:</span>
+                <select id="equip">
+                    <option>JCM800 + METAL ZONE</option>
+                    <option>MESA RECTIFIER + WAH</option>
                 </select>
-            </div>
-            <div class="controles-gear">
-                <div><span>GAIN</span><div class="knob-gear" style="transform:rotate(45deg);"></div></div>
-                <div><span>BASS</span><div class="knob-gear" style="transform:rotate(10deg);"></div></div>
-                <div><span>MID</span><div class="knob-gear" style="transform:rotate(-5deg);"></div></div>
-                <div><span>TREBLE</span><div class="knob-gear" style="transform:rotate(20deg);"></div></div>
             </div>
         </div>
-        <button id="recBtn" class="btn-war btn-rec" onclick="recStart()">● GRABAR INSTRUMENTO/VOX</button>
-        <button id="stopBtn" class="btn-war btn-rec" style="display:none; background:#fff; color:#000;" onclick="recStop()">■ CORTE DE LÍNEA</button>
+        
+        <div class="mixer">
+            <div class="knob-wrap"><span class="label-knob">GAIN</span><div class="knob" style="transform: rotate(60deg);"></div></div>
+            <div class="knob-wrap"><span class="label-knob especial">CONTRAS (ANTI-FIERRO)</span><div class="knob" style="transform: rotate(90deg); border-color: var(--oro);"></div></div>
+            <div class="knob-wrap"><span class="label-knob">BASS</span><div class="knob" style="transform: rotate(20deg);"></div></div>
+            <div class="knob-wrap"><span class="label-knob">TREBLE</span><div class="knob" style="transform: rotate(45deg);"></div></div>
+        </div>
     </div>
 
     <div class="seccion-bunker">
-        <span class="titulo-seccion">2. SÓLO MÚSICA (MAGIA EXPRESS)</span>
-        <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin:10px 0; font-size:10px; color:#444;">
-        <button class="btn-war btn-magia" onclick="ejecutarMagia()">✨ SOLTAR MAGIA ✨</button>
+        <span class="titulo-seccion">02. METAMORFOSIS MÁGICA</span>
+        <input type="file" id="audioFile" accept="audio/*" style="width: 100%; color: #444; margin-bottom: 10px; font-size: 10px;">
+        <button class="btn-war btn-magia" onclick="lanzarMagia()">✨ SOLTAR MÁSTER FINAL ✨</button>
     </div>
 
-    <div id="lista-precios"></div>
-    <div id="resultado" style="display:none;">
-        <audio id="player" controls controlsList="nodownload"></audio>
-        <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none; font-weight:bold;">📥 DESCARGAR MÁSTER FINAL</a></div>
+    <div id="cobros-area"></div>
+
+    <div id="resultado-wrap" style="display:none;">
+        <audio id="reproductor" controls controlsList="nodownload"></audio>
+        <div id="descarga-final">
+            <a id="linkDownload" style="color:#fff; text-decoration:none; font-weight:bold; font-size: 1.3rem;">📥 BAJAR MÁSTER SIN TAPAS DE FIERRO</a>
+        </div>
     </div>
-    
-    <svg id="pentagrama-key" viewBox="0 0 512 512">
+
+    <svg id="master-pentagram" viewBox="0 0 512 512">
         <path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/>
     </svg>
 </div>
 
 <script>
-    let rec, chunks = [], boss = false, timer;
+    let bossMode = false, holdTimer;
 
-    window.onload = () => updateUI(false);
+    window.onload = () => {
+        const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let c = "MXN", p1 = "$300", p8 = "$1,800";
+        if(zone.includes("Europe")) { c="EUR"; p1="€40"; p8="€220"; }
+        else if(!zone.includes("Mexico")) { c="USD"; p1="$45"; p8="$250"; }
 
-    function updateUI(grab) {
-        const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        let mon = "MXN", p1 = grab ? "$650" : "$300", p8 = grab ? "$2,150" : "$1,800";
-        if (zona.includes("Europe")) { mon = "EUR"; p1 = grab ? "€90" : "€40"; p8 = grab ? "€280" : "€220"; }
-        else if (zona.includes("America") && !zona.includes("Mexico")) { mon = "USD"; p1 = grab ? "$95" : "$45"; p8 = grab ? "$300" : "$250"; }
-
-        document.getElementById('lista-precios').innerHTML = `
-            <div style="font-size:8px; color:#333; margin-bottom:8px; text-align:left;">DETECCIÓN: ${mon}</div>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>1 TRACK + PLAN</span> <span class="monto">${p1} ${mon}</span></a>
-            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>8 TRACKS (ALBUM)</span> <span class="monto">${p8} ${mon}</span></a>`;
-    }
-
-    async function recStart() {
-        chunks = []; const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-        rec = new MediaRecorder(s); rec.ondataavailable = e => chunks.push(e.data);
-        rec.onstop = () => { 
-            const b = new Blob(chunks, { type: 'audio/mp3' }); 
-            document.getElementById('player').src = URL.createObjectURL(b); 
-            updateUI(true); mostrarResultado(); 
-        };
-        rec.start(); document.getElementById('recBtn').style.display='none'; document.getElementById('stopBtn').style.display='block';
-    }
-    function recStop() { rec.stop(); document.getElementById('recBtn').style.display='block'; document.getElementById('stopBtn').style.display='none'; }
-
-    function ejecutarMagia() {
-        const file = document.getElementById('inputAudio').files[0];
-        if(!file) return alert("SUBE TU ROLA");
-        document.getElementById('player').src = URL.createObjectURL(file);
-        updateUI(false); mostrarResultado();
-    }
-
-    function mostrarResultado() {
-        const p = document.getElementById('player');
-        document.getElementById('resultado').style.display='block';
-        p.play();
-        p.ontimeupdate = () => { if(!boss && p.currentTime >= 90) { p.pause(); p.currentTime=0; alert("DERECHO DE PISO: PAGA PARA BAJAR LA ROLA"); }};
-        document.getElementById('linkD').href = p.src;
-    }
-
-    // LÓGICA DEL PENTAGRAMA MAESTRO
-    const penta = document.getElementById('pentagrama-key');
-    penta.onmousedown = () => { 
-        timer = setTimeout(() => { 
-            boss = true; 
-            penta.classList.add('active'); 
-            document.getElementById('descarga').style.display = 'block'; 
-            alert("SISTEMA DESBLOQUEADO, BIENVENIDO JEFE"); 
-        }, 3000); 
+        document.getElementById('cobros-area').innerHTML = `
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago-item"><span>MÁSTER ANTI-FIERRO (1)</span> <span class="price">${p1} ${c}</span></a>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago-item"><span>ÁLBUM COMPLETO</span> <span class="price">${p8} ${c}</span></a>`;
     };
-    penta.onmouseup = () => clearTimeout(timer);
-    penta.ontouchstart = (e) => { e.preventDefault(); penta.onmousedown(); };
-    penta.ontouchend = () => clearTimeout(timer);
+
+    function lanzarMagia() {
+        const file = document.getElementById('audioFile').files[0];
+        if(!file) return alert("SUBE EL ARCHIVO");
+        const player = document.getElementById('reproductor');
+        player.src = URL.createObjectURL(file);
+        document.getElementById('resultado-wrap').style.display = 'block';
+        player.play();
+        player.ontimeupdate = () => {
+            if(!bossMode && player.currentTime >= 90) {
+                player.pause(); player.currentTime = 0;
+                alert("MUESTRA TERMINADA. PAGA PARA QUITAR EL SONIDO DE TAPAS DE FIERRO.");
+            }
+        };
+        document.getElementById('linkDownload').href = player.src;
+    }
+
+    const penta = document.getElementById('master-pentagram');
+    penta.onmousedown = () => {
+        holdTimer = setTimeout(() => {
+            bossMode = true;
+            penta.classList.add('active');
+            document.getElementById('descarga-final').style.display = 'block';
+            alert("ACCESO MAESTRO ACTIVO, JEFE ERICK.");
+        }, 3000);
+    };
+    penta.onmouseup = () => clearTimeout(holdTimer);
 </script>
 </body>
-</html>
+    </html>
+    
