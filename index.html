@@ -10,7 +10,7 @@
         .bunker-rack { max-width: 600px; margin: 20px auto; background: #1a1a1a; border: 5px solid #333; border-radius: 12px; box-shadow: 0 0 70px rgba(255, 0, 0, 0.8); padding: 25px; border-top: 8px solid var(--red); position: relative; }
         h1 { font-size: 2.2rem; color: var(--red); margin: 0; letter-spacing: -1px; text-shadow: 2px 2px #000; }
         h2 { font-size: 0.8rem; color: #888; margin-bottom: 20px; letter-spacing: 2px; line-height: 1.4; }
-        .lcd-monitor { background: #050505; border: 2px solid #222; padding: 15px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 20px; border-radius: 4px; font-size: 0.7rem; min-height: 190px; border-left: 5px solid var(--red); overflow-y: auto; box-shadow: inset 0 0 15px #000; }
+        .lcd-monitor { background: #050505; border: 2px solid #222; padding: 15px; color: #0f0; font-family: 'Consolas', monospace; text-align: left; margin-bottom: 20px; border-radius: 4px; font-size: 0.7rem; min-height: 230px; border-left: 5px solid var(--red); overflow-y: auto; box-shadow: inset 0 0 15px #000; }
         .module { background: var(--dark); padding: 15px; border: 1px solid #222; margin-bottom: 12px; text-align: left; border-radius: 4px; }
         label { display: block; font-size: 0.6rem; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
         select, input, .pay-btn { width: 100%; background: #000; border: 1px solid #444; color: #fff; padding: 12px; box-sizing: border-box; font-weight: bold; }
@@ -62,11 +62,11 @@
     </div>
 
     <div id="payment-area">
-        <label>III. ACTIVACIÓN DE EQUIPO (MULTIDIVISA)</label>
+        <label>III. ACTIVACIÓN DE EQUIPO (TARIFA INTERNACIONAL)</label>
         <div class="multi-pay">
             <button class="pay-btn mxn" onclick="window.open('TU_LINK_MXN')">$100 MXN</button>
-            <button class="pay-btn usd" onclick="window.open('TU_LINK_USD')">$5 USD</button>
-            <button class="pay-btn eur" onclick="window.open('TU_LINK_EUR')">€5 EUR</button>
+            <button class="pay-btn usd" onclick="window.open('TU_LINK_USD')">$20 USD</button>
+            <button class="pay-btn eur" onclick="window.open('TU_LINK_EUR')">20€ EUR</button>
         </div>
     </div>
     
@@ -77,7 +77,7 @@
     </div>
 
     <div class="legal">
-        <b>AVISO DE PRIVACIDAD:</b> EL ARSENAL protege tus archivos. Se eliminan automáticamente tras el proceso. <b>TÉRMINOS:</b> Prohibido VPN (el cadenero te banea). El máster es analógico, quirúrgico y de alta fidelidad. <b>© 2026 EL ARSENAL. LA METAMORFOSIS DEL SONIDO. ALL RIGHTS RESERVED.</b>
+        <b>AVISO DE PRIVACIDAD:</b> EL ARSENAL protege tus archivos. Se eliminan tras el máster. <b>TÉRMINOS:</b> Prohibido VPN (el cadenero te banea). El máster es analógico, quirúrgico y de alta fidelidad. <b>© 2026 EL ARSENAL. ALL RIGHTS RESERVED.</b>
     </div>
 </div>
 
@@ -104,7 +104,7 @@
             btn.classList.add('active');
             btn.onclick = () => detonar();
             document.getElementById('payment-area').style.display = 'none';
-            screen.innerHTML = `> ACCESO: ERICK<br>> CADENA: SHURE -> MARSHALL -> TAMA -> AMPEG MACIZO.<br>> STATUS: LISTO PARA LA METAMORFOSIS.`;
+            screen.innerHTML = `> ACCESO AUTORIZADO: ERICK<br>> MICROFONEO: SHURE SM7B ACTIVADO.<br>> AMPLIFICACIÓN: MARSHALL & AMPEG CALIENTES.<br>> BATERÍA: TAMA (BRILLO QUIRÚRGICO).<br>> STATUS: LISTO PARA LA METAMORFOSIS.`;
             screen.style.color = "#ff0000";
         }
     }
@@ -112,11 +112,12 @@
     function detonar() {
         const file = document.getElementById('trackUpload').files[0];
         if (!file) return alert("SUBE EL TRACK");
-        screen.innerHTML += `<br>> CALIBRANDO HI-HATS & PLATILLOS TAMA...`;
-        screen.innerHTML += `<br>> AJUSTANDO ATAQUE QUIRÚRGICO...`;
+        screen.innerHTML += `<br>> CALENTANDO BULBOS DE EQUIPO REAL...`;
+        screen.innerHTML += `<br>> PROCESANDO CON SHURE SM7B...`;
+        screen.innerHTML += `<br>> AJUSTANDO HI-HATS Y PLATILLOS TAMA...`;
         screen.innerHTML += `<br>> ELIMINANDO SONIDOS GORDOS Y LENTOS...`;
-        screen.innerHTML += `<br>> PROCESANDO CON EL ARSENAL COMPLETO...`;
-        setTimeout(() => alert("¡METAMORFOSIS COMPLETADA! BRILLO DE PLATILLOS LISTO."), 1500);
+        screen.innerHTML += `<br>> METAMORFOSIS COMPLETADA CON ÉXITO.`;
+        setTimeout(() => alert("¡METAMORFOSIS COMPLETADA! REVISA EL BRILLO."), 1500);
     }
 </script>
 </body>
