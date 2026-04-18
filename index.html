@@ -1,111 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | LA METAMORFOSIS DEL ROCK</title>
-    <style>
-        :root { --diamond: #00f2ff; --gold: #ffcc00; --steel: #222; }
-        body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; text-align: center; }
-        .bunker-rack { 
-            max-width: 600px; margin: 20px auto; background: #0a0a0a; border: 2px solid #333; 
-            border-radius: 15px; box-shadow: 0 0 60px rgba(0, 242, 255, 0.3); 
-            padding: 30px; border-top: 8px solid var(--diamond);
-        }
-        h1 { font-size: 2.2rem; color: #fff; margin: 0; text-shadow: 0 0 20px var(--diamond); letter-spacing: 2px; }
-        h2 { font-size: 0.7rem; color: var(--diamond); margin-bottom: 25px; letter-spacing: 4px; font-weight: bold; }
-        .lcd-monitor { 
-            background: #000; border: 1px solid #1a1a1a; padding: 20px; color: var(--diamond); 
-            text-align: left; font-size: 0.85rem; min-height: 200px; margin-bottom: 25px; 
-            border-radius: 8px; box-shadow: inset 0 0 30px #001a1d; border-left: 5px solid var(--diamond);
-        }
-        .module { background: #0f0f0f; padding: 15px; border: 1px solid #222; margin-bottom: 15px; text-align: left; border-radius: 10px; }
-        label { display: block; font-size: 0.65rem; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
-        select, input, .pay-btn { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; font-weight: bold; border-radius: 5px; font-size: 0.85rem; outline: none; }
-        .multi-pay { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .pay-btn { font-size: 0.65rem; cursor: pointer; border: none; transition: 0.4s; }
-        .mxn { background: #1a1a1a; border: 1px solid #009ee3; color: #009ee3; }
-        .usd { background: #1a1a1a; border: 1px solid #2e7d32; color: #2e7d32; }
-        .eur { background: #1a1a1a; border: 1px solid #1565c0; color: #1565c0; }
-        .detonate-btn { 
-            width: 100%; background: #000; border: 2px solid #333; color: #333; 
-            font-size: 2rem; padding: 25px; font-weight: bold; cursor: not-allowed; transition: 0.6s; 
-        }
-        .detonate-btn.active { border-color: var(--diamond); color: var(--diamond); box-shadow: 0 0 40px var(--diamond); cursor: pointer; text-shadow: 0 0 10px var(--diamond); }
-        #result-area { margin-top: 25px; display: none; background: #050505; padding: 20px; border: 2px solid var(--diamond); border-radius: 12px; }
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg); margin-top: 15px; }
-        .author-seal { margin: 35px 0; opacity: 0.3; width: 65px; cursor: pointer; transition: 0.6s; display: inline-block; }
-        .author-seal:hover { opacity: 1; filter: drop-shadow(0 0 15px var(--diamond)); transform: scale(1.1); }
-        .privacy-box { background: #050505; border: 1px solid #1a1a1a; padding: 15px; margin-top: 25px; border-radius: 8px; text-align: justify; }
-    </style>
-</head>
-<body onload="antiVPN()">
-
-<div class="bunker-rack" id="bunker">
-    <h1>EL ARSENAL</h1>
-    <h2>LA METAMORFOSIS DEL ROCK</h2>
-
-    <div class="lcd-monitor" id="log-screen">
-        > MANDO DE AUTOR: ESCANEANDO CASTA ARGENTINA...<br>
-        > STATUS: ESPERANDO LLAVE MAESTRA...
-    </div>
-
-    <div class="module">
-        <label>I. CALIBRACIÓN DE CASTA (15 GÉNEROS MAESTROS)</label>
-        <select id="genreSelect">
-            <option>1. ROCK EN TU IDIOMA (CAIFANES/SODA)</option>
-            <option>2. ROCK URBANO (BARRIO POWER)</option>
-            <option>3. POST-PUNK (DARK WAVE)</option>
-            <option>4. SKA (PUNCHY HORNS)</option>
-            <option>5. BLUES (WARM TUBE)</option>
-            <option>6. ROCK ANALÓGICO (MARSHALL JCM)</option>
-            <option>7. METAL EXTREMO (HIGH GAIN)</option>
-            <option>8. THRASH METAL (FAST ATTACK)</option>
-            <option>9. BLACK / DEATH (ACERO FRÍO)</option>
-            <option>10. HEAVY METAL (IRON POWER)</option>
-            <option>11. PUNK ROCK (RAW & REAL)</option>
-            <option>12. GRUNGE (LODO DE DIAMANTE)</option>
-            <option>13. INDUSTRIAL (STEEL PULSE)</option>
-            <option>14. HARD ROCK (STADIUM SOUND)</option>
-            <option>15. PSICODELIA (MUTACIÓN)</option>
-        </select>
-    </div>
-
-    <div class="module">
-        <label>II. CARGAR PROEZA (SÓLO ROCK & METAL)</label>
-        <input type="file" id="audioInput" accept="audio/*">
-    </div>
-
-    <div id="payment-box">
-        <label>III. TARIFA INTERNACIONAL ($20 USD/EUR)</label>
-        <div class="multi-pay">
-            <button class="pay-btn mxn">$100 MXN</button>
-            <button class="pay-btn usd">$20 USD</button>
-            <button class="pay-btn eur">20€ EUR</button>
-        </div>
-    </div>
-    
-    <button id="detonator" class="detonate-btn" disabled>DETONAR</button>
-
-    <div id="result-area">
-        <label style="color:var(--diamond); font-weight:bold;">MUTACIÓN COMPLETADA:</label>
-        <audio id="masterPlayer" controls></audio>
-        <br><br>
-        <a id="downloadBtn" style="color:var(--gold); font-size:0.8rem; text-decoration:none; border:1px solid var(--gold); padding:8px; display:inline-block; border-radius:4px;">[ GUARDAR MÁSTER DIAMANTE ]</a>
-    </div>
-
-    <div class="privacy-box">
-        <p style="color: var(--gold); font-size: 0.6rem; font-weight: bold; margin-bottom: 5px;">🛡️ GARANTÍA DE BÚNKER (PRIVACIDAD):</p>
-        <p style="color: #666; font-size: 0.55rem; line-height: 1.2; margin: 0;">
-            TUS CANCIONES NO SE ALMACENAN. EL PROCESAMIENTO ES 100% LOCAL. RESPETAMOS TU OBRA Y TU CASTA. AL DETONAR, ACEPTAS QUE EL ARSENAL NO GUARDA COPIA DE TU PROEZA. MANDO DE AUTOR: ERICK.
-        </p>
-    </div>
-
-    <div class="author-seal" onclick="unlock()">
-        <svg viewBox="0 0 512 512" fill="#00f2ff"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM170.5 416.7L256 373.1L341.5 416.7L324.4 324.4L393.1 258.9L299.1 245.8L256 163.6L212.9 245.8L118.9 258.9L187.6 324.4L170.5 416.7z"/></svg>
-    </div>
-</div>
-
 <script>
     const log = document.getElementById('log-screen');
     let ctx, source, filter, saturator, compressor;
@@ -123,23 +15,29 @@
     }
 
     function unlock() {
-        if(prompt("LLAVE DE AUTOR:") === "Abre esta m***** 666") {
+        let key = prompt("LLAVE DE AUTOR:");
+        // Ajuste quirúrgico: limpia espacios y reconoce la clave de casta
+        if(key && key.trim() === "Abre esta m***** 666") {
             const btn = document.getElementById('detonator');
-            btn.disabled = false; btn.classList.add('active');
+            btn.disabled = false; 
+            btn.classList.add('active'); // Aquí es donde se ilumina
             btn.onclick = startMutation;
+            
             document.getElementById('payment-box').style.display = 'none';
-            log.innerHTML = `> MANDO DE AUTOR: ACTIVADO<br>> CASTA: ERICK (FENÓMENO)<br>> STATUS: VIBRA DE DIAMANTE ONLINE.`;
+            log.innerHTML = `> MANDO DE AUTOR: ACTIVADO<br>> CASTA: ERICK (FENÓMENO)<br>> STATUS: VIBRA DE DIAMANTE ONLINE.<br>> EL BOTÓN ESTÁ LISTO PARA DETONAR.`;
             log.style.color = "#00f2ff";
+        } else {
+            alert("LLAVE INCORRECTA. REVISA LA CASTA.");
+            log.innerHTML += "<br>> ERROR: INTENTO DE ACCESO NO AUTORIZADO.";
         }
     }
 
     function startMutation() {
         const file = document.getElementById('audioInput').files[0];
-        if(!file) return alert("SUBE TU PROEZA.");
+        if(!file) return alert("SUBE TU PROEZA ANTES DE DETONAR.");
 
         log.innerHTML += `<br>> INICIANDO METAMORFOSIS DEL ROCK...`;
-        log.innerHTML += `<br>> FILTRO QUIRÚRGICO: ELIMINANDO TOSTADO...`;
-
+        
         const player = document.getElementById('masterPlayer');
         const url = URL.createObjectURL(file);
         player.src = url;
@@ -150,12 +48,10 @@
         if(source) source.disconnect();
         source = ctx.createMediaElementSource(player);
         
-        // FILTRO DIAMANTE (14,200 Hz)
         filter = ctx.createBiquadFilter();
         filter.type = "lowpass";
         filter.frequency.setValueAtTime(14200, ctx.currentTime); 
 
-        // CALOR MARSHALL
         saturator = ctx.createWaveShaper();
         saturator.curve = (n => {
             let c = new Float32Array(n), x;
@@ -166,20 +62,14 @@
             return c;
         })(44100);
 
-        // COMPRESIÓN TAMA POWER
         compressor = ctx.createDynamicsCompressor();
         compressor.threshold.setValueAtTime(-18, ctx.currentTime);
         compressor.ratio.setValueAtTime(12, ctx.currentTime);
 
         source.connect(filter).connect(saturator).connect(compressor).connect(ctx.destination);
 
-        setTimeout(() => {
-            document.getElementById('result-area').style.display = 'block';
-            log.innerHTML += "<br>> MUTACIÓN COMPLETADA. TRUENA LA CASTA.";
-            player.play();
-        }, 2000);
+        document.getElementById('result-area').style.display = 'block';
+        log.innerHTML += "<br>> MUTACIÓN COMPLETADA. TRUENA LA CASTA.";
+        player.play();
     }
 </script>
-</body>
-    </html>
-    
