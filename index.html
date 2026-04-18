@@ -5,7 +5,7 @@
     <title>EL ARSENAL | LA METAMORFOSIS DEL ROCK</title>
     <style>
         :root { --diamond: #00f2ff; --gold: #ffcc00; }
-        body { background: #000; color: #fff; font-family: 'Courier New', monospace; text-align: center; text-transform: uppercase; padding: 10px; margin: 0; }
+        body { background: #000 !important; color: #fff !important; font-family: 'Courier New', monospace; text-align: center; text-transform: uppercase; padding: 10px; margin: 0; }
         .bunker-rack { 
             max-width: 550px; margin: 20px auto; background: #0a0a0a; border: 2px solid #333; 
             border-radius: 15px; box-shadow: 0 0 50px rgba(0, 242, 255, 0.2); padding: 25px; border-top: 8px solid var(--diamond);
@@ -16,124 +16,57 @@
         }
         .module { background: #0f0f0f; padding: 15px; border: 1px solid #222; margin-bottom: 15px; text-align: left; }
         select, input, .detonate-btn { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 15px; font-weight: bold; border-radius: 5px; box-sizing: border-box; }
-        .detonate-btn { 
-            font-size: 1.8rem; color: #333; border: 2px solid #333; cursor: not-allowed; transition: 0.5s; margin-top: 10px; opacity: 0.3;
-        }
-        .btn-active { 
-            border-color: var(--diamond) !important; 
-            color: var(--diamond) !important; 
-            box-shadow: 0 0 40px var(--diamond) !important; 
-            cursor: pointer !important; 
-            opacity: 1 !important; 
-        }
+        .detonate-btn { font-size: 1.8rem; color: #333; border: 2px solid #333; cursor: not-allowed; transition: 0.5s; margin-top: 10px; opacity: 0.3; }
+        .btn-active { border-color: var(--diamond) !important; color: var(--diamond) !important; box-shadow: 0 0 40px var(--diamond) !important; cursor: pointer !important; opacity: 1 !important; }
         #result { display: none; margin-top: 20px; border-top: 1px solid var(--diamond); padding-top: 20px; }
         audio { width: 100%; filter: invert(1) hue-rotate(180deg); margin-top: 10px; }
         .seal { margin-top: 20px; opacity: 0.4; cursor: pointer; transition: 0.5s; width: 60px; display: inline-block; }
-        .seal:hover { opacity: 1; filter: drop-shadow(0 0 10px var(--diamond)); }
     </style>
 </head>
 <body>
-
 <div class="bunker-rack">
     <h1>EL ARSENAL</h1>
-    <h2 style="color:var(--diamond); font-size: 0.7rem; letter-spacing: 3px;">LA METAMORFOSIS DEL ROCK</h2>
-
-    <div class="lcd" id="log">
-        > MANDO DE AUTOR: SLAYER38<br>
-        > STATUS: ESPERANDO LLAVE DE CASTA...
-    </div>
-
+    <h2 style="color:var(--diamond); font-size: 0.7rem;">LA METAMORFOSIS DEL ROCK</h2>
+    <div class="lcd" id="log">> MANDO: SLAYER38<br>> STATUS: ESPERANDO LLAVE...</div>
     <div class="module">
-        <label style="color:var(--gold); font-size:0.6rem;">I. SELECCIONAR CALIBRE</label>
-        <select id="genre">
-            <option>1. ROCK EN TU IDIOMA (CAIFANES/SODA)</option>
-            <option>2. ROCK URBANO (BARRIO POWER)</option>
-            <option>3. POST-PUNK (DARK WAVE)</option>
-            <option>4. SKA (PUNCHY HORNS)</option>
-            <option>5. BLUES (WARM TUBE)</option>
-            <option>6. ROCK ANALÓGICO (MARSHALL JCM)</option>
-            <option>7. METAL EXTREMO (HIGH GAIN)</option>
-            <option>8. THRASH METAL (SLAYER STYLE)</option>
-            <option>9. HEAVY METAL (IRON POWER)</option>
-        </select>
+        <label style="color:var(--gold); font-size:0.6rem;">I. CALIBRE</label>
+        <select id="genre"><option>ROCK EN TU IDIOMA</option><option>METAL EXTREMO</option><option>THRASH METAL</option></select>
     </div>
-
     <div class="module">
-        <label style="color:var(--gold); font-size:0.6rem;">II. CARGAR PROEZA</label>
+        <label style="color:var(--gold); font-size:0.6rem;">II. PROEZA</label>
         <input type="file" id="audioFile" accept="audio/*">
     </div>
-
     <button id="detonador" class="detonate-btn" disabled>BLOQUEADO</button>
-
     <div id="result">
-        <p style="color:var(--diamond); font-size:0.7rem;">MUTACIÓN COMPLETADA:</p>
-        <audio id="player" controls></audio>
-        <br><br>
-        <a id="download" style="color:var(--gold); text-decoration:none; border:1px solid var(--gold); padding:10px; display:inline-block; border-radius:5px;">[ GUARDAR MÁSTER ]</a>
+        <audio id="player" controls></audio><br><br>
+        <a id="download" style="color:var(--gold); text-decoration:none; border:1px solid var(--gold); padding:10px; display:inline-block;">[ GUARDAR MÁSTER ]</a>
     </div>
-
-    <div style="background: #050505; padding: 10px; margin-top: 20px; border-radius: 5px; font-size: 0.5rem; color: #555; text-align: justify;">
-        AVISO: PROCESAMIENTO LOCAL. TUS CANCIONES NO SE ALMACENAN. RESPETAMOS TU OBRA.
-    </div>
-
     <div class="seal" onclick="activarBunker()">
-        <svg viewBox="0 0 512 512" fill="#00f2ff"><path d="M256 0c141.4 0 256 114.6 256 256s-114.6 256-256 256S0 397.4 0 256 114.6 0 256 0zm0 128l-39.1 79.2L128 219.7l64 62.4-15.1 88.1 79.1-41.6 79.1 41.6L320 282.1l64-62.4-88.9-12.5L256 128z"/></svg>
+        <svg viewBox="0 0 512 512" fill="#00f2ff" width="60"><path d="M256 0c141.4 0 256 114.6 256 256s-114.6 256-256 256S0 397.4 0 256 114.6 0 256 0zm0 128l-39.1 79.2L128 219.7l64 62.4-15.1 88.1 79.1-41.6 79.1 41.6L320 282.1l64-62.4-88.9-12.5L256 128z"/></svg>
     </div>
 </div>
-
 <script>
     let audioCtx, source;
-
     function activarBunker() {
         let pass = prompt("LLAVE DE AUTOR:");
-        // LLAVE: slayer38 666
         if(pass && pass.trim().toLowerCase() === "slayer38 666") {
             const btn = document.getElementById('detonador');
             btn.disabled = false;
             btn.classList.add('btn-active');
             btn.innerHTML = "DETONAR";
-            
-            document.getElementById('log').innerHTML = "> MANDO ACTIVADO: ERICK SLAYER38<br>> STATUS: VIBRA DE DIAMANTE ONLINE.<br>> EL DETONADOR ESTÁ LISTO.";
+            document.getElementById('log').innerHTML = "> MANDO ACTIVADO<br>> STATUS: VIBRA DE DIAMANTE ONLINE.";
             document.getElementById('log').style.color = "#00f2ff";
-
-            btn.onclick = function() {
-                iniciarMutacion();
-            };
-        } else {
-            alert("LLAVE INCORRECTA");
-        }
+            btn.onclick = iniciarMutacion;
+        } else { alert("LLAVE INCORRECTA"); }
     }
-
     function iniciarMutacion() {
         const file = document.getElementById('audioFile').files[0];
-        if(!file) {
-            alert("SUBE UN ARCHIVO ANTES DE DETONAR.");
-            return;
-        }
-
+        if(!file) return alert("SUBE UN ARCHIVO");
         const p = document.getElementById('player');
-        const url = URL.createObjectURL(file);
-        p.src = url;
-        document.getElementById('download').href = url;
-        document.getElementById('download').download = "MASTER_ARSENAL_" + file.name;
-
-        if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if(source) source.disconnect();
-        
-        source = audioCtx.createMediaElementSource(p);
-        
-        let lowpass = audioCtx.createBiquadFilter();
-        lowpass.type = "lowpass";
-        lowpass.frequency.value = 14200; // FILTRO DIAMANTE
-
-        let compressor = audioCtx.createDynamicsCompressor();
-        compressor.threshold.value = -18;
-        compressor.ratio.value = 12;
-
-        source.connect(lowpass).connect(compressor).connect(audioCtx.destination);
-
+        p.src = URL.createObjectURL(file);
+        document.getElementById('download').href = p.src;
+        document.getElementById('download').download = "MASTER_" + file.name;
         document.getElementById('result').style.display = 'block';
-        document.getElementById('log').innerHTML += "<br>> MUTACIÓN EXITOSA. TRUENA EL DIAMANTE.";
         p.play();
     }
 </script>
