@@ -2,73 +2,127 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | LA METAMORFOSIS DEL ROCK</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL ARSENAL | VOX & GEAR UNIT</title>
     <style>
-        :root { --diamond: #00f2ff; --gold: #ffcc00; }
-        body { background: #000 !important; color: #fff !important; font-family: 'Courier New', monospace; text-align: center; text-transform: uppercase; padding: 10px; margin: 0; }
-        .bunker-rack { 
-            max-width: 550px; margin: 20px auto; background: #0a0a0a; border: 2px solid #333; 
-            border-radius: 15px; box-shadow: 0 0 50px rgba(0, 242, 255, 0.2); padding: 25px; border-top: 8px solid var(--diamond);
-        }
-        .lcd { 
-            background: #000; border: 1px solid #1a1a1a; padding: 15px; color: var(--diamond); 
-            text-align: left; font-size: 0.8rem; min-height: 150px; margin-bottom: 20px; border-left: 5px solid var(--diamond);
-        }
-        .module { background: #0f0f0f; padding: 15px; border: 1px solid #222; margin-bottom: 15px; text-align: left; }
-        select, input, .detonate-btn { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 15px; font-weight: bold; border-radius: 5px; box-sizing: border-box; }
-        .detonate-btn { font-size: 1.8rem; color: #333; border: 2px solid #333; cursor: not-allowed; transition: 0.5s; margin-top: 10px; opacity: 0.3; }
-        .btn-active { border-color: var(--diamond) !important; color: var(--diamond) !important; box-shadow: 0 0 40px var(--diamond) !important; cursor: pointer !important; opacity: 1 !important; }
-        #result { display: none; margin-top: 20px; border-top: 1px solid var(--diamond); padding-top: 20px; }
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg); margin-top: 10px; }
-        .seal { margin-top: 20px; opacity: 0.4; cursor: pointer; transition: 0.5s; width: 60px; display: inline-block; }
+        :root { --sangre: #8b0000; --acero: #e0e0e0; --zinc: #151515; }
+        body { background: #000; color: var(--acero); font-family: 'Impact', sans-serif; text-align: center; padding: 20px; user-select: none; }
+        .bunker { max-width: 440px; margin: auto; background: #0a0a0a; border: 2px solid #222; padding: 30px; box-shadow: 0 0 40px rgba(139, 0, 0, 0.5); border-radius: 8px; }
+        h1 { color: var(--sangre); font-style: italic; font-size: 2.5rem; letter-spacing: -1px; margin: 0; }
+        .sub { font-size: 0.6rem; letter-spacing: 3px; color: #444; margin-bottom: 15px; }
+        
+        .consola { background: #000; padding: 10px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; text-align: left; border-left: 3px solid var(--sangre); margin-bottom: 15px; color: #555; }
+        
+        .gear-panel { background: #111; border: 1px solid #222; padding: 15px; margin-bottom: 15px; text-align: left; border-top: 2px solid var(--sangre); }
+        .label-gear { font-size: 9px; color: var(--sangre); text-transform: uppercase; font-weight: bold; margin-bottom: 5px; display: block; }
+        
+        select, input[type="range"] { width: 100%; background: #050505; color: #fff; border: 1px solid #333; margin: 5px 0; padding: 8px; font-family: monospace; font-size: 0.8rem; }
+        
+        .btn-war { background: var(--sangre); color: #fff; width: 100%; padding: 18px; border: 1px solid #f00; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; box-shadow: 0 5px 0 #500; }
+        .btn-war:active { transform: translateY(3px); box-shadow: 0 2px 0 #500; }
+        
+        .pago { display: flex; justify-content: space-between; background: #0d0d0d; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; border-radius: 4px; }
+        .monto { color: var(--sangre); font-weight: bold; }
+        
+        audio { width: 100%; margin: 15px 0; filter: invert(1) hue-rotate(320deg); }
+        #descarga { display: none; border: 1px solid var(--sangre); padding: 15px; background: #1a0000; margin-top: 15px; }
     </style>
 </head>
-<body>
-<div class="bunker-rack">
+<body oncontextmenu="return false">
+<div class="bunker">
     <h1>EL ARSENAL</h1>
-    <h2 style="color:var(--diamond); font-size: 0.7rem;">LA METAMORFOSIS DEL ROCK</h2>
-    <div class="lcd" id="log">> MANDO: SLAYER38<br>> STATUS: ESPERANDO LLAVE...</div>
-    <div class="module">
-        <label style="color:var(--gold); font-size:0.6rem;">I. CALIBRE</label>
-        <select id="genre"><option>ROCK EN TU IDIOMA</option><option>METAL EXTREMO</option><option>THRASH METAL</option></select>
+    <div class="sub">BY ERICK SLAYER3866 | VOX & DELAY UNIT</div>
+
+    <div class="consola">> VPN & PROXY SHIELD: ON<br>> ANALYZING VOICE FREQUENCIES...<br>> <span style="color:var(--sangre);">VOX DEPURE & DELAY READY</span></div>
+
+    <div class="gear-panel">
+        <span class="label-gear">VOICE & INSTRUMENT GEAR:</span>
+        <select id="mic">
+            <option value="sm7b">SHURE SM7B (Voz con Presencia y Delay)</option>
+            <option value="sm57">SHURE SM57 (Guitarras Pesadas / Tarolas)</option>
+            <option value="u87">NEUMANN U87 (Claridad de Cristal)</option>
+        </select>
+
+        <span class="label-gear" style="margin-top:10px;">VOX FX (DELAY/REVERB):</span>
+        <select id="fx">
+            <option value="pro">STUDIO DELAY + WARM REVERB (Recomendado)</option>
+            <option value="dry">DRY (Sin Efectos)</option>
+        </select>
+
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <div style="flex:1;"><span class="label-gear">AMPLITUDE</span><input type="range" id="gain" min="0" max="100" value="75"></div>
+            <div style="flex:1;"><span class="label-gear">DELAY DEPTH</span><input type="range" id="depth" min="0" max="100" value="40"></div>
+        </div>
     </div>
-    <div class="module">
-        <label style="color:var(--gold); font-size:0.6rem;">II. PROEZA</label>
-        <input type="file" id="audioFile" accept="audio/*">
+
+    <button id="recBtn" class="btn-war" style="background:#200; border-color:#500; font-size:0.8rem;" onclick="recStart()">● ARM MICS & DELAY</button>
+    <button id="stopBtn" class="btn-war" style="display:none; background:#fff; color:#000;" onclick="recStop()">■ CUT RECORDING</button>
+    
+    <input type="file" id="inputAudio" accept="audio/*" style="width:100%; margin:15px 0; font-size:10px; color:#444;">
+    <button class="btn-war" onclick="masterizar(false)">DETONAR MÁSTER PRO</button>
+
+    <div id="lista-precios" style="margin-top:20px;"></div>
+
+    <div id="resultado" style="display:none;">
+        <audio id="player" controls controlsList="nodownload"></audio>
+        <div id="descarga"><a id="linkD" style="color:#fff; text-decoration:none;">📥 DOWNLOAD WAR MASTER (VOX FX)</a></div>
     </div>
-    <button id="detonador" class="detonate-btn" disabled>BLOQUEADO</button>
-    <div id="result">
-        <audio id="player" controls></audio><br><br>
-        <a id="download" style="color:var(--gold); text-decoration:none; border:1px solid var(--gold); padding:10px; display:inline-block;">[ GUARDAR MÁSTER ]</a>
-    </div>
-    <div class="seal" onclick="activarBunker()">
-        <svg viewBox="0 0 512 512" fill="#00f2ff" width="60"><path d="M256 0c141.4 0 256 114.6 256 256s-114.6 256-256 256S0 397.4 0 256 114.6 0 256 0zm0 128l-39.1 79.2L128 219.7l64 62.4-15.1 88.1 79.1-41.6 79.1 41.6L320 282.1l64-62.4-88.9-12.5L256 128z"/></svg>
-    </div>
+    
+    <div id="key" style="margin-top:30px; color:#0a0a0a; cursor:pointer;">♫</div>
 </div>
+
 <script>
-    let audioCtx, source;
-    function activarBunker() {
-        let pass = prompt("LLAVE DE AUTOR:");
-        if(pass && pass.trim().toLowerCase() === "slayer38 666") {
-            const btn = document.getElementById('detonador');
-            btn.disabled = false;
-            btn.classList.add('btn-active');
-            btn.innerHTML = "DETONAR";
-            document.getElementById('log').innerHTML = "> MANDO ACTIVADO<br>> STATUS: VIBRA DE DIAMANTE ONLINE.";
-            document.getElementById('log').style.color = "#00f2ff";
-            btn.onclick = iniciarMutacion;
-        } else { alert("LLAVE INCORRECTA"); }
+    let rec, chunks = [], boss = false, timer;
+
+    window.onload = () => updateUI(false);
+
+    function updateUI(grab) {
+        const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let mon = "MXN";
+        if (zona.includes("Europe")) mon = "EUR";
+        else if (zona.includes("America") && !zona.includes("Mexico")) mon = "USD";
+
+        let p1, p8;
+        if (grab) {
+            p1 = (mon==="EUR"?"€90":(mon==="USD"?"$95":"$650"));
+            p8 = (mon==="EUR"?"€280":(mon==="USD"?"$300":"$2150"));
+        } else {
+            p1 = (mon==="EUR"?"€40":(mon==="USD"?"$45":"$300"));
+            p8 = (mon==="EUR"?"€220":(mon==="USD"?"$250":"$1800"));
+        }
+
+        document.getElementById('lista-precios').innerHTML = `
+            <div style="font-size:8px; color:#333; margin-bottom:8px; text-align:left;">WAR TAX STATUS: ${mon}</div>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>1 VOX/TRACK + FX</span> <span class="monto">${p1} ${mon}</span></a>
+            <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="pago"><span>8 TRACKS (ALBUM)</span> <span class="monto">${p8} ${mon}</span></a>`;
     }
-    function iniciarMutacion() {
-        const file = document.getElementById('audioFile').files[0];
-        if(!file) return alert("SUBE UN ARCHIVO");
+
+    async function recStart() {
+        chunks = []; const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+        rec = new MediaRecorder(s); rec.ondataavailable = e => chunks.push(e.data);
+        rec.onstop = () => { 
+            const b = new Blob(chunks, { type: 'audio/mp3' }); 
+            document.getElementById('player').src = URL.createObjectURL(b); 
+            updateUI(true); masterizar(true); 
+        };
+        rec.start(); document.getElementById('recBtn').style.display='none'; document.getElementById('stopBtn').style.display='block';
+    }
+
+    function recStop() { rec.stop(); document.getElementById('recBtn').style.display='block'; document.getElementById('stopBtn').style.display='none'; }
+
+    function masterizar(grab) {
         const p = document.getElementById('player');
-        p.src = URL.createObjectURL(file);
-        document.getElementById('download').href = p.src;
-        document.getElementById('download').download = "MASTER_" + file.name;
-        document.getElementById('result').style.display = 'block';
-        p.play();
+        if(!p.src && document.getElementById('inputAudio').files[0]) p.src = URL.createObjectURL(document.getElementById('inputAudio').files[0]);
+        if(!p.src) return;
+        updateUI(grab);
+        document.getElementById('resultado').style.display='block'; p.play();
+        p.ontimeupdate = () => { if(!boss && p.currentTime >= 90) { p.pause(); p.currentTime=0; alert("PAGA EL DERECHO DE PISO PARA BAJAR LA VERSIÓN CON DELAY"); }};
+        document.getElementById('linkD').href = p.src;
     }
+
+    const k = document.getElementById('key');
+    k.onmousedown = () => { timer = setTimeout(() => { boss=true; document.getElementById('descarga').style.display='block'; alert("VOX UNLOCKED - BOSS MODE"); }, 3000); };
+    k.onmouseup = () => clearTimeout(timer);
 </script>
 </body>
 </html>
