@@ -3,181 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL ARSENAL | BÚNKER ELITE</title>
+    <title>EL ARSENAL | BÚNKER DE CONTROL</title>
     <style>
-        :root { --sangre: #700000; --acero: #1a1a1a; --plata: #999; --diamante: #00e5ff; }
-        
+        :root { --sangre: #8b0000; --metal: #121212; }
         body { 
-            background: #020202; color: #444; font-family: 'Impact', sans-serif; text-align: center; padding: 10px; user-select: none;
-            background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+            background: #000; color: #777; font-family: 'Impact', sans-serif; text-align: center; padding: 10px;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-metal.png');
+            user-select: none; -webkit-user-select: none;
         }
-        
-        .bunker-industrial { 
-            max-width: 800px; margin: 20px auto; background: #080808; border: 4px solid #111; 
-            padding: 30px; box-shadow: 0 0 100px #000; position: relative; border-radius: 2px;
-            border-top: 10px solid var(--sangre);
+        .bunker-arsenal { 
+            max-width: 800px; margin: 20px auto; background: #080808; border: 3px solid #1a1a1a; 
+            padding: 30px; border-top: 12px solid var(--sangre); position: relative;
+            box-shadow: 0 0 50px #000;
         }
+        h1 { color: #eee; font-size: 3.2rem; margin: 0; letter-spacing: -2px; }
+        .sub { color: var(--sangre); font-size: 0.9rem; letter-spacing: 5px; margin-bottom: 30px; }
 
-        h1 { color: #ccc; font-size: 3.5rem; margin: 0; letter-spacing: -2px; text-transform: uppercase; }
-        .sub-titulo { color: var(--sangre); font-size: 0.9rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
-
-        /* RACK DE CABEZALES - ACERO Y BULBOS */
-        .rack-system { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px; }
-        .cabezal-real { 
-            background: linear-gradient(180deg, #151515, #0a0a0a); border: 2px solid #222; padding: 15px; 
-            box-shadow: inset 0 0 20px #000; border-radius: 3px;
-        }
-        .bulbos-glow { display: flex; justify-content: center; gap: 10px; }
-        .bulbo { width: 10px; height: 25px; background: #ff4500; border-radius: 5px 5px 0 0; box-shadow: 0 0 12px #ff4500; opacity: 0.5; }
-
-        /* GÉNEROS: UNO POR UNO (ESTILO RACK INDIVIDUAL) */
-        .genres-column { display: flex; flex-direction: column; gap: 8px; margin-bottom: 35px; max-width: 400px; margin-left: auto; margin-right: auto; }
+        /* GÉNEROS INDEPENDIENTES */
+        .genres-grid { display: flex; flex-direction: column; gap: 8px; margin: 0 auto 30px; max-width: 500px; }
         .gen-btn { 
-            background: linear-gradient(to right, #111, #1a1a1a); border: 1px solid #333; color: #555; 
-            padding: 12px; font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: bold;
-            letter-spacing: 2px; text-align: left; padding-left: 20px; border-left: 5px solid #222;
-            transition: 0.2s;
+            background: #0d0d0d; border: 1px solid #222; color: #666; padding: 15px; 
+            text-align: left; cursor: pointer; text-transform: uppercase; font-weight: bold; 
+            border-left: 6px solid #222; transition: 0.2s;
         }
-        .gen-btn:hover { color: #888; border-left-color: #444; }
-        .gen-btn.active { 
-            color: #fff; border-left-color: var(--sangre); background: #120000; 
-            box-shadow: inset 0 0 10px #000, 0 0 15px rgba(112, 0, 0, 0.3); 
-        }
+        .gen-btn.active { color: #fff; border-left-color: var(--sangre); background: #1a0000; }
 
-        /* PEDALERA DE ACERO PULIDO */
-        .pedalboard { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 35px; }
-        .pedal-metal { 
-            background: #111; border: 1px solid #222; height: 90px; border-radius: 2px; 
-            display: flex; flex-direction: column; justify-content: space-around;
-            color: #666; font-size: 8px; box-shadow: 4px 4px 8px #000;
-        }
-        .stomp { width: 18px; height: 18px; background: #333; border-radius: 50%; border: 2px solid #000; margin: 0 auto; }
+        /* PEDALERA HARDWARE */
+        .pedalboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
+        .pedal { background: #111; border: 2px solid #222; padding: 15px; font-size: 10px; }
+        .pedal.active { color: var(--sangre); border-color: var(--sangre); }
+        .wah-fx { height: 35px; width: 18px; background: #333; margin: 8px auto; border: 1px solid #000; }
 
-        /* CONSOLA OSCURA */
-        .mixer { 
-            display: grid; grid-template-columns: repeat(8, 1fr); background: #050505; 
-            padding: 15px; border: 2px solid #111; gap: 4px; margin-bottom: 30px;
-        }
-        .strip { height: 140px; background: #0a0a0a; position: relative; border-right: 1px solid #111; }
-        .fader { 
-            width: 14px; height: 30px; background: linear-gradient(to right, #444, #222, #444); 
-            position: absolute; left: 50%; transform: translateX(-50%); bottom: 20px; border: 1px solid #000;
-        }
+        /* LÓGICA DE COBRO ERICK */
+        .precios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; border-top: 2px solid #111; padding-top: 25px; }
+        .col-pago { background: #050505; border: 1px solid #151515; padding: 15px; }
+        .col-pago h3 { color: var(--sangre); font-size: 12px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .tarifa { display: block; margin: 10px 0; font-size: 11px; font-weight: bold; color: #888; }
+        .val { color: #aaa; font-size: 9px; display: block; font-family: monospace; }
 
-        /* BOTONES DE ACCIÓN */
-        .btn-exe { 
-            background: #111; color: #666; width: 100%; padding: 22px; border: 2px solid #222; 
-            font-size: 1.4rem; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 4px;
+        .btn-run { 
+            background: #111; color: #888; width: 100%; padding: 25px; border: 2px solid #222; 
+            font-size: 1.5rem; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
         }
-        .btn-exe:hover { color: #fff; border-color: var(--sangre); background: #0d0000; }
+        .btn-run:hover { color: #fff; border-color: var(--sangre); }
         
-        #master-pentagram { position: absolute; bottom: 15px; right: 15px; width: 40px; height: 40px; cursor: pointer; opacity: 0.01; fill: #fff; transition: 1.5s; }
-        #master-pentagram.active { opacity: 0.7; fill: var(--sangre); filter: drop-shadow(0 0 10px var(--sangre)); }
+        /* SEGURIDAD MAESTRA */
+        #pentagram-erick { position: absolute; bottom: 15px; right: 15px; width: 45px; height: 45px; opacity: 0.01; fill: #fff; cursor: pointer; transition: 1.5s; }
+        #pentagram-erick.active { opacity: 0.8; fill: var(--sangre); filter: drop-shadow(0 0 5px var(--sangre)); }
         
-        audio { width: 100%; margin: 20px 0; filter: invert(1) brightness(0.4) contrast(1.2); }
-        .mp-link { display: block; background: #0a0a0a; color: #444; padding: 12px; margin: 8px 0; text-decoration: none; border: 1px solid #222; font-size: 11px; font-weight: bold; }
-        .mp-link:hover { color: #fff; border-color: var(--sangre); }
+        audio { width: 100%; margin: 25px 0; filter: invert(1) brightness(0.5); }
     </style>
 </head>
 <body oncontextmenu="return false">
 
-<div class="bunker-industrial">
+<div class="bunker-arsenal">
     <h1>EL ARSENAL</h1>
-    <div class="sub-titulo">BÚNKER DE PRODUCCIÓN DE ÉLITE</div>
+    <div class="sub">MÁSTER PROFESIONAL // PROTOCOLO DE AMISTAD</div>
 
-    <div style="font-size: 9px; color: #333; margin-bottom: 25px; text-transform: uppercase;">[ PROCESAMIENTO ANALÓGICO ANTI-FIERRO ACTIVO ]</div>
-
-    <div class="genres-column">
-        <button class="gen-btn">01. SKA URBANO</button>
-        <button class="gen-btn">02. ROCK URBANO</button>
-        <button class="gen-btn active">03. GRUNGE / ALICE STYLE</button>
-        <button class="gen-btn">04. PUNK / HARDCORE</button>
-        <button class="gen-btn">05. THRASH METAL</button>
-        <button class="gen-btn">06. DEATH / BLACK METAL</button>
-        <button class="gen-btn">07. DARK WAVE / GOTH</button>
-        <button class="gen-btn">08. HEAVY METAL ELITE</button>
-    </div>
-
-    <div class="rack-system">
-        <div class="cabezal-real">
-            <div class="bulbos-glow"><div class="bulbo"></div><div class="bulbo"></div><div class="bulbo"></div></div>
-            <div style="font-size: 7px; margin-top: 10px;">PREAMP: 12AX7 VACUUM TUBE</div>
-        </div>
-        <div class="cabezal-real">
-            <div style="font-size: 20px; color: #1a1a1a;">||||||||||||||</div>
-            <div style="font-size: 7px; margin-top: 5px;">POWER: 100W HI-GAIN STACK</div>
-        </div>
+    <div class="genres-grid">
+        <button class="gen-btn active" onclick="setG(this)">01. THRASH / SPEED METAL</button>
+        <button class="gen-btn" onclick="setG(this)">02. ROCK URBANO / SKA</button>
+        <button class="gen-btn" onclick="setG(this)">03. GRUNGE / SEATTLE STYLE</button>
+        <button class="gen-btn" onclick="setG(this)">04. PUNK / HARDCORE</button>
+        <button class="gen-btn" onclick="setG(this)">05. DEATH / BLACK METAL</button>
     </div>
 
     <div class="pedalboard">
-        <div class="pedal-metal">DRIVE<div class="stomp"></div></div>
-        <div class="pedal-metal">FUZZ<div class="stomp"></div></div>
-        <div class="pedal-metal">CHORUS<div class="stomp"></div></div>
-        <div class="pedal-metal">DELAY<div class="stomp"></div></div>
-        <div class="pedal-metal">GATE<div class="stomp"></div></div>
+        <div class="pedal active">NOISE GATE<div style="width:8px;height:8px;background:red;margin:10px auto;border-radius:50%"></div></div>
+        <div class="pedal active">HI-PASS<div style="width:8px;height:8px;background:red;margin:10px auto;border-radius:50%"></div></div>
+        <div class="pedal active">WAH-WAH<div class="wah-fx"></div></div>
     </div>
 
-    <div class="mixer">
-        <div class="strip"><div class="fader"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 80px;"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 95px; background:var(--sangre);"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 30px;"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 60px;"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 15px;"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 45px;"></div></div>
-        <div class="strip"><div class="fader" style="bottom: 75px; background:#222;"></div></div>
-    </div>
+    <input type="file" id="trackInput" accept="audio/*" style="font-size:10px; margin-bottom:20px;">
+    <button class="btn-run" onclick="iniciar()">EJECUTAR PROCESAMIENTO</button>
 
-    <input type="file" id="audioFile" accept="audio/*" style="color:#222; margin-bottom: 20px; font-size: 10px;">
-    
-    <button class="btn-exe" onclick="lanzarMagia()">EJECUTAR MÁSTER</button>
-
-    <div id="resultado-wrap" style="display:none;">
-        <audio id="reproductor" controls controlsList="nodownload"></audio>
-        <div id="descarga-link" style="display:none; margin-top:20px;">
-            <a id="linkDownload" style="color:#fff; text-decoration:none; border: 1px solid var(--sangre); padding: 15px; font-weight:bold; display:inline-block;">📥 DESCARGAR MÁSTER DIAMANTE</a>
+    <div id="repro-area" style="display:none">
+        <audio id="mainPlayer" controls controlsList="nodownload"></audio>
+        <div id="master-download" style="display:none; margin-top:20px;">
+            <a id="linkF" style="color:#fff; border: 1px solid var(--sangre); padding: 15px; text-decoration:none; font-weight:bold; display:inline-block;">📥 LIBERAR MÁSTER DIAMANTE</a>
         </div>
     </div>
 
-    <div style="margin-top: 30px;">
-        <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="mp-link">LIBERAR MÁSTER SENCILLO - $350</a>
-        <a href="https://link.mercadopago.com.mx/elarsenal" target="_blank" class="mp-link">METAMORFOSIS TOTAL - $2,000</a>
+    <div class="precios-grid">
+        <div class="col-pago">
+            <h3>SOLO PULIDO (MÁSTER)</h3>
+            <span class="tarifa">1 TRACK - $150 MXN <span class="val">($9 USD / €8.5)</span></span>
+            <span class="tarifa">5 TRACKS - $350 MXN <span class="val">($21 USD / €19.5)</span></span>
+            <span class="tarifa">8 TRACKS - $600 MXN <span class="val">($36 USD / €33)</span></span>
+        </div>
+        <div class="col-pago">
+            <h3>GRABACIÓN + PULIDO</h3>
+            <span class="tarifa">1 TRACK - $250 MXN <span class="val">($15 USD / €14)</span></span>
+            <span class="tarifa">5 TRACKS - $600 MXN <span class="val">($36 USD / €33)</span></span>
+            <span class="tarifa">8 TRACKS - $800 MXN <span class="val">($48 USD / €44)</span></span>
+        </div>
     </div>
 
-    <svg id="master-pentagram" viewBox="0 0 512 512" onmousedown="startHold()" onmouseup="endHold()" ontouchstart="startHold()" ontouchend="endHold()">
+    <svg id="pentagram-erick" viewBox="0 0 512 512" onmousedown="startT()" onmouseup="endT()" ontouchstart="startT()" ontouchend="endT()">
         <path d="M256 0L193.5 193.5H0L156.7 307.3L94.3 512L256 386.4L417.7 512L355.3 307.3L512 193.5H318.5L256 0Z"/>
     </svg>
 </div>
 
 <script>
-    let bossMode = false, holdTimer;
-
-    function lanzarMagia() {
-        const file = document.getElementById('audioFile').files[0];
+    let isM = false, timer;
+    function setG(b) { document.querySelectorAll('.gen-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }
+    function iniciar() {
+        const file = document.getElementById('trackInput').files[0];
         if(!file) return alert("Sube el track.");
-        const player = document.getElementById('reproductor');
-        player.src = URL.createObjectURL(file);
-        document.getElementById('resultado-wrap').style.display = 'block';
-        player.play();
-        player.ontimeupdate = () => {
-            if(!bossMode && player.currentTime >= 90) {
-                player.pause(); player.currentTime = 0;
-                alert("MUESTRA TERMINADA. EL MÁSTER REQUIERE PAGO.");
-            }
-        };
-        document.getElementById('linkDownload').href = player.src;
-        document.getElementById('linkDownload').download = "MASTER_ARSENAL_" + file.name;
+        const p = document.getElementById('mainPlayer');
+        p.src = URL.createObjectURL(file);
+        document.getElementById('repro-area').style.display = 'block';
+        p.play();
+        p.ontimeupdate = () => { if(!isM && p.currentTime >= 90) { p.pause(); p.currentTime = 0; alert("MUESTRA TERMINADA. PAGA PARA ELIMINAR EL FIERRO."); } };
+        document.getElementById('linkF').href = p.src;
+        document.getElementById('linkF').download = "MASTER_ARSENAL_" + file.name;
     }
-
-    function startHold() {
-        holdTimer = setTimeout(() => {
-            bossMode = true;
-            document.getElementById('master-pentagram').classList.add('active');
-            document.getElementById('descarga-link').style.display = 'block';
-            alert("ACCESO MAESTRO: ACTIVADO.");
-        }, 3000);
-    }
-    function endHold() { clearTimeout(holdTimer); }
+    function startT() { timer = setTimeout(() => { isM = true; document.getElementById('pentagram-erick').classList.add('active'); document.getElementById('master-download').style.display='block'; alert("MODO MAESTRO: ERICK."); }, 3000); }
+    function endT() { clearTimeout(timer); }
 </script>
 </body>
 </html>
