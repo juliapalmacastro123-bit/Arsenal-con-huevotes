@@ -1,75 +1,28 @@
-<script>
-    const log = document.getElementById('log-screen');
-    let ctx, source, filter, saturator, compressor;
-
-    async function antiVPN() {
-        try {
-            const res = await fetch('https://ipapi.co/json/');
-            const data = await res.json();
-            if (data.proxy || data.hosting) {
-                document.getElementById('bunker').innerHTML = "<h1 style='color:red;'>BLOQUEO ANTI-VPN</h1><p>LA CASTA NO ADMITE TÚNELES DIGITALES.</p>";
-            } else {
-                log.innerHTML += "<br>> CADENERO: CONEXIÓN LIMPIA.";
-            }
-        } catch(e) { log.innerHTML += "<br>> SEGURIDAD: MODO BÚNKER LOCAL ACTIVADO."; }
-    }
-
-    function unlock() {
-        let key = prompt("LLAVE DE AUTOR:");
-        // Ajuste quirúrgico: limpia espacios y reconoce la clave de casta
-        if(key && key.trim() === "Abre esta m***** 666") {
-            const btn = document.getElementById('detonator');
-            btn.disabled = false; 
-            btn.classList.add('active'); // Aquí es donde se ilumina
-            btn.onclick = startMutation;
-            
-            document.getElementById('payment-box').style.display = 'none';
-            log.innerHTML = `> MANDO DE AUTOR: ACTIVADO<br>> CASTA: ERICK (FENÓMENO)<br>> STATUS: VIBRA DE DIAMANTE ONLINE.<br>> EL BOTÓN ESTÁ LISTO PARA DETONAR.`;
-            log.style.color = "#00f2ff";
-        } else {
-            alert("LLAVE INCORRECTA. REVISA LA CASTA.");
-            log.innerHTML += "<br>> ERROR: INTENTO DE ACCESO NO AUTORIZADO.";
-        }
-    }
-
-    function startMutation() {
-        const file = document.getElementById('audioInput').files[0];
-        if(!file) return alert("SUBE TU PROEZA ANTES DE DETONAR.");
-
-        log.innerHTML += `<br>> INICIANDO METAMORFOSIS DEL ROCK...`;
+function unlock() {
+    let key = prompt("LLAVE DE AUTOR:");
+    
+    // NUEVA LLAVE DE CASTA: slayer38 666
+    if(key && key.trim().toLowerCase() === "slayer38 666") {
+        const btn = document.getElementById('detonator');
         
-        const player = document.getElementById('masterPlayer');
-        const url = URL.createObjectURL(file);
-        player.src = url;
-        document.getElementById('downloadBtn').href = url;
-        document.getElementById('downloadBtn').download = "MASTER_DIAMANTE_" + file.name;
-
-        if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-        if(source) source.disconnect();
-        source = ctx.createMediaElementSource(player);
+        // FORZADO DE ILUMINACIÓN QUIRÚRGICA
+        btn.disabled = false; 
+        btn.style.opacity = "1";
+        btn.style.borderColor = "#00f2ff";
+        btn.style.color = "#00f2ff";
+        btn.style.boxShadow = "0 0 50px #00f2ff"; // Brillo de diamante aumentado
+        btn.style.cursor = "pointer";
+        btn.innerHTML = "DETONAR";
         
-        filter = ctx.createBiquadFilter();
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(14200, ctx.currentTime); 
-
-        saturator = ctx.createWaveShaper();
-        saturator.curve = (n => {
-            let c = new Float32Array(n), x;
-            for(let i=0; i<n; i++) {
-                x = i * 2 / n - 1;
-                c[i] = (3 + 35) * x * 20 * (Math.PI/180) / (Math.PI + 35 * Math.abs(x));
-            }
-            return c;
-        })(44100);
-
-        compressor = ctx.createDynamicsCompressor();
-        compressor.threshold.setValueAtTime(-18, ctx.currentTime);
-        compressor.ratio.setValueAtTime(12, ctx.currentTime);
-
-        source.connect(filter).connect(saturator).connect(compressor).connect(ctx.destination);
-
-        document.getElementById('result-area').style.display = 'block';
-        log.innerHTML += "<br>> MUTACIÓN COMPLETADA. TRUENA LA CASTA.";
-        player.play();
+        // ASIGNACIÓN DE PODER
+        btn.onclick = function() { startMutation(); };
+        
+        // LIMPIEZA DE MONITOR LCD
+        document.getElementById('payment-box').style.display = 'none';
+        log.innerHTML = `> MANDO DE AUTOR: ACTIVADO<br>> CASTA: ERICK (SLAYER38)<br>> STATUS: DETONADOR ONLINE.<br>> VIBRA DE DIAMANTE AL 100%.`;
+        log.style.color = "#00f2ff";
+    } else {
+        alert("LLAVE INCORRECTA. REVISA TU CASTA.");
+        log.innerHTML += "<br>> ERROR: LLAVE DENEGADA.";
     }
-</script>
+}
