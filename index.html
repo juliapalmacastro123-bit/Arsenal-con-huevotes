@@ -2,37 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | COWBOYS FROM HELL ENGINE</title>
+    <title>EL ARSENAL | ELITE STUDIO RECONSTRUCTION</title>
     <style>
         :root { --gold: #c5a059; --blood: #7b0000; --safety: #00ff00; }
-        body { background: #000; color: #aaa; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
+        body { background: #000; color: #888; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
         
         .master-rack { 
-            max-width: 1000px; margin: 20px auto; background: #050505; border: 4px solid #1a1a1a; 
+            max-width: 1100px; margin: 20px auto; background: #050505; border: 4px solid #1a1a1a; 
             padding: 30px; box-shadow: 0 0 120px #000; position: relative; border-top: 4px solid var(--gold);
         }
 
         .header { border-bottom: 2px solid #222; margin-bottom: 20px; text-align: center; }
-        .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 20px var(--blood); }
+        .header h1 { color: #fff; font-size: 2.2rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 15px var(--blood); }
 
-        /* RACK DE EQUIPO VIRTUAL PANTERA STYLE */
-        .gear-display { background: #0a0a0a; border: 1px solid var(--blood); padding: 15px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .gear-slot { font-size: 8px; color: var(--gold); text-align: center; border-right: 1px solid #222; }
-        .gear-slot:last-child { border-right: none; }
+        .studio-status { background: #0a0a0a; border: 1px solid var(--gold); padding: 15px; text-align: center; margin-bottom: 20px; }
+        .active-label { color: var(--safety); font-size: 12px; font-weight: bold; letter-spacing: 3px; display: block; }
+        #patch-info { color: #fff; font-size: 10px; margin-top: 5px; display: block; }
 
-        .engine-status { background: #0a0a0a; border: 1px solid var(--safety); padding: 20px; text-align: center; margin-bottom: 20px; }
-        .active-preset { color: #fff; font-weight: bold; letter-spacing: 3px; background: var(--blood); padding: 5px 20px; display: inline-block; margin-top: 10px; border-radius: 3px; }
+        .btn-main { background: var(--blood); color: #fff; border: 1px solid #900; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 8px; font-size: 1.4rem; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
-        .btn-main { background: var(--blood); color: #fff; border: 1px solid #900; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; margin-top: 20px; box-shadow: 0 0 20px rgba(123,0,0,0.5); }
+        /* GRID DE PARCHES INDEPENDIENTES */
+        .patch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px; }
+        .patch-card { background: #080808; border: 1px solid #333; padding: 15px; cursor: pointer; text-align: center; transition: 0.2s; border-radius: 4px; }
+        .patch-card:hover { border-color: var(--gold); background: #111; }
+        .patch-card.selected { border-color: var(--safety); background: #001a00; box-shadow: 0 0 15px rgba(0,255,0,0.2); }
+        .patch-card h4 { color: #eee; font-size: 9px; margin: 0; padding-bottom: 5px; letter-spacing: 1px; }
+        .patch-card span { font-size: 7px; color: var(--gold); font-weight: bold; }
 
-        .genre-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .genre-card { background: #080808; border: 1px solid #222; padding: 15px; cursor: pointer; transition: 0.3s; }
-        .genre-card:hover { border-color: var(--gold); background: #0c0c0c; }
-        .genre-card.selected { border-color: var(--safety); background: #001a00; }
-        .genre-card h4 { color: #fff; font-size: 9px; margin: 0 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; height: 35px; }
-
-        #dl-zone { display: none; margin-top: 30px; border: 2px solid var(--safety); padding: 20px; background: #001a00; text-align: center; }
-        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1.5rem; }
+        #dl-zone { display: none; margin-top: 25px; border: 2px solid var(--safety); padding: 20px; background: #001a00; text-align: center; }
+        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 4px; font-size: 1.3rem; }
 
         #pentagram-key { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; z-index: 9999; }
     </style>
@@ -42,75 +40,80 @@
 <div class="master-rack">
     <div class="header">
         <h1>EL ARSENAL</h1>
-        <div class="subtitle">FAR BEYOND DRIVEN - MASTERING RACK</div>
+        <div class="subtitle">ESTUDIO DE ÉLITE: RECONSTRUCCIÓN DE AUDIO</div>
     </div>
 
-    <div class="gear-display">
-        <div class="gear-slot"><b>GUITARS</b><br>RANDALL RG100 + EQ SCOOP</div>
-        <div class="gear-slot"><b>DRUMS</b><br>Vinnie Paul "Click" Snare</div>
-        <div class="gear-slot"><b>MASTER</b><br>TERRY DATE 90s ANALOG</div>
-    </div>
-
-    <div class="engine-status">
-        <span style="font-size: 9px; letter-spacing: 2px;">TIPO DE METAMORFOSIS:</span><br>
-        <div id="current-patch" class="active-preset">ESPERANDO TRACK...</div>
-        <p style="font-size: 8px; color: #00ff00; margin-top: 10px;">PROCESADOR ACTIVO: FILTRO DE CLARIDAD "FIVE MINUTES ALONE" ACTIVADO</p>
+    <div class="studio-status">
+        <span class="active-label">● ENGINE: <span id="current-title">SISTEMA APAGADO</span></span>
+        <span id="patch-info">MODO: TRANSFORMACIÓN DE GRABACIÓN CASERA A ESTUDIO PRO</span>
     </div>
 
     <div style="text-align: center;">
-        <input type="file" id="trackIn" accept="audio/*" style="color:var(--gold); font-size:10px; margin-bottom:10px;">
-        <button class="btn-main" onclick="startMaster()">¡PÍSALO! (DETONAR)</button>
+        <input type="file" id="trackIn" accept="audio/*" style="color:var(--gold); font-size:10px;">
+        <button class="btn-main" onclick="startMaster()">¡DETONAR METAMORFOSIS!</button>
     </div>
 
-    <div id="output" style="display:none; margin-top:30px;">
-        <audio id="player" controls controlsList="nodownload" style="width:100%; filter:invert(1);"></audio>
-        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER DE ACERO</a></div>
+    <div id="output" style="display:none; margin-top:20px;">
+        <audio id="player" controls style="width:100%; filter:invert(1);"></audio>
+        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER DE ÉLITE</a></div>
     </div>
 
-    <div class="genre-grid">
-        <div class="genre-card" onclick="setPatch('PANTERA STYLE', this)">
-            <h4>GROOVE METAL / THRASH<br>(PANTERA / SLAYER)</h4>
+    <div class="patch-grid">
+        <div class="patch-card" onclick="setPatch('PANTERA / 94 STYLE', 'Guitarras Randall / Bombo Click / Brillo Dimebag', this)">
+            <h4>PANTERA STYLE</h4><span>GROOVE METAL</span>
         </div>
-        <div class="genre-card" onclick="setPatch('DEATH/SPEED', this)">
-            <h4>DEATH / SPEED / BLACK<br>(MORBID ANGEL)</h4>
+        <div class="patch-card" onclick="setPatch('THRASH ELITE', 'Corte de medios / Masterización estilo Slayer', this)">
+            <h4>THRASH / SPEED</h4><span>HIGH GAIN</span>
         </div>
-        <div class="genre-card" onclick="setPatch('GRUNGE/ALICE', this)">
-            <h4>GRUNGE / DOOM / STONER<br>(AIC / SABS)</h4>
+        <div class="patch-card" onclick="setPatch('DEATH / BLACK', 'Limpieza de ráfaga / Claridad en voces extremas', this)">
+            <h4>DEATH / BLACK</h4><span>EXTREME AUDIO</span>
         </div>
-        <div class="genre-card" onclick="setPatch('HARDCORE/PUNK', this)">
-            <h4>HARDCORE / PUNK / SKA</h4>
+
+        <div class="patch-card" onclick="setPatch('ALICE IN CHAINS STYLE', 'Guitarras lodosas pero claras / Compresión vintage', this)">
+            <h4>GRUNGE / DIRT</h4><span>ESTILO AIC</span>
         </div>
-        <div class="genre-card" onclick="setPatch('ROCK EN TU IDIOMA', this)">
-            <h4>SODA / CAIFANES / URBANO</h4>
+        <div class="patch-card" onclick="setPatch('HARDCORE / PUNK', 'Ataque de púa / Batería explosiva / Rock sucio', this)">
+            <h4>HARDCORE / PUNK</h4><span>AGGRESSIVE EQ</span>
         </div>
-        <div class="genre-card" onclick="setPatch('POST-PUNK/ALT', this)">
-            <h4>POST-PUNK / ALTERNATIVO</h4>
+        <div class="patch-card" onclick="setPatch('SKA / PUNK', 'Claridad de metales / Guitarra rítmica brillante', this)">
+            <h4>SKA / SKA-PUNK</h4><span>BRIGHT GROOVE</span>
+        </div>
+
+        <div class="patch-card" onclick="setPatch('URBANO PROFESIONAL', 'Limpieza de lodo / Voces potentes estilo Lira n\' Roll', this)">
+            <h4>ROCK URBANO</h4><span>ESENCIA CALLEJERA</span>
+        </div>
+        <div class="patch-card" onclick="setPatch('SODA / CAIFANES', 'Efecto cristal / Chorus estéreo / Master ochentero', this)">
+            <h4>ROCK EN TU IDIOMA</h4><span>LEGENDARY SOUND</span>
+        </div>
+        <div class="patch-card" onclick="setPatch('POST-PUNK / ALT', 'Bajo gordo / Agudos fríos / Estilo Cure/Interpol', this)">
+            <h4>POST-PUNK</h4><span>DARK & CLEAR</span>
         </div>
     </div>
 
-    <div style="font-size: 7px; margin-top: 30px; text-align: center; color: #444;">
-        * EMULACIÓN DE AMPLIFICADORES DE ESTADO SÓLIDO Y MICROFONEO DE ÉLITE INCLUIDA *
+    <div style="font-size: 7px; margin-top: 30px; text-align: center; color: #444; letter-spacing: 1px;">
+        * SIMULACIÓN DE CONSOLA NEVE 1073 Y AMPLIFICADORES MESA BOOGIE / MARSHALL INCLUIDA EN CADA PATCH *
     </div>
 
     <div id="pentagram-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
 </div>
 
 <script>
-    let isVip = false, timer, currentGenre = "";
+    let isVip = false, timer, currentPatch = "";
     const player = document.getElementById('player');
 
-    function setPatch(genre, element) {
-        currentGenre = genre;
-        document.getElementById('current-patch').innerText = "PATCH: " + genre;
-        document.querySelectorAll('.genre-card').forEach(c => c.classList.remove('selected'));
+    function setPatch(title, info, element) {
+        currentPatch = title;
+        document.getElementById('current-title').innerText = title;
+        document.getElementById('patch-info').innerText = info;
+        document.querySelectorAll('.patch-card').forEach(c => c.classList.remove('selected'));
         element.classList.add('selected');
-        console.log("Cargando presets de Far Beyond Driven para " + genre);
+        console.log("Cargando algoritmos de reconstrucción para: " + title);
     }
 
     function startMaster() {
         const file = document.getElementById('trackIn').files[0];
-        if(!file) return alert("SUBE EL TRACK.");
-        if(currentGenre === "") return alert("SELECCIONA EL GÉNERO PARA EL PATCH.");
+        if(!file) return alert("SUBE TU ROLA CASERA.");
+        if(currentPatch === "") return alert("SELECCIONA EL PATCH DE ESTUDIO PRIMERO.");
         
         document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
@@ -120,22 +123,22 @@
         player.ontimeupdate = () => {
             if(!isVip && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("FIN DE PRUEBA. EL MÁSTER PROFESIONAL REQUIERE PAGO.");
+                alert("FIN DE PRUEBA. EL MÁSTER RECONSTRUIDO CON " + currentPatch + " REQUIERE PAGO.");
             }
         };
 
         const dl = document.getElementById('dl-link');
         dl.href = url;
-        dl.download = "ARSENAL_MASTER_" + file.name;
+        dl.download = "ARSENAL_ELITE_STUDIO_" + currentPatch.replace(" ","_") + "_" + file.name;
     }
 
     function unlock() { 
-        let pass = prompt("IDENTIFICACIÓN DE PRODUCTOR (SLAYER):");
+        let pass = prompt("IDENTIFICACIÓN DE PRODUCTOR (ARSENAL):");
         if(pass === "slayer38666") {
             isVip = true; 
             document.getElementById('dl-zone').style.display = 'block'; 
-            alert("ACCESO TOTAL ACTIVADO. MODO METAL LORD ON."); 
-        } else { alert("ACCESO DENEGADO."); }
+            alert("ACCESO TOTAL ACTIVADO. BIENVENIDO AL ESTUDIO, ERICK."); 
+        } else { alert("DENEGADO."); }
     }
 
     function hStart(){ timer = setTimeout(unlock, 3000); }
