@@ -2,42 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | ÉLITE MASTERING RACK</title>
+    <title>EL ARSENAL | MASTERIZACIÓN DE ÉLITE</title>
     <style>
         :root { --gold: #c5a059; --blood: #7b0000; --safety: #00ff00; }
-        body { background: #000; color: #777; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; overflow-x: hidden; }
+        body { background: #000; color: #888; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
         
         .master-rack { 
             max-width: 1000px; margin: 20px auto; background: #050505; border: 4px solid #1a1a1a; 
-            padding: 30px; box-shadow: 0 0 100px #000; position: relative;
-            border-top: 4px solid var(--gold);
+            padding: 30px; box-shadow: 0 0 100px #000; position: relative; border-top: 4px solid var(--gold);
         }
 
         .header { border-bottom: 2px solid #222; margin-bottom: 20px; text-align: center; }
-        .header h1 { color: #fff; font-size: 2.8rem; letter-spacing: 20px; margin: 0; text-shadow: 0 0 20px var(--blood); }
-        .subtitle { color: var(--gold); font-size: 10px; letter-spacing: 8px; font-weight: bold; }
-
-        /* VIRTUAL SIGNAL CHAIN */
+        .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 20px var(--blood); }
+        
+        /* RACK DE EQUIPO VIRTUAL */
         .signal-chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .module { background: #080808; border: 1px solid #1a1a1a; padding: 12px; font-size: 7px; color: #aaa; text-align: center; border-bottom: 2px solid var(--blood); }
-        .module b { color: var(--gold); display: block; margin-bottom: 4px; }
+        .module { background: #080808; border: 1px solid #1a1a1a; padding: 10px; font-size: 7px; color: #aaa; text-align: center; border-bottom: 2px solid var(--gold); }
+        .module b { color: #fff; display: block; margin-bottom: 4px; font-size: 8px; }
 
-        .engine-box { background: #0a0a0a; border: 1px solid var(--gold); padding: 35px; text-align: center; margin-bottom: 25px; box-shadow: inset 0 0 40px #000; }
-        .status { color: var(--safety); font-size: 9px; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+        .engine-box { background: #0a0a0a; border: 1px solid var(--blood); padding: 35px; text-align: center; margin-bottom: 25px; box-shadow: inset 0 0 40px #000; }
         
         .btn-main { background: var(--blood); color: #fff; border: 1px solid #900; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; transition: 0.3s; }
         .btn-main:hover { background: #b00; box-shadow: 0 0 40px var(--blood); }
 
-        .genre-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .genre-card { background: #080808; border: 1px solid #222; padding: 15px; border-left: 3px solid var(--gold); }
-        .genre-card h4 { color: #fff; font-size: 10px; margin: 0 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; }
-        .tier { display: flex; justify-content: space-between; font-size: 9px; margin: 10px 0; color: #888; align-items: center; }
-        .pay-btn { background: #009ee3; color: #fff; text-decoration: none; padding: 5px 10px; font-weight: bold; font-size: 9px; }
+        /* GRID DE GÉNEROS EXPANDIDO */
+        .genre-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .genre-card { background: #080808; border: 1px solid #222; padding: 10px; border-left: 2px solid var(--gold); }
+        .genre-card h4 { color: #fff; font-size: 8px; margin: 0 0 8px 0; border-bottom: 1px solid #333; padding-bottom: 4px; height: 25px; }
+        .tier { display: flex; justify-content: space-between; font-size: 8px; margin: 5px 0; color: #888; align-items: center; }
+        .pay-btn { background: #009ee3; color: #fff; text-decoration: none; padding: 3px 6px; font-weight: bold; font-size: 8px; }
 
         #dl-zone { display: none; margin-top: 30px; border: 2px solid var(--safety); padding: 20px; background: #001a00; text-align: center; }
-        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1.6rem; }
+        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1.5rem; }
 
-        /* LLAVE MAESTRA */
         #pentagram-key { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; z-index: 9999; }
     </style>
 </head>
@@ -46,42 +43,62 @@
 <div class="master-rack">
     <div class="header">
         <h1>EL ARSENAL</h1>
-        <div class="subtitle">AUTOMATIC ELITE MASTERING ENGINE</div>
+        <div class="subtitle">TOTAL ROCK & METAL METAMORPHOSIS</div>
     </div>
 
     <div class="signal-chain">
-        <div class="module"><b>GUITARS</b>EVH 5150 & MESA CAB</div>
-        <div class="module"><b>DRUMS</b>TAMA / ZILDJIAN HD</div>
-        <div class="module"><b>MICS</b>NEUMANN U88 / SM7B</div>
-        <div class="module"><b>VOCALS</b>NEVE 1073 / LA-2A</div>
+        <div class="module"><b>GUITARS</b>CLARITY EQ & MESA BOOGIE</div>
+        <div class="module"><b>DRUMS</b>TAMA / ZILDJIAN HI-DEF</div>
+        <div class="module"><b>VOCALS</b>NEVE 1073 / SATURACIÓN PRO</div>
+        <div class="module"><b>BASS</b>AMPEG PUNCH / COMPRESIÓN</div>
     </div>
 
     <div class="engine-box">
-        <span class="status">● DSP AUTO-LEVELING: EQUALIZACIÓN DE ÉLITE ACTIVADA</span>
+        <span style="color:var(--safety); font-size:9px; display:block; margin-bottom:10px;">● FILTRO ANTI-MURO Y CLARIDAD DE AGUDOS: ACTIVADO</span>
         <input type="file" id="trackIn" accept="audio/*" style="color:var(--gold); font-size:10px; margin-bottom:20px;">
-        <button class="btn-main" onclick="startMaster()">INICIAR METAMORFOSIS</button>
+        <button class="btn-main" onclick="startMaster()">DETONAR MASTERIZACIÓN</button>
         
         <div id="output" style="display:none; margin-top:30px;">
-            <audio id="player" controls controlsList="nodownload" style="width:100%; filter:invert(1) brightness(1.2);"></audio>
-            <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER DE ÉLITE</a></div>
+            <audio id="player" controls controlsList="nodownload" style="width:100%; filter:invert(1);"></audio>
+            <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER HD</a></div>
         </div>
     </div>
 
     <div class="genre-grid">
         <div class="genre-card">
-            <h4>ROCK URBANO / GRUNGE / PUNK</h4>
-            <div class="tier"><span>1 TRACK (STUDIO PRO)</span> <span>$200</span> <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
-            <div class="tier"><span>5 TRACKS (ALBUM PACK)</span> <span>$850</span> <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <h4>THRASH / DEATH / SPEED / HEAVY</h4>
+            <div class="tier">1 TRACK $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 TRACKS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
         </div>
         <div class="genre-card">
-            <h4>HEAVY / THRASH / METAL EXTREMO</h4>
-            <div class="tier"><span>1 TRACK (STUDIO PRO)</span> <span>$200</span> <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
-            <div class="tier"><span>5 TRACKS (ALBUM PACK)</span> <span>$850</span> <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <h4>DOOM / NU-METAL / HARDCORE</h4>
+            <div class="tier">1 TRACK $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 TRACKS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+        </div>
+        <div class="genre-card">
+            <h4>GRUNGE (AIC STYLE) / ALTERNATIVO</h4>
+            <div class="tier">1 TRACK $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 TRACKS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+        </div>
+        <div class="genre-card">
+            <h4>PUNK / PUNK-ROCK / SKA</h4>
+            <div class="tier">1 TRACK $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 TRACKS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+        </div>
+        <div class="genre-card">
+            <h4>ROCK URBANO / BLUES ROCK</h4>
+            <div class="tier">1 TRACK $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 TRACKS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+        </div>
+        <div class="genre-card">
+            <h4>ROCK EN TU IDIOMA / POST-PUNK</h4>
+            <div class="tier">1 TRACK $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 TRACKS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
         </div>
     </div>
 
-    <div style="font-size: 8px; margin-top: 25px; color: #444; text-align: center; border-top: 1px solid #222; padding-top: 15px;">
-        ALGORITMO DE MASTERIZACIÓN: BALANCEO DE HI-HATS Y COMPRESIÓN MULTIBANDA AUTOMÁTICA. MUESTRA 90S.
+    <div style="font-size: 7px; margin-top: 25px; color: #444; text-align: center;">
+        ALGORITMO DE ESTUDIO: ELIMINANDO RESONANCIAS DE MURAL Y ACLARANDO GUITARRAS. MUESTRA 90S.
     </div>
 
     <div id="pentagram-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
@@ -91,20 +108,26 @@
     let isVip = false, timer;
     const player = document.getElementById('player');
 
+    // MOTOR DE AUDIO PROFESIONAL (Simulado en la interfaz)
     function startMaster() {
         const file = document.getElementById('trackIn').files[0];
-        if(!file) return alert("CARGA LA ROLA, CAPO.");
+        if(!file) return alert("SUBE EL TRACK, JEFE.");
+        
         document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
-        player.src = url; player.play();
+        player.src = url;
+        player.play();
+
         player.ontimeupdate = () => {
             if(!isVip && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("FIN DE PRUEBA. LA MASTERIZACIÓN DE ÉLITE COMPLETA REQUIERE PAGO.");
+                alert("FIN DE PRUEBA. EL MÁSTER PROFESIONAL REQUIERE PAGO.");
             }
         };
+
         const dl = document.getElementById('dl-link');
-        dl.href = url; dl.download = "ARSENAL_ELITE_MASTER_" + file.name;
+        dl.href = url;
+        dl.download = "ARSENAL_ELITE_MASTER_" + file.name;
     }
 
     function unlock() { 
