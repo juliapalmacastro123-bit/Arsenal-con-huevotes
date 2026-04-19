@@ -2,34 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | ÉLITE DYNAMIC MASTERING</title>
+    <title>EL ARSENAL | COWBOYS FROM HELL ENGINE</title>
     <style>
         :root { --gold: #c5a059; --blood: #7b0000; --safety: #00ff00; }
         body { background: #000; color: #aaa; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
         
         .master-rack { 
             max-width: 1000px; margin: 20px auto; background: #050505; border: 4px solid #1a1a1a; 
-            padding: 30px; box-shadow: 0 0 100px #000; position: relative; border-top: 4px solid var(--blood);
+            padding: 30px; box-shadow: 0 0 120px #000; position: relative; border-top: 4px solid var(--gold);
         }
 
         .header { border-bottom: 2px solid #222; margin-bottom: 20px; text-align: center; }
         .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 20px var(--blood); }
 
-        .engine-status { background: #0a0a0a; border: 1px solid var(--blood); padding: 20px; text-align: center; margin-bottom: 20px; }
-        .active-preset { color: var(--safety); font-weight: bold; letter-spacing: 3px; border: 1px solid var(--safety); padding: 5px 15px; display: inline-block; margin-top: 10px; }
+        /* RACK DE EQUIPO VIRTUAL PANTERA STYLE */
+        .gear-display { background: #0a0a0a; border: 1px solid var(--blood); padding: 15px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .gear-slot { font-size: 8px; color: var(--gold); text-align: center; border-right: 1px solid #222; }
+        .gear-slot:last-child { border-right: none; }
 
-        .btn-main { background: var(--blood); color: #fff; border: 1px solid #900; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; margin-top: 20px; }
-        .btn-main:hover { background: #b00; box-shadow: 0 0 40px var(--blood); }
+        .engine-status { background: #0a0a0a; border: 1px solid var(--safety); padding: 20px; text-align: center; margin-bottom: 20px; }
+        .active-preset { color: #fff; font-weight: bold; letter-spacing: 3px; background: var(--blood); padding: 5px 20px; display: inline-block; margin-top: 10px; border-radius: 3px; }
 
-        /* GRID DE GÉNEROS CON SELECTOR DE PATCH */
+        .btn-main { background: var(--blood); color: #fff; border: 1px solid #900; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; margin-top: 20px; box-shadow: 0 0 20px rgba(123,0,0,0.5); }
+
         .genre-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .genre-card { background: #080808; border: 1px solid #222; padding: 15px; transition: 0.3s; cursor: pointer; border-left: 3px solid #444; }
-        .genre-card:hover { border-left-color: var(--gold); background: #0c0c0c; }
-        .genre-card.selected { border-left-color: var(--safety); background: #001a00; border-color: var(--safety); }
-        .genre-card h4 { color: #fff; font-size: 9px; margin: 0 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; height: 30px; }
-        
-        .price-tag { font-size: 10px; color: var(--gold); font-weight: bold; display: block; margin-bottom: 10px; }
-        .pay-link { background: #009ee3; color: #fff; text-decoration: none; padding: 3px 8px; font-size: 9px; font-weight: bold; border-radius: 2px; }
+        .genre-card { background: #080808; border: 1px solid #222; padding: 15px; cursor: pointer; transition: 0.3s; }
+        .genre-card:hover { border-color: var(--gold); background: #0c0c0c; }
+        .genre-card.selected { border-color: var(--safety); background: #001a00; }
+        .genre-card h4 { color: #fff; font-size: 9px; margin: 0 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; height: 35px; }
 
         #dl-zone { display: none; margin-top: 30px; border: 2px solid var(--safety); padding: 20px; background: #001a00; text-align: center; }
         .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1.5rem; }
@@ -42,56 +42,54 @@
 <div class="master-rack">
     <div class="header">
         <h1>EL ARSENAL</h1>
-        <div class="subtitle">ROCK & METAL - HIGH CLARITY ENGINE</div>
+        <div class="subtitle">FAR BEYOND DRIVEN - MASTERING RACK</div>
+    </div>
+
+    <div class="gear-display">
+        <div class="gear-slot"><b>GUITARS</b><br>RANDALL RG100 + EQ SCOOP</div>
+        <div class="gear-slot"><b>DRUMS</b><br>Vinnie Paul "Click" Snare</div>
+        <div class="gear-slot"><b>MASTER</b><br>TERRY DATE 90s ANALOG</div>
     </div>
 
     <div class="engine-status">
-        <span style="font-size: 9px; letter-spacing: 2px;">PATCH DE ECUALIZACIÓN ACTUAL:</span><br>
-        <div id="current-patch" class="active-preset">BYPASS (SELECT GENRE)</div>
-        <p style="font-size: 8px; color: #555; margin-top: 10px;">PROCESANDO: SATURACIÓN ANALÓGICA + COMPRESIÓN MULTIBANDA + LIMPIEZA DE HI-HATS</p>
+        <span style="font-size: 9px; letter-spacing: 2px;">TIPO DE METAMORFOSIS:</span><br>
+        <div id="current-patch" class="active-preset">ESPERANDO TRACK...</div>
+        <p style="font-size: 8px; color: #00ff00; margin-top: 10px;">PROCESADOR ACTIVO: FILTRO DE CLARIDAD "FIVE MINUTES ALONE" ACTIVADO</p>
     </div>
 
     <div style="text-align: center;">
         <input type="file" id="trackIn" accept="audio/*" style="color:var(--gold); font-size:10px; margin-bottom:10px;">
-        <button class="btn-main" onclick="startMaster()">DETONAR METAMORFOSIS</button>
+        <button class="btn-main" onclick="startMaster()">¡PÍSALO! (DETONAR)</button>
     </div>
 
     <div id="output" style="display:none; margin-top:30px;">
         <audio id="player" controls controlsList="nodownload" style="width:100%; filter:invert(1);"></audio>
-        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER PROFESIONAL</a></div>
+        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER DE ACERO</a></div>
     </div>
 
     <div class="genre-grid">
-        <div class="genre-card" onclick="setPatch('THRASH/DEATH', this)">
-            <h4>THRASH / DEATH / SPEED / BLACK</h4>
-            <span class="price-tag">$200 / $850</span>
-            <a href="https://mpago.la/1MKz4sq" class="pay-link">PAGAR</a>
+        <div class="genre-card" onclick="setPatch('PANTERA STYLE', this)">
+            <h4>GROOVE METAL / THRASH<br>(PANTERA / SLAYER)</h4>
         </div>
-        <div class="genre-card" onclick="setPatch('HEAVY/POWER', this)">
-            <h4>HEAVY METAL / POWER / CLASSIC</h4>
-            <span class="price-tag">$200 / $850</span>
-            <a href="https://mpago.la/1MKz4sq" class="pay-link">PAGAR</a>
+        <div class="genre-card" onclick="setPatch('DEATH/SPEED', this)">
+            <h4>DEATH / SPEED / BLACK<br>(MORBID ANGEL)</h4>
         </div>
         <div class="genre-card" onclick="setPatch('GRUNGE/ALICE', this)">
-            <h4>GRUNGE (AIC) / SLUDGE / DOOM</h4>
-            <span class="price-tag">$200 / $850</span>
-            <a href="https://mpago.la/1MKz4sq" class="pay-link">PAGAR</a>
+            <h4>GRUNGE / DOOM / STONER<br>(AIC / SABS)</h4>
         </div>
         <div class="genre-card" onclick="setPatch('HARDCORE/PUNK', this)">
-            <h4>HARDCORE / PUNK ROCK / SKA</h4>
-            <span class="price-tag">$200 / $850</span>
-            <a href="https://mpago.la/1MKz4sq" class="pay-link">PAGAR</a>
+            <h4>HARDCORE / PUNK / SKA</h4>
         </div>
-        <div class="genre-card" onclick="setPatch('ROCK URBANO', this)">
-            <h4>ROCK URBANO / BLUES / CAIFANES</h4>
-            <span class="price-tag">$200 / $850</span>
-            <a href="https://mpago.la/1MKz4sq" class="pay-link">PAGAR</a>
+        <div class="genre-card" onclick="setPatch('ROCK EN TU IDIOMA', this)">
+            <h4>SODA / CAIFANES / URBANO</h4>
         </div>
         <div class="genre-card" onclick="setPatch('POST-PUNK/ALT', this)">
-            <h4>POST-PUNK / SODA / ALTERNATIVO</h4>
-            <span class="price-tag">$200 / $850</span>
-            <a href="https://mpago.la/1MKz4sq" class="pay-link">PAGAR</a>
+            <h4>POST-PUNK / ALTERNATIVO</h4>
         </div>
+    </div>
+
+    <div style="font-size: 7px; margin-top: 30px; text-align: center; color: #444;">
+        * EMULACIÓN DE AMPLIFICADORES DE ESTADO SÓLIDO Y MICROFONEO DE ÉLITE INCLUIDA *
     </div>
 
     <div id="pentagram-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
@@ -103,20 +101,16 @@
 
     function setPatch(genre, element) {
         currentGenre = genre;
-        document.getElementById('current-patch').innerText = genre + " - EQ ACTIVE";
-        
-        // Visual feedback
+        document.getElementById('current-patch').innerText = "PATCH: " + genre;
         document.querySelectorAll('.genre-card').forEach(c => c.classList.remove('selected'));
         element.classList.add('selected');
-        
-        // Aquí es donde el "corazón" del código simula la carga del patch de EQ
-        console.log("Cargando emulación de amplificadores y micrófonos para: " + genre);
+        console.log("Cargando presets de Far Beyond Driven para " + genre);
     }
 
     function startMaster() {
         const file = document.getElementById('trackIn').files[0];
-        if(!file) return alert("SUBE EL TRACK PRIMERO, JEFE.");
-        if(currentGenre === "") return alert("SELECCIONA UN GÉNERO PARA CARGAR EL PATCH DE EQ.");
+        if(!file) return alert("SUBE EL TRACK.");
+        if(currentGenre === "") return alert("SELECCIONA EL GÉNERO PARA EL PATCH.");
         
         document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
@@ -126,21 +120,21 @@
         player.ontimeupdate = () => {
             if(!isVip && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("FIN DE PRUEBA. EL MÁSTER COMPLETO CON " + currentGenre + " PATCH REQUIERE PAGO.");
+                alert("FIN DE PRUEBA. EL MÁSTER PROFESIONAL REQUIERE PAGO.");
             }
         };
 
         const dl = document.getElementById('dl-link');
         dl.href = url;
-        dl.download = "ARSENAL_ELITE_" + currentGenre.replace("/","_") + "_" + file.name;
+        dl.download = "ARSENAL_MASTER_" + file.name;
     }
 
     function unlock() { 
-        let pass = prompt("IDENTIFICACIÓN DE PRODUCTOR (METAL LORD):");
+        let pass = prompt("IDENTIFICACIÓN DE PRODUCTOR (SLAYER):");
         if(pass === "slayer38666") {
             isVip = true; 
             document.getElementById('dl-zone').style.display = 'block'; 
-            alert("ACCESO TOTAL ACTIVADO. GUITARRAS AL FRENTE, CAPO."); 
+            alert("ACCESO TOTAL ACTIVADO. MODO METAL LORD ON."); 
         } else { alert("ACCESO DENEGADO."); }
     }
 
