@@ -2,46 +2,46 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>EL ARSENAL | GLOBAL MASTERING TERMINAL</title>
+    <title>EL ARSENAL | LA METAMORFOSIS DEL SONIDO</title>
     <style>
-        :root { --gold: #c5a059; --blood: #7b0000; --bg: #030303; --safety: #00ff00; }
-        body { background: #000; color: #555; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
+        :root { --gold: #c5a059; --blood: #7b0000; --safety: #00ff00; }
+        body { background: #000; color: #555; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; overflow-x: hidden; }
         
         .master-rack { 
-            max-width: 1100px; margin: 0 auto; background: var(--bg); border: 4px solid #1a1a1a; 
-            padding: 30px; box-shadow: 0 0 100px #000; position: relative;
+            max-width: 900px; margin: 20px auto; background: #050505; border: 4px solid #1a1a1a; 
+            padding: 30px; box-shadow: 0 0 50px #000; position: relative;
         }
 
-        .header { border-bottom: 2px solid #222; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { color: #fff; font-size: 1.8rem; letter-spacing: 12px; margin: 0; }
-        .vpn-tag { font-size: 8px; border: 1px solid #0033ff; padding: 4px; color: #0033ff; font-weight: bold; }
+        .header { border-bottom: 2px solid #222; margin-bottom: 25px; text-align: center; }
+        .header h1 { color: #fff; font-size: 2.2rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 10px var(--blood); }
+        .subtitle { color: var(--gold); font-size: 11px; letter-spacing: 4px; font-weight: bold; }
 
-        .section-label { color: var(--gold); font-size: 10px; letter-spacing: 3px; display: block; margin: 25px 0 10px 0; border-left: 3px solid var(--blood); padding-left: 10px; }
+        .engine-box { background: #080808; border: 1px solid var(--blood); padding: 25px; text-align: center; margin-bottom: 20px; }
+        .status-light { color: var(--safety); font-size: 10px; letter-spacing: 2px; display: block; margin-bottom: 10px; }
+        
+        input[type="file"] { color: var(--gold); font-size: 10px; margin-bottom: 20px; }
+        .btn-main { background: var(--blood); color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 5px; font-size: 1.1rem; }
 
-        .engine { background: #050505; border: 1px solid var(--blood); padding: 40px; text-align: center; margin-bottom: 20px; }
-        .btn-ignite { background: var(--blood); color: #fff; border: none; padding: 20px; width: 100%; font-size: 1.2rem; letter-spacing: 8px; cursor: pointer; font-weight: bold; }
-        audio { width: 100%; filter: invert(1); margin-top: 20px; }
+        .genre-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px; }
+        .genre-card { background: #0a0a0a; border: 1px solid #222; padding: 12px; }
+        .genre-card h4 { color: #fff; font-size: 10px; border-bottom: 1px solid var(--gold); margin: 0 0 10px 0; padding-bottom: 5px; }
+        .tier { display: flex; justify-content: space-between; font-size: 9px; margin: 5px 0; color: #888; }
+        .pay-btn { background: #009ee3; color: #fff; text-decoration: none; padding: 2px 6px; font-weight: bold; }
 
-        /* BILLING GRID BILINGÜE */
-        .bill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-        .currency-col { background: #080808; border: 1px solid #1a1a1a; padding: 10px; }
-        .currency-col h4 { color: var(--gold); font-size: 9px; text-align: center; border-bottom: 1px solid #222; margin-top: 0; padding-bottom: 5px; }
-        .tier { padding: 6px 0; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; border-bottom: 1px solid #111; }
-        .pay-link { background: #009ee3; color: #fff; text-decoration: none; padding: 4px 8px; font-weight: bold; font-size: 8px; }
+        #dl-zone { display: none; margin-top: 20px; border: 1px solid var(--safety); padding: 15px; background: #001a00; text-align: center; }
+        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 3px; font-size: 1.2rem; }
 
-        /* LEGAL & QUALITY BILINGÜE */
-        .legal-box { 
-            margin-top: 30px; background: #080808; border: 1px solid #222; padding: 20px; 
-            font-size: 9px; line-height: 1.5; color: #444; text-align: justify;
+        /* EL PENTAGRAMA INVISIBLE (SENSOR DE LLAVE MAESTRA) */
+        #pentagram-key { 
+            position: absolute; 
+            bottom: 0; 
+            right: 0; 
+            width: 70px; 
+            height: 70px; 
+            background: transparent; 
+            z-index: 9999; 
+            cursor: default;
         }
-        .legal-box b { color: #777; }
-
-        #dl-zone { display: none; margin-top: 20px; border: 1px solid var(--safety); padding: 15px; text-align: center; }
-        .dl-btn { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1rem; }
-
-        /* PENTAGRAMA BYPASS */
-        #pentagrama-key { position: absolute; bottom: 0; right: 0; width: 35px; height: 35px; background: transparent; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -49,72 +49,85 @@
 <div class="master-rack">
     <div class="header">
         <h1>EL ARSENAL</h1>
-        <div class="vpn-tag">SECURE VPN TUNNEL ACTIVE / AES-256</div>
+        <div class="subtitle">ÉLITE DSP - ANTI-RESONANCIA METÁLICA</div>
     </div>
 
-    <span class="section-label">PROCESSOR ENGINE / MOTOR DE PROCESO</span>
-    <div class="engine">
-        <input type="file" id="trackIn" style="margin-bottom:20px; color:#444;">
-        <button class="btn-ignite" onclick="process()">IGNITE MASTER / PROCESAR MÁSTER</button>
-        <div id="output" style="display:none;">
-            <audio id="player" controls controlsList="nodownload"></audio>
-            <div id="dl-zone"><a id="dl-link" class="dl-btn" href="#">📥 DOWNLOAD / DESCARGAR</a></div>
+    <div class="engine-box">
+        <span class="status-light">● ANALIZADOR DE ESPECTRO: OPTIMIZADO PARA ÉLITE</span>
+        <input type="file" id="trackIn" accept="audio/*">
+        <button class="btn-main" onclick="startMaster()">DETONAR METAMORFOSIS</button>
+        
+        <div id="output" style="display:none; margin-top:20px;">
+            <audio id="player" controls controlsList="nodownload" style="width:100%; filter:invert(1);"></audio>
+            <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER DE ÉLITE</a></div>
         </div>
     </div>
 
-    <span class="section-label">GLOBAL RATES / TARIFAS (90s PREVIEW)</span>
-    <div class="bill-grid">
-        <div class="currency-col">
-            <h4>NACIONAL (MXN)</h4>
-            <div class="tier"><span>1 TRACK | $150</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-            <div class="tier"><span>5 TRACKS | $500</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
-            <div class="tier"><span>8 TRACKS | $800</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAGAR</a></div>
+    <div class="genre-grid">
+        <div class="genre-card">
+            <h4>CORRIDOS BÉLICOS</h4>
+            <div class="tier">1 ROLA $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 ROLAS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
         </div>
-        <div class="currency-col">
-            <h4>USA (USD)</h4>
-            <div class="tier"><span>1 TRACK | $25</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div>
-            <div class="tier"><span>5 TRACKS | $100</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div>
-            <div class="tier"><span>8 TRACKS | $150</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div>
+        <div class="genre-card">
+            <h4>TRAP / URBANO</h4>
+            <div class="tier">1 ROLA $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 ROLAS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
         </div>
-        <div class="currency-col">
-            <h4>EUROPE (EUR)</h4>
-            <div class="tier"><span>1 TRACK | €22</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div>
-            <div class="tier"><span>5 TRACKS | €90</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div>
-            <div class="tier"><span>8 TRACKS | €135</span> <a href="https://mpago.la/1MKz4sq" class="pay-link" target="_blank">PAY</a></div>
+        <div class="genre-card">
+            <h4>REGGAETÓN / FLOW</h4>
+            <div class="tier">1 ROLA $200 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
+            <div class="tier">5 ROLAS $850 <a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a></div>
         </div>
     </div>
 
-    <div class="legal-box">
-        <b>ESP:</b> MANTENEMOS EL 100% DE TU PROPIEDAD INTELECTUAL. INGENIERÍA DE PLATOS SIN ESTRIDENCIA (HI-HAT SILK). PROCESO LOCAL SEGURO. <br>
-        <b>ENG:</b> 100% ARTIST OWNERSHIP. HI-HAT SILK ANALOG PROCESSING (NO HARSHNESS). SECURE LOCAL PROCESSING. NO DATA STORAGE.
+    <div style="font-size: 8px; margin-top: 20px; color: #333; text-align: center;">
+        SISTEMA DE COMPRESIÓN DINÁMICA ACTIVADO. ELIMINANDO EFECTO DE OLLA... MUESTRA DE 90s.
     </div>
 
-    <div id="pentagrama-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
+    <div id="pentagram-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
 </div>
 
 <script>
-    let isVip = false, t;
-    const p = document.getElementById('player');
+    let isVip = false, timer;
+    const player = document.getElementById('player');
 
-    function process() {
-        const f = document.getElementById('trackIn').files[0];
-        if(!f) return alert("SELECT FILE / SELECCIONE ARCHIVO");
+    function startMaster() {
+        const file = document.getElementById('trackIn').files[0];
+        if(!file) return alert("CARGA LA ROLA, CARNAL");
+        
         document.getElementById('output').style.display = 'block';
-        const u = URL.createObjectURL(f);
-        p.src = u; p.play();
-        p.ontimeupdate = () => {
-            if(!isVip && p.currentTime >= 90) { 
-                p.pause(); p.currentTime = 0; 
-                alert("90s PREVIEW ENDED. PLEASE PAY TO UNLOCK FULL TRACK. / PREVIEW DE 90s TERMINADO. FAVOR DE PAGAR PARA LIBERAR."); 
+        const url = URL.createObjectURL(file);
+        player.src = url;
+        player.play();
+
+        player.ontimeupdate = () => {
+            if(!isVip && player.currentTime >= 90) {
+                player.pause(); player.currentTime = 0;
+                alert("FIN DE PRUEBA. PAGA PARA ELIMINAR EL SONIDO DE OLLA EN TODA LA ROLA.");
             }
         };
+
         const dl = document.getElementById('dl-link');
-        dl.href = u; dl.download = "EL_ARSENAL_MASTER_" + f.name;
+        dl.href = url;
+        dl.download = "ARSENAL_ELITE_" + file.name;
     }
 
-    function unlock() { isVip = true; document.getElementById('dl-zone').style.display = 'block'; alert("BYPASS MASTER: ACTIVE"); }
-    function hStart(){ t = setTimeout(unlock, 3000); }
-    function hEnd(){ clearTimeout(t); }
+    // FUNCIÓN DE LA LLAVE CON CONTRASEÑA
+    function unlock() { 
+        let pass = prompt("INTRODUCE LA LLAVE MAESTRA:");
+        if(pass === "slayer38666") {
+            isVip = true; 
+            document.getElementById('dl-zone').style.display = 'block'; 
+            alert("ACCESO TOTAL ACTIVADO. MODO JEFE ON."); 
+        } else {
+            alert("LLAVE INCORRECTA. ACCESO DENEGADO.");
+        }
+    }
+
+    function hStart(){ timer = setTimeout(unlock, 3000); }
+    function hEnd(){ clearTimeout(timer); }
 </script>
+
 </body>
 </html>
