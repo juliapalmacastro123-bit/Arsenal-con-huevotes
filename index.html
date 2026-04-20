@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | HIGH-GAIN ELITE SYSTEM</title>
+    <title>EL ARSENAL | ELITE HYBRID SYSTEM</title>
     <style>
         :root { --gold: #c5a059; --blood: #b00; --safety: #0f0; --ice: #00f2ff; }
         body { background: #000; color: #777; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
@@ -13,23 +13,21 @@
         }
 
         .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 20px; margin: 0; text-shadow: 0 0 30px var(--blood); cursor: crosshair; }
+        /* LA LLAVE MAESTRA ESTÁ AQUÍ */
+        .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 20px; margin: 0; text-shadow: 0 0 30px var(--blood); cursor: pointer; }
 
-        /* TABLA DE REVENTA */
         .price-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .price-card { background: #0a0a0a; border: 1px solid #333; padding: 12px; text-align: center; border-radius: 4px; }
         .price-card h5 { color: var(--gold); margin: 0; font-size: 9px; }
         .price-card .amount { color: #fff; font-size: 1.3rem; font-weight: bold; display: block; margin: 5px 0; }
         .buy-link { background: #009ee3; color: #fff; text-decoration: none; padding: 6px; display: block; font-size: 9px; font-weight: bold; border-radius: 2px; }
 
-        /* MONITOR QUIRÚRGICO DE GUITARRAS Y BATERÍA */
         .v-monitor { background: #000; border: 2px solid var(--blood); padding: 25px; margin-bottom: 30px; text-align: center; box-shadow: inset 0 0 80px #ff000033; }
         #patch-status { color: var(--ice); font-size: 20px; font-weight: bold; letter-spacing: 6px; text-shadow: 0 0 15px var(--ice); }
         .specs { color: var(--safety); font-size: 10px; margin-top: 15px; letter-spacing: 2px; display: block; line-height: 1.8; }
         .warning { color: #fff; background: var(--blood); font-size: 9px; font-weight: bold; margin-top: 10px; display: inline-block; padding: 3px 10px; animation: pulse 0.5s infinite; }
         @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
 
-        /* GRID DE PARCHES POTENCIADOS */
         .patch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         .patch-card { background: #080808; border: 1px solid #444; padding: 20px; cursor: pointer; transition: 0.3s; border-bottom: 5px solid #222; text-align: center; }
         .patch-card:hover { border-color: var(--gold); background: #111; transform: translateY(-5px); }
@@ -47,7 +45,7 @@
 
 <div class="master-rack">
     <div class="header">
-        <h1 onclick="unlock()">EL ARSENAL</h1>
+        <h1 onclick="masterKey()">EL ARSENAL</h1>
         <div style="color:var(--gold); font-size:11px; letter-spacing:8px;">HIGH-GAIN MASTERING | 4x12 CAB EMULATION</div>
     </div>
 
@@ -58,25 +56,25 @@
     </div>
 
     <div class="v-monitor">
-        <div id="patch-status">READY FOR ACTION</div>
-        <span class="specs" id="current-specs">GTRS: +9DB SATURATION / MESA 4x12 IR | KICK: SUB-LOW PRESSURE ON | HI-HATS: FIDELITY FOCUS</span>
+        <div id="patch-status">SISTEMA ARMADO</div>
+        <span class="specs" id="current-specs">GTRS: HIGH-GAIN +9DB | KICK: PARALLEL PRESSURE (LOMBARDO STYLE) | HI-HATS: FIDELITY</span>
         <div class="warning">DANGER: EXTREME VOLUME & GAIN</div>
     </div>
 
     <div style="text-align:center;">
         <input type="file" id="trackIn" accept="audio/*" style="font-size:12px; margin-bottom:20px; color:var(--gold);">
-        <button class="btn-main" onclick="startMaster()">DETONAR MASTER DE ÉLITE</button>
+        <button class="btn-main" onclick="startMaster()">DETONAR MASTERIZACIÓN</button>
     </div>
 
     <div id="output" style="display:none; margin-top:25px;">
         <audio id="player" controls style="width:100%; filter:invert(1);"></audio>
-        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER HD</a></div>
+        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER HD (VIP)</a></div>
     </div>
 
     <div class="patch-grid">
-        <div class="patch-card" onclick="setPatch('THRASH METAL', 'BOMBO IMPACTO / GTR MURO DE SONIDO / CLICK JORDISON', 'contrast(1.8) saturate(2) brightness(1.1)')"><h4>THRASH METAL</h4></div>
-        <div class="patch-card" onclick="setPatch('DEATH / SPEED', 'SUB-SONIC TRIGGER / GTR NAVAJA / NOISE GATE EXTREMO', 'hue-rotate(290deg) contrast(2.2)')"><h4>DEATH / SPEED</h4></div>
-        <div class="patch-card" onclick="setPatch('HARDCORE', 'GTR AGRESIVA / SNARE PUNCH / TOTAL PRESSURE', 'saturate(2.5) contrast(1.6)')"><h4>HARDCORE</h4></div>
+        <div class="patch-card" onclick="setPatch('THRASH METAL', 'GUITARRAS MURO / BOMBO IMPACTO / JORDISON CLICK', 'contrast(1.8) saturate(2) brightness(1.1)')"><h4>THRASH METAL</h4></div>
+        <div class="patch-card" onclick="setPatch('DEATH / SPEED', 'SUB-SONIC TRIGGER / NAVAJA GTRS / GATE EXTREMO', 'hue-rotate(290deg) contrast(2.2)')"><h4>DEATH / SPEED</h4></div>
+        <div class="patch-card" onclick="setPatch('HARDCORE', 'PUNCH TOTAL / GTR AGRESIVA / SNARE SMASH', 'saturate(2.5) contrast(1.6)')"><h4>HARDCORE</h4></div>
         <div class="patch-card" onclick="setPatch('STUDIO RECON', 'VOX NEUMANN / RECONSTRUCCIÓN HI-FI / AIR FIDELITY', 'brightness(1.2) contrast(1.4)')"><h4>STUDIO RECON</h4></div>
     </div>
 </div>
@@ -85,21 +83,28 @@
     let isVip = false, currentF = "";
     const player = document.getElementById('player');
 
+    function masterKey() { 
+        let pass = prompt("IDENTIFICACIÓN PRODUCTOR ELITE:");
+        if(pass === "slayer38666") { 
+            isVip = true; 
+            document.getElementById('dl-zone').style.display = 'block'; 
+            alert("LLAVE MAESTRA ACTIVADA: ACCESO TOTAL ERICK."); 
+        }
+    }
+
     function setPatch(name, specs, filter) {
         document.getElementById('patch-status').innerText = name;
         document.getElementById('current-specs').innerText = "SPECS: " + specs;
         currentF = filter;
         document.querySelectorAll('.patch-card').forEach(c => c.classList.remove('active'));
         event.currentTarget.classList.add('active');
-        
-        // El filtro CSS simula el cambio de "carácter" del audio
         player.style.filter = "invert(1) " + filter;
         new Audio('https://www.soundjay.com/buttons/button-16.mp3').play();
     }
 
     function startMaster() {
         const file = document.getElementById('trackIn').files[0];
-        if(!file || !currentF) return alert("CARGA EL AUDIO Y ELIGE TU PATCH PROFESIONAL.");
+        if(!file || !currentF) return alert("SUBE EL TRACK Y ELIGE TU PARCHE.");
         document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
         player.src = url; player.play();
@@ -107,20 +112,11 @@
         player.ontimeupdate = () => {
             if(!isVip && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("MUESTRA FINALIZADA. EL SONIDO DE ÉLITE REQUIERE EL PAGO COMPLETO.");
+                alert("MUESTRA FINALIZADA. ACTIVA EL PODER TOTAL CON EL PAGO.");
             }
         };
         document.getElementById('dl-link').href = url;
-        document.getElementById('dl-link').download = "ARSENAL_ELITE_POWER_" + file.name;
-    }
-
-    function unlock() { 
-        let pass = prompt("PRODUCTOR ARSENAL:");
-        if(pass === "slayer38666") { 
-            isVip = true; 
-            document.getElementById('dl-zone').style.display = 'block'; 
-            alert("MODO ELITE DESBLOQUEADO: GUITARRAS Y BOMBO AL MÁXIMO."); 
-        }
+        document.getElementById('dl-link').download = "ARSENAL_MASTER_" + file.name;
     }
 </script>
 
