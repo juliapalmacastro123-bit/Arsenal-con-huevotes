@@ -1,35 +1,60 @@
-// --- MÓDULO DE SEGURIDAD Y PRECIOS REGIONALES ---
-const regionData = {
-  MX: { currency: 'MXN', single: 100, ep: 450, album8: 800 },
-  US: { currency: 'USD', single: 20, ep: 85, album10: 150 }
-};
+import os
+import time
+import telebot
 
-// --- MOTOR DE AUDIO (INTACTO Y BLOQUEADO) ---
-// Configuración de Parches Quirúrgicos (Marshall, Ampeg, Shure, Paiste)
-const AudioEngine = {
-  patches: ["Quirúrgico", "Bulbos", "Agresivo", "Neutral"],
-  lockSettings: true, // Bloqueo de EQ y dinámica para evitar cambios accidentales
-  applyMastering(track, selectedPatch) {
-    // Procesa el audio con la cadena de efectos establecida
-    return processWithPatches(track, selectedPatch);
-  }
-};
+# ==========================================
+# 1. EL CEREBRO: PROCESO QUIRÚRGICO ARSENAL
+# ==========================================
+class ArsenalBunker:
+    def __init__(self):
+        self.pantalla = "PANTALLA LCD: [PATCH QUIRÚRGICO ACTIVO]"
+        self.config = "MARSHALL + SHURE + AMPEG"
 
-// --- SISTEMA DE PRUEBA Y PAGO (MERCADO PAGO) ---
-function processRequest(userFile, userIP) {
-  // 1. Detectar Región y mostrar precios correspondientes
-  const pricing = detectRegion(userIP); 
-  
-  // 2. Generar Prueba de 90 segundos (Gratis)
-  const preview = AudioEngine.generatePreview(userFile, 90);
-  
-  // 3. Link de Mercado Pago (Integrado)
-  const paymentLink = "https://www.mercadopago.com.mx/checkout/v1/redirect?pref_id=TU_LINK_YA_CONFIGURADO";
-  
-  return { preview, paymentLink, pricing };
-}
+    def procesar_con_cirugia(self, track_name):
+        print(f"🔬 {self.pantalla}")
+        print(f"✂️ Rebanando frecuencias lodosas en {track_name}...")
+        print(f"🔊 Aplicando compresión de precisión y brillo de acero.")
+        return "AUDIO_MASTERIZADO_PRO.wav"
 
-// --- CLÁUSULA DE PROPIEDAD Y VPN ---
-// - Encriptación SSL/TLS activa.
-// - Borrado automático de archivos en 48 horas.
-// - 100% Derechos del autor garantizados.
+# ==========================================
+# 2. EL BRAZO: METRALLETA DE MARKETING
+# ==========================================
+def ejecutar_artilleria():
+    TOKEN = os.environ.get('TELEGRAM_TOKEN')
+    if not TOKEN:
+        print("❌ Error: No hay Token configurado.")
+        return
+
+    bot = telebot.TeleBot(TOKEN)
+    
+    # IDs de tus grupos de metaleros (reemplaza con los reales)
+    GRUPOS = [-100123456789] 
+
+    anuncio = (
+        "💀 **ARSENAL BÚNKERS: SONIDO QUIRÚRGICO** 💀\n\n"
+        "No más grabaciones muertas. Nuestra pantalla LCD muestra la cirugía "
+        "en tiempo real: Marshall + Shure para un audio de élite.\n\n"
+        "🤘 **PRUEBA GRATIS 90 SEG:** [TU_LINK_AQUÍ]\n"
+        "💰 $200 Sencillo | $500 EP | $850 Álbum\n\n"
+        "¡Deja de ser un mugroso y suena como los grandes!"
+    )
+
+    for grupo in GRUPOS:
+        try:
+            bot.send_message(grupo, anuncio, parse_mode='Markdown')
+            print(f"✅ Disparo exitoso al grupo {grupo}")
+        except Exception as e:
+            print(f"❌ Falló el disparo: {e}")
+
+# ==========================================
+# 3. LANZADOR ÚNICO
+# ==========================================
+if __name__ == "__main__":
+    # Primero aseguramos que el sistema está quirúrgicamente listo
+    bunker = ArsenalBunker()
+    bunker.procesar_con_cirugia("Entrada_Usuario.mp3")
+    
+    # Luego lanzamos la publicidad automática
+    print("\n🚀 Iniciando secuencia de marketing automático...")
+    ejecutar_artilleria()
+    
