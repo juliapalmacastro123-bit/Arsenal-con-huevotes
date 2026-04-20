@@ -1,50 +1,32 @@
+import asyncio
 import os
-import telebot
+from telegram import Bot
 
-# ==========================================
-# 1. EL NÚCLEO QUIRÚRGICO Y BLINDADO
-# ==========================================
-class ArsenalBunker:
-    def __init__(self):
-        self.pantalla = "PANTALLA LCD: [PATCH QUIRÚRGICO ACTIVO]"
-        self.precios_mxn = {"Sencillo": 200, "EP": 500, "Album": 850}
-        self.status = "SISTEMA BILINGÜE Y VPN READY"
+# CONFIGURACIÓN QUIRÚRGICA
+TOKEN = os.getenv('TELEGRAM_TOKEN')
+# Aquí usamos el ID que ya tenemos verificado
+GRUPOS = [8372489384] 
 
-    def aplicar_cirugia_total(self):
-        print(f"🔬 {self.pantalla}")
-        print("🛡️ Verificando Blindaje de Pago (BP) y VPN...")
-        print("✂️ Ejecutando cirugía sónica: Eliminando lodo y estática.")
-        print("🔊 Calibración Marshall/Shure aplicada a todos los parches.")
-        return "Audio_Master_Final_Quirurgico.wav"
+mensaje_arsenal = """
+🔥 **ARSENAL QUIRÚRGICO ACTIVO** 🔥
 
-# ==========================================
-# 2. LA METRALLETA DE LINKS (MARKETING)
-# ==========================================
-def disparar_links():
-    TOKEN = os.environ.get('TELEGRAM_TOKEN')
-    if not TOKEN:
-        print("❌ Error: Configura el TELEGRAM_TOKEN en Secrets.")
-        return
+✅ **Servicio:** Configuración de Búnker Bot
+✅ **Estado:** Operativo 100%
+✅ **Precisión:** Alta
 
-    bot = telebot.TeleBot(TOKEN)
-    GRUPOS = [-100123456789] # <--- ¡Pon tus IDs aquí!
+¡El sistema está disparando correctamente! 🚀
+"""
 
-    anuncio = (
-        "💀 **ARSENAL BÚNKERS: EL SONIDO QUIRÚRGICO** 💀\n\n"
-        "Tu audio pasa por cirugía real: Marshall + Shure en pantalla LCD.\n"
-        "🌎 Bilingüe | 🛡️ Blindado | 💳 MXN y USD\n\n"
-        "💰 $200 (Sencillo) | $500 (EP) | $850 (Álbum)\n"
-        "🤘 PRUEBA TU ROLA GRATIS AQUÍ: [TU_LINK_AQUÍ]"
-    )
-
-    for grupo in GRUPOS:
+async def disparar_arsenal():
+    bot = Bot(token=TOKEN)
+    print("PANTALLA LCD: [INICIANDO SECUENCIA DE DISPARO]")
+    for grupo_id in GRUPOS:
         try:
-            bot.send_message(grupo, anuncio, parse_mode='Markdown')
-        except:
-            pass
+            await bot.send_message(chat_id=grupo_id, text=mensaje_arsenal, parse_mode='Markdown')
+            print(f"PANTALLA LCD: [MENSAJE ENVIADO A {grupo_id}]")
+        except Exception as e:
+            print(f"PANTALLA LCD: [ERROR EN ID {grupo_id}]: {e}")
 
 if __name__ == "__main__":
-    bunker = ArsenalBunker()
-    bunker.aplicar_cirugia_total()
-    disparar_links() xdd
-    aaa
+    asyncio.run(disparar_arsenal())
+    
