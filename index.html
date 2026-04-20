@@ -2,42 +2,44 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | PRO MASTERING SUITE</title>
+    <title>EL ARSENAL | EXTREME STUDIO RECONSTRUCTION</title>
     <style>
         :root { --gold: #c5a059; --blood: #b00; --safety: #0f0; --ice: #00f2ff; }
         body { background: #000; color: #777; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
         
         .master-rack { 
-            max-width: 1150px; margin: 10px auto; background: #050505; border: 4px solid #1a1a1a; 
+            max-width: 1100px; margin: 10px auto; background: #050505; border: 4px solid #1a1a1a; 
             padding: 25px; box-shadow: 0 0 250px #000; position: relative; border-top: 5px solid var(--gold);
         }
 
         .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 18px; margin: 0; text-shadow: 0 0 25px var(--blood); }
+        .header h1 { color: #fff; font-size: 2.2rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 25px var(--blood); }
 
-        /* TABLA DE PRECIOS REVENTA-CARTERAS */
-        .price-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
-        .price-card { background: #111; border: 1px solid #222; padding: 10px; text-align: center; border-radius: 5px; }
-        .price-card h5 { color: var(--gold); margin: 0; font-size: 10px; }
-        .price-card .amount { color: #fff; font-size: 1.2rem; font-weight: bold; display: block; margin: 5px 0; }
-        .price-card .buy-link { background: #009ee3; color: #fff; text-decoration: none; padding: 5px; display: block; font-size: 8px; font-weight: bold; }
+        /* PRECIOS ACTUALIZADOS */
+        .price-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .price-card { background: #0a0a0a; border: 1px solid #222; padding: 10px; text-align: center; }
+        .price-card h5 { color: var(--gold); margin: 0; font-size: 9px; }
+        .price-card .amount { color: #fff; font-size: 1.1rem; display: block; margin: 5px 0; font-weight: bold; }
+        .buy-link { background: #009ee3; color: #fff; text-decoration: none; padding: 4px; display: block; font-size: 8px; font-weight: bold; }
 
-        .v-monitor { background: #080808; border: 1px solid var(--blood); padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 40px #000; }
-        #patch-status { color: var(--ice); font-size: 12px; font-weight: bold; letter-spacing: 3px; }
+        /* ANALIZADOR DE ESPECTRO (VISUAL) */
+        .v-monitor { background: #000; border: 1px solid var(--blood); padding: 20px; margin-bottom: 25px; text-align: center; box-shadow: inset 0 0 50px #90000033; }
+        #patch-status { color: var(--ice); font-size: 16px; font-weight: bold; letter-spacing: 5px; text-shadow: 0 0 10px var(--ice); }
+        .specs { color: var(--safety); font-size: 8px; margin-top: 10px; letter-spacing: 1px; display: block; }
 
-        .btn-main { background: var(--blood); color: #fff; border: 2px solid #f00; padding: 20px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; transition: 0.2s; margin-top: 10px; }
-        .btn-main:hover { background: #f00; box-shadow: 0 0 50px var(--blood); }
+        /* BOTONES DE PATCH CON PODER */
+        .patch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .patch-card { background: #080808; border: 1px solid #333; padding: 15px; cursor: pointer; transition: 0.2s; border-bottom: 4px solid #222; }
+        .patch-card:hover { border-color: var(--gold); background: #111; transform: scale(1.02); }
+        .patch-card.active { border-color: var(--ice); background: #001a1a; border-bottom: 4px solid var(--ice); }
+        .patch-card h4 { color: #fff; font-size: 9px; margin: 0; letter-spacing: 1px; text-align: center; }
 
-        .patch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
-        .patch-card { background: #0a0a0a; border: 1px solid #333; padding: 12px; cursor: pointer; transition: 0.2s; border-bottom: 3px solid #222; text-align: center; }
-        .patch-card:hover { border-color: var(--gold); background: #111; }
-        .patch-card.active { border-color: var(--ice); background: #00121a; border-bottom: 3px solid var(--ice); }
-        .patch-card h4 { color: #fff; font-size: 8px; margin: 0; height: 30px; display: flex; align-items: center; justify-content: center; }
-
-        #dl-zone { display: none; margin-top: 25px; border: 3px solid var(--safety); padding: 20px; background: #001a00; text-align: center; }
+        .btn-main { background: var(--blood); color: #fff; border: 2px solid #f00; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; margin-top: 20px; box-shadow: 0 5px 20px #90000066; }
+        
+        #dl-zone { display: none; margin-top: 25px; border: 3px solid var(--safety); padding: 25px; background: #001a00; text-align: center; }
         .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1.5rem; }
 
-        #pentagram-key { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; }
+        #pentagram-key { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; opacity: 0.1; }
     </style>
 </head>
 <body>
@@ -45,32 +47,18 @@
 <div class="master-rack">
     <div class="header">
         <h1>EL ARSENAL</h1>
-        <div style="color:var(--gold); font-size:10px; letter-spacing:6px;">LOMBARDO-JORDISON HYBRID | ELITE MASTERING</div>
+        <div style="color:var(--gold); font-size:10px; letter-spacing:6px;">LOMBARDO-JORDISON ENGINE | NEUMANN VOX EMULATOR</div>
     </div>
 
     <div class="price-table">
-        <div class="price-card">
-            <h5>1 CANCIÓN (INDIVIDUAL)</h5>
-            <span class="amount">$200</span>
-            <a href="https://mpago.la/1MKz4sq" target="_blank" class="buy-link">PAGAR TRACK</a>
-        </div>
-        <div class="price-card" style="border-color: var(--ice);">
-            <h5>6 CANCIONES (EP PACK)</h5>
-            <span class="amount">$500</span>
-            <a href="https://mpago.la/1MKz4sq" target="_blank" class="buy-link" style="background:var(--ice); color:#000;">PAGAR PAQUETE</a>
-        </div>
-        <div class="price-card" style="border-color: var(--gold);">
-            <h5>8 CANCIONES (LP PACK)</h5>
-            <span class="amount">$850</span>
-            <a href="https://mpago.la/1MKz4sq" target="_blank" class="buy-link" style="background:var(--gold); color:#000;">PAGAR ÁLBUM</a>
-        </div>
+        <div class="price-card"><h5>1 CANCIÓN</h5><span class="amount">$200</span><a href="https://mpago.la/1MKz4sq" class="buy-link">PAGAR</a></div>
+        <div class="price-card" style="border-color:var(--ice)"><h5>6 CANCIONES</h5><span class="amount">$500</span><a href="https://mpago.la/1MKz4sq" class="buy-link">PAGAR EP</a></div>
+        <div class="price-card" style="border-color:var(--gold)"><h5>8 CANCIONES</h5><span class="amount">$850</span><a href="https://mpago.la/1MKz4sq" class="buy-link">PAGAR LP</a></div>
     </div>
 
     <div class="v-monitor">
-        <div id="patch-status">SISTEMA LISTO: RECONSTRUCCIÓN HI-FI ACTIVA</div>
-        <div style="color: var(--safety); font-size: 7px; margin-top: 8px; letter-spacing: 1px;">
-            DRUMS: LOMBARDO/JORDISON HYBRID | HI-HATS: CRYSTAL CLEAR | VOX: NEUMANN U87 EMULATION
-        </div>
+        <div id="patch-status">SISTEMA EN BYPASS</div>
+        <span class="specs" id="current-specs">ESPERANDO INYECCIÓN DE SEÑAL...</span>
     </div>
 
     <div style="text-align:center;">
@@ -80,61 +68,62 @@
 
     <div id="output" style="display:none; margin-top:20px;">
         <audio id="player" controls style="width:100%; filter:invert(1);"></audio>
-        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER HD</a></div>
+        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER HD (PRO)</a></div>
     </div>
 
     <div class="patch-grid">
-        <div class="patch-card" onclick="setPatch('THRASH METAL', this)"><h4>THRASH METAL</h4></div>
-        <div class="patch-card" onclick="setPatch('DEATH / SPEED', this)"><h4>DEATH / SPEED</h4></div>
-        <div class="patch-card" onclick="setPatch('HEAVY METAL', this)"><h4>HEAVY METAL</h4></div>
-        <div class="patch-card" onclick="setPatch('NU-METAL / DOOM', this)"><h4>NU-METAL / DOOM</h4></div>
-        <div class="patch-card" onclick="setPatch('HARDCORE', this)"><h4>HARDCORE</h4></div>
-        <div class="patch-card" onclick="setPatch('PUNK ROCK', this)"><h4>PUNK ROCK</h4></div>
-        <div class="patch-card" onclick="setPatch('GRUNGE / AIC', this)"><h4>GRUNGE / AIC</h4></div>
-        <div class="patch-card" onclick="setPatch('SKA / SKA-PUNK', this)"><h4>SKA / SKA-PUNK</h4></div>
-        <div class="patch-card" onclick="setPatch('ROCK URBANO', this)"><h4>ROCK URBANO</h4></div>
-        <div class="patch-card" onclick="setPatch('SODA / CAIFANES', this)"><h4>SODA / CAIFANES</h4></div>
-        <div class="patch-card" onclick="setPatch('POST-PUNK', this)"><h4>POST-PUNK</h4></div>
-        <div class="patch-card" onclick="setPatch('STUDIO RECON', this)"><h4>STUDIO RECON</h4></div>
+        <div class="patch-card" onclick="setPatch('THRASH METAL', 'BOMBO LOMBARDO / HI-HAT CRYSTAL / GTR MESA BOOGIE', 'sepia(1) saturate(5) contrast(1.5)')"><h4>THRASH METAL</h4></div>
+        <div class="patch-card" onclick="setPatch('DEATH / SPEED', 'JORDISON CLICK / VOX SATURATION / DOUBLE BASS FOCUS', 'brightness(1.2) contrast(2) hue-rotate(290deg)')"><h4>DEATH / SPEED</h4></div>
+        <div class="patch-card" onclick="setPatch('HEAVY METAL', 'VALVE WARMTH / SUSTAIN PRO / BRIGHT OVERDRIVE', 'brightness(1.1) saturate(2)')"><h4>HEAVY METAL</h4></div>
+        <div class="patch-card" onclick="setPatch('HARDCORE', 'SNARE SMASH / PARALLEL COMPRESSION / AGGRESSIVE', 'contrast(1.8) saturate(1.5)')"><h4>HARDCORE</h4></div>
+        <div class="patch-card" onclick="setPatch('PUNK ROCK', 'PLECTRUM ATTACK / GARAGE PRO / NOISE GATE', 'sepia(0.5) contrast(1.2)')"><h4>PUNK ROCK</h4></div>
+        <div class="patch-card" onclick="setPatch('GRUNGE / AIC', 'NEUMANN U87 / SEATTLE TEXTURE / DIRT DEPTH', 'saturate(0.8) contrast(1.4) brightness(0.9)')"><h4>GRUNGE / AIC</h4></div>
+        <div class="patch-card" onclick="setPatch('SKA / SKA-PUNK', 'HORN BRIGHTNESS / CLEAN STRUM / TIGHT BASS', 'saturate(2) brightness(1.2)')"><h4>SKA / SKA-PUNK</h4></div>
+        <div class="patch-card" onclick="setPatch('ROCK URBANO', 'LIRA N ROLL STYLE / DRY VOCAL / STREET ANALOG', 'contrast(1.1) sepia(0.3)')"><h4>ROCK URBANO</h4></div>
     </div>
 
     <div id="pentagram-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
 </div>
 
 <script>
-    let isVip = false, timer, currentP = "";
+    let isVip = false, timer, currentF = "";
     const player = document.getElementById('player');
 
-    function setPatch(name, el) {
-        currentP = name;
-        document.getElementById('patch-status').innerText = "PATCH CARGADO: " + name;
+    function setPatch(name, specs, filter) {
+        document.getElementById('patch-status').innerText = name;
+        document.getElementById('current-specs').innerText = "SPECS: " + specs;
+        currentF = filter; // Guardamos el filtro visual y de audio simulado
         document.querySelectorAll('.patch-card').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-        new Audio('https://www.soundjay.com/buttons/button-3.mp3').play();
+        event.currentTarget.classList.add('active');
+        
+        // Aplicar cambio visual al reproductor para notar que algo cambió
+        player.style.filter = "invert(1) " + filter;
+        new Audio('https://www.soundjay.com/buttons/button-16.mp3').play();
     }
 
     function startMaster() {
         const file = document.getElementById('trackIn').files[0];
-        if(!file || !currentP) return alert("CARGA TU AUDIO Y ELIGE EL PATCH.");
+        if(!file || !currentF) return alert("CARGA AUDIO Y ELIGE TU PATCH DE ÉLITE.");
         document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
         player.src = url; player.play();
+
         player.ontimeupdate = () => {
             if(!isVip && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("MUESTRA FINALIZADA. ELIMINA EL SONIDO DE CARTÓN CON EL MÁSTER COMPLETO.");
+                alert("MUESTRA FINALIZADA. EL MÁSTER COMPLETO REQUIERE PAGO.");
             }
         };
         document.getElementById('dl-link').href = url;
-        document.getElementById('dl-link').download = "ARSENAL_HD_" + file.name;
+        document.getElementById('dl-link').download = "ARSENAL_PRO_" + file.name;
     }
 
     function unlock() { 
-        let pass = prompt("ACCESO PRODUCTOR:");
+        let pass = prompt("ID PRODUCTOR:");
         if(pass === "slayer38666") {
             isVip = true; 
             document.getElementById('dl-zone').style.display = 'block'; 
-            alert("ACCESO TOTAL ACTIVADO. ¡A REVENTAR CARTERAS, ERICK!"); 
+            alert("ACCESO TOTAL ACTIVADO. GUITARRAS AL FRENTE."); 
         }
     }
     function hStart(){ timer = setTimeout(unlock, 3000); }
@@ -142,4 +131,5 @@
 </script>
 
 </body>
-</html>
+    </html>
+    
