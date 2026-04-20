@@ -11,7 +11,6 @@ class ArsenalBunker:
         self.status = "SISTEMA BILINGÜE Y VPN READY"
 
     def aplicar_cirugia_total(self):
-        # Aquí se aplica el sonido Marshall + Shure + Limpieza profunda
         print(f"🔬 {self.pantalla}")
         print("🛡️ Verificando Blindaje de Pago (BP) y VPN...")
         print("✂️ Ejecutando cirugía sónica: Eliminando lodo y estática.")
@@ -28,33 +27,24 @@ def disparar_links():
         return
 
     bot = telebot.TeleBot(TOKEN)
-    
-    # IMPORTANTE: Aquí pon los IDs de tus grupos de Telegram
-    GRUPOS = [-100123456789] 
+    GRUPOS = [-100123456789] # <--- ¡Pon tus IDs aquí!
 
     anuncio = (
         "💀 **ARSENAL BÚNKERS: EL SONIDO QUIRÚRGICO** 💀\n\n"
         "Tu audio pasa por cirugía real: Marshall + Shure en pantalla LCD.\n"
         "🌎 Bilingüe | 🛡️ Blindado | 💳 MXN y USD\n\n"
         "💰 $200 (Sencillo) | $500 (EP) | $850 (Álbum)\n"
-        "🤘 PRUEBA TU ROLA GRATIS AQUÍ: [TU_LINK_DE_PÁGINA_AQUÍ]"
+        "🤘 PRUEBA TU ROLA GRATIS AQUÍ: [TU_LINK_AQUÍ]"
     )
 
     for grupo in GRUPOS:
         try:
             bot.send_message(grupo, anuncio, parse_mode='Markdown')
-            print(f"✅ Disparo exitoso al grupo {grupo}")
-        except Exception as e:
-            print(f"❌ Falló disparo: {e}")
+        except:
+            pass
 
-# ==========================================
-# 3. EJECUCIÓN
-# ==========================================
 if __name__ == "__main__":
-    # El sistema asegura que la cirugía esté lista
     bunker = ArsenalBunker()
     bunker.aplicar_cirugia_total()
-    
-    # Se lanza la artillería de links
-    disparar_links()
-  
+    disparar_links() xdd
+    aaa
