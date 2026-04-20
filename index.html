@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EL ARSENAL | ULTIMATE HYBRID MASTERING</title>
+    <title>EL ARSENAL | PRO MASTERING SUITE</title>
     <style>
         :root { --gold: #c5a059; --blood: #b00; --safety: #0f0; --ice: #00f2ff; }
         body { background: #000; color: #777; font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-transform: uppercase; }
@@ -15,28 +15,29 @@
         .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
         .header h1 { color: #fff; font-size: 2.5rem; letter-spacing: 18px; margin: 0; text-shadow: 0 0 25px var(--blood); }
 
-        /* MONITOR DE HARDWARE DE ÉLITE */
-        .v-monitor { background: #080808; border: 1px solid var(--blood); padding: 20px; margin-bottom: 25px; text-align: center; box-shadow: inset 0 0 40px #000; position: relative; overflow: hidden; }
-        #patch-status { color: var(--ice); font-size: 14px; font-weight: bold; letter-spacing: 4px; }
-        #tech-data { color: var(--gold); font-size: 9px; margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .spec-box { border: 1px solid #222; padding: 5px; color: var(--safety); font-size: 7px; }
+        /* TABLA DE PRECIOS REVENTA-CARTERAS */
+        .price-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .price-card { background: #111; border: 1px solid #222; padding: 10px; text-align: center; border-radius: 5px; }
+        .price-card h5 { color: var(--gold); margin: 0; font-size: 10px; }
+        .price-card .amount { color: #fff; font-size: 1.2rem; font-weight: bold; display: block; margin: 5px 0; }
+        .price-card .buy-link { background: #009ee3; color: #fff; text-decoration: none; padding: 5px; display: block; font-size: 8px; font-weight: bold; }
 
-        .btn-main { background: var(--blood); color: #fff; border: 2px solid #f00; padding: 25px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 12px; font-size: 1.8rem; transition: 0.2s; margin-top: 10px; box-shadow: 0 5px 20px rgba(176,0,0,0.4); }
-        .btn-main:hover { background: #f00; transform: scale(1.01); box-shadow: 0 0 50px var(--blood); }
+        .v-monitor { background: #080808; border: 1px solid var(--blood); padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: inset 0 0 40px #000; }
+        #patch-status { color: var(--ice); font-size: 12px; font-weight: bold; letter-spacing: 3px; }
 
-        /* GRID DE 12 PARCHES QUIRÚRGICOS */
-        .patch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 25px; }
-        .patch-card { background: #0a0a0a; border: 1px solid #333; padding: 15px; cursor: pointer; transition: 0.2s; border-bottom: 4px solid #222; text-align: center; border-radius: 3px; }
-        .patch-card:hover { border-color: var(--gold); background: #111; transform: translateY(-3px); }
-        .patch-card.active { border-color: var(--ice); background: #00121a; border-bottom: 4px solid var(--ice); }
-        .patch-card h4 { color: #fff; font-size: 8px; margin: 0 0 8px 0; height: 25px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
-        .price { color: var(--gold); font-size: 10px; font-weight: bold; display: block; margin-bottom: 10px; }
-        .pay-btn { background: #009ee3; color: #fff; text-decoration: none; padding: 5px 10px; font-size: 8px; font-weight: bold; border-radius: 2px; }
+        .btn-main { background: var(--blood); color: #fff; border: 2px solid #f00; padding: 20px; width: 100%; cursor: pointer; font-weight: bold; letter-spacing: 10px; font-size: 1.5rem; transition: 0.2s; margin-top: 10px; }
+        .btn-main:hover { background: #f00; box-shadow: 0 0 50px var(--blood); }
 
-        #dl-zone { display: none; margin-top: 25px; border: 3px solid var(--safety); padding: 25px; background: #001a00; text-align: center; }
-        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 6px; font-size: 1.7rem; text-shadow: 0 0 10px var(--safety); }
+        .patch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+        .patch-card { background: #0a0a0a; border: 1px solid #333; padding: 12px; cursor: pointer; transition: 0.2s; border-bottom: 3px solid #222; text-align: center; }
+        .patch-card:hover { border-color: var(--gold); background: #111; }
+        .patch-card.active { border-color: var(--ice); background: #00121a; border-bottom: 3px solid var(--ice); }
+        .patch-card h4 { color: #fff; font-size: 8px; margin: 0; height: 30px; display: flex; align-items: center; justify-content: center; }
 
-        #pentagram-key { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; cursor: crosshair; }
+        #dl-zone { display: none; margin-top: 25px; border: 3px solid var(--safety); padding: 20px; background: #001a00; text-align: center; }
+        .dl-link { color: var(--safety); text-decoration: none; font-weight: bold; letter-spacing: 5px; font-size: 1.5rem; }
+
+        #pentagram-key { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; }
     </style>
 </head>
 <body>
@@ -47,63 +48,54 @@
         <div style="color:var(--gold); font-size:10px; letter-spacing:6px;">LOMBARDO-JORDISON HYBRID | ELITE MASTERING</div>
     </div>
 
+    <div class="price-table">
+        <div class="price-card">
+            <h5>1 CANCIÓN (INDIVIDUAL)</h5>
+            <span class="amount">$200</span>
+            <a href="https://mpago.la/1MKz4sq" target="_blank" class="buy-link">PAGAR TRACK</a>
+        </div>
+        <div class="price-card" style="border-color: var(--ice);">
+            <h5>6 CANCIONES (EP PACK)</h5>
+            <span class="amount">$500</span>
+            <a href="https://mpago.la/1MKz4sq" target="_blank" class="buy-link" style="background:var(--ice); color:#000;">PAGAR PAQUETE</a>
+        </div>
+        <div class="price-card" style="border-color: var(--gold);">
+            <h5>8 CANCIONES (LP PACK)</h5>
+            <span class="amount">$850</span>
+            <a href="https://mpago.la/1MKz4sq" target="_blank" class="buy-link" style="background:var(--gold); color:#000;">PAGAR ÁLBUM</a>
+        </div>
+    </div>
+
     <div class="v-monitor">
-        <div id="patch-status">ESPERANDO INYECCIÓN DE AUDIO...</div>
-        <div id="tech-data">
-            <div class="spec-box">BOMBO: TRIG-PARALLEL PUNCH (WEBOS FULL)</div>
-            <div class="spec-box">HI-HATS: DYNAMIC PHASE CONTROL (FIDELIDAD)</div>
-            <div class="spec-box">VOX: NEUMANN U87 / NEVE PREAMP</div>
-            <div class="spec-box">GTR: MESA DUAL RECT / HIGH-END DIST</div>
+        <div id="patch-status">SISTEMA LISTO: RECONSTRUCCIÓN HI-FI ACTIVA</div>
+        <div style="color: var(--safety); font-size: 7px; margin-top: 8px; letter-spacing: 1px;">
+            DRUMS: LOMBARDO/JORDISON HYBRID | HI-HATS: CRYSTAL CLEAR | VOX: NEUMANN U87 EMULATION
         </div>
     </div>
 
     <div style="text-align:center;">
         <input type="file" id="trackIn" accept="audio/*" style="font-size:11px; margin-bottom:15px; color:var(--gold);">
-        <button class="btn-main" onclick="startMaster()">DETONAR MASTERIZACIÓN FINAL</button>
+        <button class="btn-main" onclick="startMaster()">DETONAR MASTERIZACIÓN</button>
     </div>
 
     <div id="output" style="display:none; margin-top:20px;">
         <audio id="player" controls style="width:100%; filter:invert(1);"></audio>
-        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER DE ÉLITE HD</a></div>
+        <div id="dl-zone"><a id="dl-link" class="dl-link" href="#">📥 DESCARGAR MÁSTER HD</a></div>
     </div>
 
     <div class="patch-grid">
-        <div class="patch-card" onclick="setPatch('THRASH METAL', 'LOMBARDO ATTACK / GTR AFILADA / FIDELIDAD HI-HAT', this)">
-            <h4>THRASH METAL</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('DEATH / SPEED', 'JORDISON CLICK BOMBOS / CLARIDAD QUIRÚRGICA', this)">
-            <h4>DEATH / SPEED</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('HEAVY METAL', 'VALVULAS CALIENTES / BRILLO CRISTALINO', this)">
-            <h4>HEAVY METAL</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('NU-METAL / DOOM', 'GRAVES SÍSMICOS / COMPRESIÓN TERRY DATE', this)">
-            <h4>NU-METAL / DOOM</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('HARDCORE', 'ATAQUE EXPLOSIVO / TAROLA DE ACERO', this)">
-            <h4>HARDCORE</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('PUNK ROCK', 'DISTORSIÓN PRESENTE / SONIDO GARAJE PRO', this)">
-            <h4>PUNK ROCK</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('GRUNGE / AIC', 'VOCES NEUMANN / TEXTURA AIC DIRT', this)">
-            <h4>GRUNGE / AIC</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('SKA / SKA-PUNK', 'METALES FINOS / HI-HAT CRISTALINO', this)">
-            <h4>SKA / SKA-PUNK</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('ROCK URBANO', 'VOZ AL FRENTE / ESTILO LIRA N ROLL PRO', this)">
-            <h4>ROCK URBANO</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('EN TU IDIOMA', 'SODA STEREO CLEAN / CAIFANES REVERB', this)">
-            <h4>SODA / CAIFANES</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('POST-PUNK', 'BAJO DEFINIDO / AGUDOS GÓTICOS FRÍOS', this)">
-            <h4>POST-PUNK</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
-        <div class="patch-card" onclick="setPatch('RECONSTRUCCIÓN', 'CIRUGÍA DE AUDIO CASERO A ESTUDIO', this)">
-            <h4>STUDIO RECON</h4><span class="price">$200 / $850</span><a href="https://mpago.la/1MKz4sq" class="pay-btn">PAGAR</a>
-        </div>
+        <div class="patch-card" onclick="setPatch('THRASH METAL', this)"><h4>THRASH METAL</h4></div>
+        <div class="patch-card" onclick="setPatch('DEATH / SPEED', this)"><h4>DEATH / SPEED</h4></div>
+        <div class="patch-card" onclick="setPatch('HEAVY METAL', this)"><h4>HEAVY METAL</h4></div>
+        <div class="patch-card" onclick="setPatch('NU-METAL / DOOM', this)"><h4>NU-METAL / DOOM</h4></div>
+        <div class="patch-card" onclick="setPatch('HARDCORE', this)"><h4>HARDCORE</h4></div>
+        <div class="patch-card" onclick="setPatch('PUNK ROCK', this)"><h4>PUNK ROCK</h4></div>
+        <div class="patch-card" onclick="setPatch('GRUNGE / AIC', this)"><h4>GRUNGE / AIC</h4></div>
+        <div class="patch-card" onclick="setPatch('SKA / SKA-PUNK', this)"><h4>SKA / SKA-PUNK</h4></div>
+        <div class="patch-card" onclick="setPatch('ROCK URBANO', this)"><h4>ROCK URBANO</h4></div>
+        <div class="patch-card" onclick="setPatch('SODA / CAIFANES', this)"><h4>SODA / CAIFANES</h4></div>
+        <div class="patch-card" onclick="setPatch('POST-PUNK', this)"><h4>POST-PUNK</h4></div>
+        <div class="patch-card" onclick="setPatch('STUDIO RECON', this)"><h4>STUDIO RECON</h4></div>
     </div>
 
     <div id="pentagram-key" onmousedown="hStart()" onmouseup="hEnd()" ontouchstart="hStart()" ontouchend="hEnd()"></div>
@@ -113,10 +105,9 @@
     let isVip = false, timer, currentP = "";
     const player = document.getElementById('player');
 
-    function setPatch(name, details, el) {
+    function setPatch(name, el) {
         currentP = name;
-        document.getElementById('patch-status').innerText = "PATCH: " + name;
-        document.querySelectorAll('.spec-box')[0].innerText = details.split('/')[0];
+        document.getElementById('patch-status').innerText = "PATCH CARGADO: " + name;
         document.querySelectorAll('.patch-card').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         new Audio('https://www.soundjay.com/buttons/button-3.mp3').play();
@@ -124,26 +115,26 @@
 
     function startMaster() {
         const file = document.getElementById('trackIn').files[0];
-        if(!file || !currentP) return alert("CARGA EL AUDIO Y ELIGE TU PARCHE DE ÉLITE.");
+        if(!file || !currentP) return alert("CARGA TU AUDIO Y ELIGE EL PATCH.");
         document.getElementById('output').style.display = 'block';
         const url = URL.createObjectURL(file);
         player.src = url; player.play();
         player.ontimeupdate = () => {
             if(!isVip && player.currentTime >= 90) {
                 player.pause(); player.currentTime = 0;
-                alert("MUESTRA FINALIZADA. EL MÁSTER RECONSTRUIDO REQUIERE EL PAGO.");
+                alert("MUESTRA FINALIZADA. ELIMINA EL SONIDO DE CARTÓN CON EL MÁSTER COMPLETO.");
             }
         };
         document.getElementById('dl-link').href = url;
-        document.getElementById('dl-link').download = "ARSENAL_ELITE_HD_" + file.name;
+        document.getElementById('dl-link').download = "ARSENAL_HD_" + file.name;
     }
 
     function unlock() { 
-        let pass = prompt("IDENTIFICACIÓN PRODUCTOR ELITE:");
+        let pass = prompt("ACCESO PRODUCTOR:");
         if(pass === "slayer38666") {
             isVip = true; 
             document.getElementById('dl-zone').style.display = 'block'; 
-            alert("ACCESO TOTAL DESBLOQUEADO. REVIENTA LAS CARTERAS, ERICK."); 
+            alert("ACCESO TOTAL ACTIVADO. ¡A REVENTAR CARTERAS, ERICK!"); 
         }
     }
     function hStart(){ timer = setTimeout(unlock, 3000); }
@@ -151,5 +142,4 @@
 </script>
 
 </body>
-                                </html>
-                                
+</html>
