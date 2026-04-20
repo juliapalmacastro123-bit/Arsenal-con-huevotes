@@ -1,0 +1,24 @@
+name: Sistema Unificado Arsenal
+
+on:
+  schedule:
+    # Dispara a las 10:00 AM y 6:00 PM hora CDMX
+    - cron: '0 16,0 * * *'
+  workflow_dispatch: # Botón para que tú le des "Play" cuando quieras
+
+jobs:
+  operacion_total:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Instalar Librerias
+        run: pip install pyTelegramBotAPI
+      - name: Ejecutar Arsenal Quirurgico Total
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python arsenal_total.py
+        
