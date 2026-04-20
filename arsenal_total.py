@@ -2,11 +2,10 @@ import asyncio
 import os
 from telegram import Bot
 
-# CONFIGURACIÓN
 TOKEN = os.getenv('TELEGRAM_TOKEN')
 GRUPOS = [8372489384] 
 
-mensaje = "🚀 **¡BÚNKER QUIRÚRGICO ACTIVO!**\n\nEl Arsenal está disparando correctamente, Erick. ¡Misión cumplida!"
+mensaje = "🚀 **¡BÚNKER QUIRÚRGICO ACTIVO!**\n\nErick, el Arsenal por fin está disparando. ¡Misión cumplida!"
 
 async def disparar_arsenal():
     bot = Bot(token=TOKEN)
