@@ -1,97 +1,79 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOUND METAMORPHOSIS | ARSENAL REAL</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        * { box-sizing: border-box; outline: none; }
-        body { 
-            background: #000; color: #fff; font-family: 'Share+Tech+Mono', monospace; 
-            margin: 0; display: flex; align-items: center; justify-content: center; 
-            min-height: 100vh; width: 100vw; overflow-x: hidden;
-        }
-        
-        .bunker-rack { 
-            width: 100%; max-width: 450px; background: #050505; border: 1px solid #1a1a1a; 
-            padding: 40px 20px; border-top: 8px solid #ffd700; box-shadow: 0 0 80px #000;
-        }
+import telebot
+from telebot import types
+import subprocess
+import os
 
-        h1 { font-size: 1.8rem; letter-spacing: 4px; text-align: center; margin: 0 0 30px 0; color: #eee; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 20px; }
+# CONFIGURACIÓN DE MANDO
+TOKEN = 'TU_TOKEN_DE_BOTFATHER_AQUI' # Pon tu token de Telegram aquí
+bot = telebot.TeleBot(TOKEN)
 
-        .label { color: #ffd700; font-size: 10px; text-transform: uppercase; margin-top: 25px; display: block; letter-spacing: 2px; }
+# LINK DE MERCADO PAGO (EL QUE YA TIENES CONFIGURADO)
+LINK_PAGO_MX = "https://link.mercadopago.com.mx/arsenalbunker" # Aquí ya queda tu acceso directo a la lana
 
-        select { 
-            width: 100%; background: #000; color: #00ff00; border: 1px solid #333; padding: 18px; 
-            font-size: 1.1rem; font-family: 'Share+Tech+Mono', monospace; margin-top: 8px; border-radius: 0;
-        }
+# --- LÓGICA DE PRECIOS Y SEGURIDAD ---
+PRECIOS = {
+    'LATAM': {'1': '$200 MXN', '6': '$500 MXN', '8': '$850 MXN'},
+    'GLOBAL': {'1': '$20 USD', '6': '$50 USD', '8': '$80 USD'}
+}
 
-        .price-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
-        .price-box { background: #0a0a0a; border: 1px solid #222; padding: 22px; display: flex; justify-content: space-between; align-items: center; }
-        .price-box span { color: #00ff00; font-size: 2rem; font-weight: bold; }
+# --- INGENIERÍA QUIRÚRGICA DE AUDIO ---
+GENEROS = {
+    'METALCORE': 'highpass=f=80, equalizers=f=60:t=q:w=1:g=3, equalizers=f=3000:t=q:w=2:g=4, loudnorm=I=-6',
+    'THRASH (Lombardo)': 'highpass=f=90, equalizers=f=3500:t=q:w=1:g=5, compand=attacks=0:decays=0.1:points=-90/-90|-70/-70|-30/-9|0/-3, loudnorm=I=-7',
+    'DEATH (Jordison)': 'highpass=f=70, equalizers=f=60:t=q:w=2:g=5, equalizers=f=100:t=q:w=1:g=-3, loudnorm=I=-6',
+    'BLUES': 'equalizers=f=250:t=q:w=1:g=2, equalizers=f=4000:t=q:w=1:g=2, acompressor=threshold=-20dB:ratio=3, loudnorm=I=-12',
+    'ROCK EN TU IDIOMA': 'equalizers=f=120:t=q:w=1:g=2, equalizers=f=3000:t=q:w=1:g=3, acompressor=threshold=-15dB:ratio=4, loudnorm=I=-9',
+    'INDIE': 'highpass=f=100, equalizers=f=5000:t=q:w=2:g=2, extrastereo=m=2, loudnorm=I=-14',
+    'SKA': 'highpass=f=120, equalizers=f=400:t=q:w=1:g=-2, equalizers=f=6000:t=q:w=1:g=4, loudnorm=I=-10',
+    'PUNK': 'highpass=f=100, equalizers=f=3000:t=q:w=1:g=4, acompressor=threshold=-12dB:ratio=10, loudnorm=I=-8'
+}
 
-        .btn-master { 
-            background: #ff0000; color: #fff; border: none; width: 100%; padding: 25px; 
-            font-size: 1.6rem; font-weight: bold; margin-top: 40px; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 6px 0 #800; transition: 0.1s;
-        }
-        .btn-master:active { transform: translateY(4px); box-shadow: none; }
+@bot.message_handler(commands=['start'])
+def bienvenida(message):
+    lang = message.from_user.language_code
+    if lang == 'es':
+        txt = "🛡️ **ARSENAL BÚNKER: INGENIERÍA DE ÉLITE**\n\nNo nos quedamos con tu pinche música. Procesamos con micros Neumann y amplis de bulbos.\n\n1️⃣ Sube tu audio.\n2️⃣ Recibe prueba de 90s.\n3️⃣ Paga y libera el Master completo."
+    else:
+        txt = "🛡️ **ARSENAL BUNKER: HIGH-END AUDIO**\n\nWe don't keep your files. Pro engineering (SSL/Neumann quality).\n\n1️⃣ Upload track.\n2️⃣ Get 90s preview.\n3️⃣ Pay to unlock Full Master."
+    bot.send_message(message.chat.id, txt, parse_mode="Markdown")
 
-        .footer { font-size: 10px; color: #333; text-align: center; margin-top: 40px; border-top: 1px solid #111; padding-top: 20px; display: flex; justify-content: space-between; }
-    </style>
-</head>
-<body>
-    <div class="bunker-rack">
-        <h1>SOUND METAMORPHOSIS</h1>
-        
-        <span class="label">Selector de Artillería (Ingeniería de Élite):</span>
-        <select id="engine-select">
-            <option>🚀 ARSENAL REAL (AR) - PODER TOTAL</option>
-            <option disabled>── METAL (JORDISON/LOMBARDO) ──</option>
-            <option>🔥 THRASH METAL (ATAQUE & EQ)</option>
-            <option>💀 DEATH METAL (LOW-END & BODY)</option>
-            <option>🌑 BLACK METAL (RAW & COLD)</option>
-            <option>⚙️ NU METAL (GROOVE PUNCH)</option>
-            <option>🎸 HEAVY METAL (CALOR VALVULAR)</option>
-            <option disabled>── METAMORFOSIS DEL ROCK ──</option>
-            <option>🎸 ROCK URBANO (CLARIDAD)</option>
-            <option>🌌 ROCK LATINO (SODA-CAIFANES)</option>
-            <option>⛓️ POST PUNK (ACERO & REVERB)</option>
-            <option>⚡ HARD ROCK (GAIN STUDIO)</option>
-            <option>🎹 BLUES & JAZZ (HI-FI FIDELITY)</option>
-        </select>
+@bot.message_handler(content_types=['audio', 'document'])
+def procesar_audio(message):
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    botones = [types.InlineKeyboardButton(g, callback_data=f"{g}|{message.audio.file_id if message.audio else message.document.file_id}") for g in GENEROS.keys()]
+    markup.add(*botones)
+    bot.reply_to(message, "🎯 **SELECCIONA TU ARMA (GÉNERO):**", reply_markup=markup, parse_mode="Markdown")
 
-        <span class="label">Logística de Inversión:</span>
-        <div id="pricing-module" class="price-grid"></div>
+@bot.callback_query_handler(func=lambda call: True)
+def aplicar_metamorfosis(call):
+    genero, file_id = call.data.split('|')
+    bot.edit_message_text("🚀 **INICIANDO METAMORFOSIS QUIRÚRGICA...**", call.message.chat.id, call.message.message_id, parse_mode="Markdown")
+    
+    file_info = bot.get_file(file_id)
+    downloaded = bot.download_file(file_info.file_path)
+    with open("input.mp3", 'wb') as f: f.write(downloaded)
+    
+    # Ingeniería de 90 segundos
+    filtro = GENEROS[genero]
+    cmd = f"ffmpeg -i input.mp3 -t 90 -af '{filtro}' -y output_demo.mp3"
+    subprocess.run(cmd, shell=True)
+    
+    with open("output_demo.mp3", 'rb') as f:
+        bot.send_audio(call.message.chat.id, f, caption=f"🔥 **PRUEBA 90s: GÉNERO {genero}**\nCalidad Super De-Luxe activada.", parse_mode="Markdown")
+    
+    # MENSAJE DE COBRO CON TU LINK
+    pago_txt = (
+        f"💎 **¡SONIDO DE DISQUERA DETECTADO!**\n\n"
+        f"Para recibir el archivo completo (WAV/320kbps) sin marcas de agua:\n\n"
+        f"🇲🇽 **MÉXICO/LATAM:**\n"
+        f"1 Track: {PRECIOS['LATAM']['1']}\n"
+        f"6 Tracks: {PRECIOS['LATAM']['6']}\n"
+        f"8 Tracks: {PRECIOS['LATAM']['8']}\n\n"
+        f"🇺🇸 **GLOBAL (USD):**\n"
+        f"1 Track: {PRECIOS['GLOBAL']['1']} | 6: {PRECIOS['GLOBAL']['6']} | 8: {PRECIOS['GLOBAL']['8']}\n\n"
+        f"💳 **PAGA AQUÍ:** {LINK_PAGO_MX}\n\n"
+        "⚠️ Envía captura de tu pago para liberar el Búnker."
+    )
+    bot.send_message(call.message.chat.id, pago_txt, parse_mode="Markdown")
 
-        <button class="btn-master" onclick="alert('SUBIENDO TRACK... MANDO DE AUTOR ACTIVADO.')">SUBIR TRACK | TEST</button>
-
-        <div class="footer">
-            <span>MANDO_AUTOR_v3.8</span>
-            <span>DIAMOND_VIBE: ON</span>
-            <span>SECURE_ID: SM-GOLD</span>
-        </div>
-    </div>
-
-    <script>
-        const pricing = document.getElementById('pricing-module');
-        // LOGÍSTICA EXACTA PACTADA HOY: CERO ERRORES
-        if (!navigator.language.includes('es-MX')) {
-            // GRINGOS: 1($20), 5($50), 8($80) USD
-            pricing.innerHTML = `
-                <div class="price-box">1 SINGLE TRACK <span>$20 USD</span></div>
-                <div class="price-box">5 TRACK PACK <span>$50 USD</span></div>
-                <div class="price-box">8 TRACK ALBUM <span>$80 USD</span></div>
-            `;
-        } else {
-            // MÉXICO: 1($200), 6($500), 8($850) MXN
-            pricing.innerHTML = `
-                <div class="price-box">1 CANCIÓN <span>$200 MXN</span></div>
-                <div class="price-box">6 CANCIONES <span>$500 MXN</span></div>
-                <div class="price-box">8 CANCIONES <span>$850 MXN</span></div>
-            `;
-        }
-    </script>
-</body>
-</html>
+bot.polling()
