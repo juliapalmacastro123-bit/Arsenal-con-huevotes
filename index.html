@@ -1,32 +1,72 @@
-<script>
-    const ACCESS_TOKEN = "slayer 38 666";
-    
-    function setupStudio() {
-        const wall = document.getElementById('pricing-wall');
-        const isGlobal = window.location.hostname.includes('.com') || window.location.hostname.includes('global');
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUND METAMORPHOSIS - BÚNKER DE ÉLITE</title>
+    <style>
+        body { background: #050505; color: #e0e0e0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .bunker-container { border: 3px solid #ff0000; padding: 30px; border-radius: 20px; background: linear-gradient(145deg, #1a1a1a, #000); max-width: 600px; margin: 50px auto; box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); }
+        h1 { color: #ff0000; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 5px; font-size: 2.5rem; text-shadow: 2px 2px #000; }
+        .sub-header { color: #888; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 2px; }
+        .ar-chief { background: #ff0000; color: #fff; padding: 10px; font-weight: bold; border-radius: 5px; display: inline-block; margin-bottom: 20px; box-shadow: 0 0 10px #ff0000; }
+        .label-text { display: block; text-align: left; margin: 10px 0 5px 10%; font-weight: bold; color: #ff0000; }
+        .patch-selector { width: 80%; padding: 15px; background: #111; color: #00ff00; border: 1px solid #333; border-radius: 8px; font-size: 1.1rem; margin-bottom: 20px; cursor: pointer; }
+        .btn-upload { background: #ff0000; color: #fff; padding: 25px; border: none; border-radius: 12px; cursor: pointer; font-size: 1.4rem; width: 85%; font-weight: bold; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .btn-upload:hover { background: #cc0000; transform: scale(1.02); }
+        .price-box { margin-top: 30px; padding: 15px; border-top: 1px solid #333; }
+        .price-tag { color: #00ff00; font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px rgba(0,255,0,0.3); }
+        .info-bullets { text-align: left; width: 80%; margin: 20px auto; font-size: 0.9rem; color: #bbb; }
+    </style>
+</head>
+<body>
+    <div class="bunker-container">
+        <h1>SOUND METAMORPHOSIS</h1>
+        <div class="sub-header">Ingeniería Sónica Quirúrgica</div>
+        
+        <div class="ar-chief">🚀 PARCHE AR: ARSENAL REAL ACTIVADO</div>
 
-        if(isGlobal) {
-            // PRECIOS INTERNACIONALES (Gringos / Europa)
-            wall.innerHTML = `
-                <div class="price-card"><h3>Single Master</h3><span class="amount">$20 USD</span></div>
-                <div class="price-card"><h3>EP Session (6)</h3><span class="amount">$50 USD</span></div>
-                <div class="price-card"><h3>Full Album (8)</h3><span class="amount">$80 USD</span></div>`;
+        <div class="info-bullets">
+            • Prueba de 90 segundos INSTANTÁNEA.<br>
+            • Cero perillas. Ingeniería soldada al código.<br>
+            • Entrega de Élite (Ligas Mayores).
+        </div>
+
+        <span class="label-text">SELECCIONA TU ARSENAL:</span>
+        <select class="patch-selector" id="genero">
+            <option value="ar">ARSENAL REAL (AR) - MÁXIMA PEGADA</option>
+            <option value="urbano">ROCK URBANO / CALLE Y CLARIDAD</option>
+            <option value="caifanes">ROCK LATINO / ATMÓSFERAS (SODA-CAIFANES)</option>
+            <option value="metal">HEAVY METAL / CORTE QUIRÚRGICO</option>
+            <option value="postpunk">POST PUNK / DINÁMICA DE ACERO</option>
+            <option value="hardrock">HARD ROCK / CALOR DE BULBOS</option>
+            <option value="blues">BLUES & JAZZ / FIDELIDAD ABSOLUTA</option>
+        </select>
+
+        <button class="btn-upload" onclick="alert('Iniciando carga de track para prueba de 90 segundos...')">
+            SUBIR TRACK Y PROBAR GRATIS
+        </button>
+
+        <div class="price-box">
+            <div id="location-text" style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">DETECTANDO BÚNKER...</div>
+            <span class="price-tag" id="price">...</span>
+        </div>
+    </div>
+
+    <script>
+        const priceTag = document.getElementById('price');
+        const locText = document.getElementById('location-text');
+        
+        // LOGÍSTICA DE PRECIOS QUIRÚRGICA
+        if (!navigator.language.includes('es-MX')) {
+            // Cliente Internacional / Gringo
+            priceTag.innerText = "SINGLE: $20 USD";
+            locText.innerText = "INTERNATIONAL BÚNKER ACTIVE";
         } else {
-            // PRECIOS MÉXICO
-            wall.innerHTML = `
-                <div class="price-card"><h3>1 Rola</h3><span class="amount">$200 MXN</span></div>
-                <div class="price-card"><h3>EP (6 Rolas)</h3><span class="amount">$500 MXN</span></div>
-                <div class="price-card)<h3>LP (8 Rolas)</h3><span class="amount">$850 MXN</span></div>`;
+            // Cliente México
+            priceTag.innerText = "SINGLE: $350 MXN";
+            locText.innerText = "BÚNKER MÉXICO SECTOR SUR";
         }
-    }
-</script>
-
-<select class="patch-selector" id="engine-select">
-    <option value="heavy">HEAVY METAL / QUIRÚRGICO</option>
-    <option value="thrash">THRASH - SPEED / IMPACTO DEMOLICIÓN</option>
-    <option value="urbano">ROCK URBANO / ESENCIA BARRIO</option>
-    <option value="latino">ROCK LATINO / CAIFANES - SODA</option>
-    <option value="postpunk">POST PUNK / ATMÓSFERA DE ACERO</option>
-    <option value="hardrock">HARD ROCK / PODER CLÁSICO</option>
-    <option value="blues">BLUES - JAZZ / VIBRACIÓN ALTA</option>
-</select>
+    </script>
+</body>
+</html>
