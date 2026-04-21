@@ -3,59 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOUND METAMORPHOSIS | BÚNKER AR</title>
+    <title>SOUND METAMORPHOSIS | ARSENAL REAL</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        body { background: #000; color: #fff; font-family: 'Share+Tech+Mono', monospace; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .bunker-panel { width: 95%; max-width: 700px; background: #0a0a0a; border: 1px solid #333; padding: 40px; border-top: 5px solid #ff0000; box-shadow: 0 0 60px #000; }
-        h1 { font-size: 2rem; letter-spacing: 4px; text-align: center; border-bottom: 1px solid #222; padding-bottom: 15px; margin: 0; text-transform: uppercase; }
-        .label { color: #555; font-size: 11px; text-transform: uppercase; margin-top: 25px; display: block; }
-        select { width: 100%; background: #000; color: #00ff00; border: 1px solid #444; padding: 15px; font-size: 1.2rem; font-family: 'Share+Tech+Mono', monospace; margin-top: 5px; outline: none; cursor: pointer; }
-        .price-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
-        .package { background: #111; border: 1px solid #333; padding: 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-        .package:hover { border-color: #ff0000; background: #1a0000; }
-        .package span { color: #00ff00; font-size: 1.8rem; font-weight: bold; }
-        .btn-action { background: #ff0000; color: #fff; border: none; width: 100%; padding: 25px; font-size: 1.6rem; font-weight: bold; margin-top: 30px; cursor: pointer; box-shadow: 0 5px 0 #800; }
-        .footer-tech { font-size: 10px; color: #222; margin-top: 30px; text-align: center; border-top: 1px solid #111; padding-top: 15px; }
+        body { background: #000; color: #fff; font-family: 'Share+Tech+Mono', monospace; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+        
+        .bunker-panel { 
+            width: 95%; max-width: 850px; background: #0a0a0a; border: 1px solid #222; padding: 60px; 
+            border-top: 8px solid #ffd700; box-shadow: 0 0 120px rgba(0,0,0,1); position: relative;
+        }
+
+        .status-indicator { position: absolute; top: 20px; right: 30px; color: #ffd700; font-size: 11px; letter-spacing: 3px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 50% { opacity: 0.2; } }
+
+        h1 { font-size: 2.8rem; letter-spacing: 12px; text-align: center; margin-bottom: 40px; color: #fff; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 25px; }
+
+        .label { color: #ffd700; font-size: 11px; text-transform: uppercase; margin-top: 35px; display: block; letter-spacing: 2px; }
+
+        select { 
+            width: 100%; background: #000; color: #00ff00; border: 1px solid #333; padding: 25px; 
+            font-size: 1.4rem; font-family: 'Share+Tech+Mono', monospace; margin-top: 10px; outline: none; cursor: pointer;
+        }
+
+        .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
+        .price-card { background: #050505; border: 1px solid #1a1a1a; padding: 30px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #ffd700; }
+        .price-card span { color: #fff; font-size: 2.5rem; font-weight: bold; }
+
+        .btn-ignite { 
+            background: #ffd700; color: #000; border: none; width: 100%; padding: 35px; 
+            font-size: 2.2rem; font-weight: bold; margin-top: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 8px; box-shadow: 0 10px 0 #b8860b;
+        }
+
+        .btn-ignite:active { transform: translateY(8px); box-shadow: none; }
+
+        .footer-specs { font-size: 10px; color: #333; text-align: center; margin-top: 60px; border-top: 1px solid #111; padding-top: 30px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
     <div class="bunker-panel">
+        <div class="status-indicator">● DIAMOND_VIBE_ACTIVE</div>
         <h1>SOUND METAMORPHOSIS</h1>
         
-        <span class="label">Hardware Module (Arsenal Real):</span>
-        <select>
-            <option>🚀 ARSENAL REAL (AR) - MÁXIMO PODER</option>
-            <option>🎸 ROCK URBANO / CLARIDAD BARRIO</option>
-            <option>🌌 ROCK LATINO (SODA-CAIFANES)</option>
-            <option>🤘 HEAVY METAL / QUIRÚRGICO</option>
-            <option>⛓️ POST PUNK / ACERO SÓNICO</option>
-            <option>⚡ HARD ROCK / CALOR VALVULAR</option>
-            <option>🎹 BLUES & JAZZ / FIDELIDAD</option>
+        <span class="label">Módulo Hardware (Ingeniería Quirúrgica Bilingüe):</span>
+        <select id="engine">
+            <option>🚀 ARSENAL REAL (AR) - MÁXIMO PODER TRANSITORIO</option>
+            <option disabled>── SECTOR METAL (JORDISON/LOMBARDO MODE) ──</option>
+            <option>🔥 THRASH METAL (ATAQUE & EQ QUIRÚRGICA)</option>
+            <option>💀 DEATH METAL (LOW-END & CLARIDAD)</option>
+            <option>🌑 BLACK METAL (ATMÓSFERA RAW)</option>
+            <option>⚙️ NU METAL (GROOVE PUNCH)</option>
+            <option>🎸 HEAVY METAL (CALOR VALVULAR)</option>
+            <option disabled>── METAMORFOSIS DEL ROCK BILINGÜE ──</option>
+            <option>🎸 ROCK URBANO (CLARIDAD DE BARRIO)</option>
+            <option>🌌 ROCK LATINO (SODA-CAIFANES STYLE)</option>
+            <option>⛓️ POST PUNK (ACERO SÓNICO & REVERB)</option>
+            <option>⚡ HARD ROCK (GAIN DE ESTUDIO)</option>
+            <option>🎹 BLUES & JAZZ (HI-FI FIDELITY)</option>
         </select>
 
-        <span class="label">Paquetes de Asalto (Logística Detectada):</span>
-        <div id="pricing-module" class="price-grid"></div>
+        <span class="label">Logística de Inversión (Detección Regional):</span>
+        <div id="pricing-module" class="pricing-grid"></div>
 
-        <button class="btn-action">SUBIR TRACK | PRUEBA 90s</button>
-        <div class="footer-tech">ENC: AES-256 | CERO_PERILLAS | ELITE_ENGINE</div>
+        <button class="btn-ignite" onclick="alert('SUBIENDO TRACK... MANDO DE AUTOR ACTIVADO.')">CARGAR TRACK | TEST 90s</button>
+
+        <div class="footer-specs">
+            <span>MANDO_DE_AUTOR: v3.8</span>
+            <span>DIAMOND_MAGNET: ACTIVE</span>
+            <span>SECURE_ID: SM-GOLD</span>
+        </div>
     </div>
 
     <script>
         const pricing = document.getElementById('pricing-module');
         if (!navigator.language.includes('es-MX')) {
-            // LOGÍSTICA GRINGA PROPORCIONAL
+            // GRINGOS: 1($20), 5($50), 8($80) USD
             pricing.innerHTML = `
-                <div class="package">1 SINGLE TRACK <span>$20 USD</span></div>
-                <div class="package">5 TRACK PACK <span>$50 USD</span></div>
-                <div class="package">8 TRACK ALBUM <span>$80 USD</span></div>
+                <div class="price-card">1 SINGLE TRACK <span>$20 USD</span></div>
+                <div class="price-card">5 TRACK PACK <span>$50 USD</span></div>
+                <div class="price-card">8 TRACK ALBUM <span>$80 USD</span></div>
             `;
         } else {
-            // LOGÍSTICA MÉXICO (TU LÓGICA ORIGINAL)
+            // MÉXICO: 1($200), 6($500), 8($850) MXN
             pricing.innerHTML = `
-                <div class="package">1 CANCIÓN <span>$200 MXN</span></div>
-                <div class="package">6 CANCIONES <span>$500 MXN</span></div>
-                <div class="package">8 CANCIONES <span>$850 MXN</span></div>
+                <div class="price-card">1 CANCIÓN <span>$200 MXN</span></div>
+                <div class="price-card">6 CANCIONES <span>$500 MXN</span></div>
+                <div class="price-card">8 CANCIONES <span>$850 MXN</span></div>
             `;
         }
     </script>
