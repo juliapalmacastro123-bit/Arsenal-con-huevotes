@@ -3,11 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOUND METAMORPHOSIS - EL ARSENAL DEL INFIERNO</title>
+    <title>SOUND METAMORPHOSIS - EL ARSENAL</title>
     <style>
-        /* ESTÉTICA CALLEJERA, INFERNAL Y DE ESCENARIO MUGROSO */
-        body {
-            background-color: #000;
-            /* Fondo de textura de asfalto/concreto rugoso */
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIHZpZXdCb3g9IjAgMCA0IDQiPgo8ZyBmaWxsPSIjMTExMTExIiBmaWxsLW9wYWNpdHk9IjAuNCI+PHBhdGggZD0iTTEgM2gydjFIMVptMiAxOWgydjFIM1pNMCAwaDJ2MUgwWm0yIDJoMnYxSDJaTTEgMWgydjFIMVptMiAxOWgydjFIM1pNMCAwaDJ2MUgwWm0yIDJoMn
-                
+        body { background: #000; color: #fff; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
+        #bunker { border: 5px solid #222; background: #111; padding: 30px; border-radius: 15px; box-shadow: 0 0 50px #ff000033; max-width: 800px; margin: auto; }
+        .plasma { background: #001a33; color: #00d4ff; border: 2px solid #00d4ff; padding: 20px; text-shadow: 0 0 10px #00d4ff; font-weight: bold; margin-bottom: 25px; }
+        .selector { background: #000; color: #ff0000; border: 2px solid #ff0000; width: 100%; padding: 15px; font-weight: bold; font-size: 1.1em; cursor: pointer; }
+        .precios { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 25px 0; }
+        .box { border: 1px solid #444; padding: 15px; background: #050505; }
+        .box:hover { border-color: #00d4ff; box-shadow: 0 0 15px #00d4ff; }
+        .btn-fuego { background: #b30000; color: #fff; border: none; padding: 20px; width: 100%; font-weight: bold; cursor: pointer; font-size: 1.2em; margin-top: 20px; }
+        .btn-fuego:hover { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
+        #privacidad { font-size: 12px; color: #444; border-top: 1px solid #222; margin-top: 30px; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div id="bunker">
+    <h1 style="letter-spacing: 10px;">SOUND METAMORPHOSIS</h1>
+    
+    <div class="plasma">
+        <div id="display">CADENERO VPN: ACTIVO</div>
+        <div style="font-size: 0.8em; margin-top: 10px;">ESTÁNDAR QUIRÚRGICO: 100% CALIBRADO</div>
+    </div>
+
+    <div id="interfaz">
+        <label style="color:#00d4ff">SELECCIONA ARTILLERÍA POR GÉNERO:</label>
+        <select id="patch" class="selector">
+            <option value="heavy">PATCH 01: HEAVY / QUIRÚRGICO</option>
+            <option value="thrash">PATCH 02: THRASH / SPEED (DEMOLICIÓN)</option>
+            <option value="death">PATCH 03: DEATH-BLACK (INFRAMUNDO)</option>
+            <option value="rock">PATCH 04: ROCK-POSTPUNK (DINÁMICO)</option>
+            <option value="ska">PATCH 05: SKA-BLUES (VIBRACIÓN)</option>
+        </select>
+
+        <div class="precios" id="precios">
+            </div>
+
+        <input type="text" id="pass" placeholder="LLAVE MAESTRA / CÓDIGO VIP" style="width:90%; padding:15px; background:#000; color:#00d4ff; border:1px solid #333;">
+        <button class="btn-fuego" onclick="disparo()">DISPARAR METAMORFOSIS</button>
+    </div>
+
+    <div id="privacidad">
+        SISTEMA DE AUTO-DESTRUCCIÓN ACTIVO: NO ALMACENAMOS ARCHIVOS. TU PROPIEDAD INTELECTUAL ESTÁ BLINDADA.
+    </div>
+</div>
+
+<script>
+    const MASTER_KEY = "slayer 38 666";
+
+    function cargarLogistica() {
+        const p = document.getElementById('precios');
+        const isInt = window.location.hostname.includes('com') || false; // Detección simplificada
+
+        if(isInt) {
+            p.innerHTML = `<div class="box">1 TRACK<br>$15 USD</div><div class="box">6 TRACKS<br>$40 USD</div><div class="box">8 TRACKS<br>$65 USD</div>`;
+            document.getElementById('display').innerText = "INTERNATIONAL ACCESS: SECURE";
+        } else {
+            p.innerHTML = `<div class="box">1 ROLA<br>$200 MXN</div><div class="box">6 ROLAS<br>$500 MXN</div><div class="box">8 ROLAS<br>$850 MXN</div>`;
+        }
+    }
+
+    function disparo() {
+        const pass = document.getElementById('pass').value.trim();
+        const display = document.getElementById('display');
+        if(pass === MASTER_KEY) {
+            display.innerText = "¡BIENVENIDO ERICK! ACCESO MAESTRO 666";
+            display.style.color = "#ff0000";
+            alert("LLAVE ACEPTADA: PAGOS Y RESTRICCIONES ELIMINADAS.");
+        } else {
+            display.innerText = "PROCESANDO CON PEGADA QUIRÚRGICA...";
+        }
+    }
+    cargarLogistica();
+</script>
+
+</body>
+</html>
