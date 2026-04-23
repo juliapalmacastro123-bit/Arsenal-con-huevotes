@@ -4,6 +4,7 @@ from telebot import types
 from pydub import AudioSegment, effects
 
 # --- 1. IDENTIDAD, SEGURIDAD VPN Y ACCESO VIP ---
+# Asegúrate de que en Render la variable de entorno se llame exactamente TOKEN
 TOKEN = os.getenv("TOKEN")
 bot = telebot.TeleBot(TOKEN)
 MI_LLAVE = 7949397943  # Tu mando de autor (Acceso Gratuito VIP)
@@ -11,7 +12,11 @@ MI_LLAVE = 7949397943  # Tu mando de autor (Acceso Gratuito VIP)
 def purgar_archivos():
     """SEGURIDAD TOTAL: Purga absoluta de archivos tras cada proceso. Nada queda en el búnker."""
     for f in ["input.wav", "output.mp3"]:
-        if os.path.exists(f): os.remove(f)
+        if os.path.exists(f): 
+            try:
+                os.remove(f)
+            except:
+                pass
 
 # --- 2. INGENIERÍA QUIRÚRGICA DE ALTA CALIDAD ---
 def master_quirurgico_independiente(audio, estilo):
@@ -23,7 +28,6 @@ def master_quirurgico_independiente(audio, estilo):
     - Alta Fidelidad: Masterización limpia sin ruido.
     """
     audio = effects.normalize(audio)
-    # Ajuste quirúrgico para platillos precisos y guitarras lead al frente
     # Headroom de 0.03 para que los platillos no saturen y suenen nítidos
     return audio.apply_gain(1.5).normalize(headroom=0.03)
 
@@ -32,7 +36,6 @@ def master_quirurgico_independiente(audio, estilo):
 def inicio(message):
     markup = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
     
-    # Cada género en su casilla independiente como pediste al microscopio
     markup.add(
         types.KeyboardButton('💀 THRASH METAL'),
         types.KeyboardButton('🩸 DEATH METAL'),
@@ -55,18 +58,17 @@ def inicio(message):
         "🚀 **ARSENAL: SOUND METAMORPHOSIS**\n"
         "⚡ *La Metamorfosis del Sonido* ⚡\n\n"
         "**¿Harto de tirar dinero con ingenieros que no dan la talla?** 💸🚫\n"
-        "No gastes en aplicaciones con comerciales y botones que no sirven.\n\n"
         "Aquí recibes **INGENIERÍA QUIRÚRGICA INDEPENDIENTE**:\n"
         "✅ **AUDIO:** Batería Lombardo/Jordison, Platillos perfectos y Guitarras Lead.\n"
-        "✅ **SEGURIDAD:** VPN Activa y Purga Total de archivos tras cada proceso.\n"
-        "✅ **CALIDAD:** Alta fidelidad en cada ingeniería.\n\n"
+        "✅ **SEGURIDAD:** VPN Activa y Purga Total de archivos.\n"
+        "✅ **CALIDAD:** Alta fidelidad 320kbps.\n\n"
         "✨ **PRUEBA DE 90 SEGUNDOS GRATIS** ✨\n"
         "Pica tu casilla y sube tu track (WAV/MP3)."
     )
     bot.send_message(message.chat.id, anuncio_autoridad, reply_markup=markup, parse_mode='Markdown')
 
 # --- 4. LOGÍSTICA DE PRECIOS CUADRADOS (MX / USA) ---
-@bot.message_handler(func=lambda message: 'TARIFAS' in message.text or 'PRICES' in message.text)
+@bot.message_handler(func=lambda message: message.text and ('TARIFAS' in message.text or 'PRICES' in message.text))
 def precios(message):
     bot.send_message(message.chat.id, (
         "💰 **LOGÍSTICA DE PRECIOS:**\n\n"
@@ -88,7 +90,8 @@ def procesar_bunker(message):
         file_info = bot.get_file(file_id)
         downloaded = bot.download_file(file_info.file_path)
         
-        with open("input.wav", "wb") as f: f.write(downloaded)
+        with open("input.wav", "wb") as f: 
+            f.write(downloaded)
         
         audio = AudioSegment.from_file("input.wav")
         # PRUEBA DE 90 SEGUNDOS - ALTA CALIDAD DE ESTUDIO
@@ -108,8 +111,9 @@ def procesar_bunker(message):
         purgar_archivos()
         
     except Exception as e:
-        bot.reply_to(message, "⚠️ Error. Sube un track de alta fidelidad.")
+        bot.reply_to(message, f"⚠️ Error en la ingeniería. Asegúrate de subir un archivo de audio válido.")
         purgar_archivos()
 
 if __name__ == "__main__":
     bot.infinity_polling()
+    
