@@ -1,10 +1,15 @@
+import os
 import telebot
 from telebot import types
 
-# --- TU TOKEN QUE YA TENÍAMOS DESDE HACE 3 DÍAS ---
-TOKEN = '7982269986:AAF2_xY-6_z9_8_7_6_5_4_3_2_1_A_B_C' 
+# --- CONFIGURACIÓN DE SEGURIDAD (Mando de Autor) ---
+# Jalamos el TOKEN directamente desde Render (Environment Variables)
+TOKEN = os.getenv("TOKEN")
 
-bot = telebot.TeleBot(TOKEN)
+if not TOKEN:
+    print("❌ ERROR: No se encontró la variable TOKEN en Render.")
+else:
+    bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
 def inicio(message):
@@ -32,9 +37,16 @@ def inicio(message):
 
     bot.send_message(message.chat.id, msg, reply_markup=markup, parse_mode='Markdown')
 
-# Aquí sigue tu ingeniería de FFmpeg que ya tienes blindada...
+# --- AQUÍ EMPIEZA LA MAGIA DEL PROCESAMIENTO ---
+@bot.message_handler(content_types=['audio', 'document'])
+def manejar_audio(message):
+    bot.reply_to(message, "⚡ **Arsenal recibiendo material...** Preparando los motores de masterización. Dame un momento, carnal.")
 
+# --- INICIO DEL SISTEMA ---
 if __name__ == "__main__":
-    print("El Arsenal-con-huevotes está patrullando...")
-    bot.infinity_polling()
-    
+    print("🔥 El Arsenal-con-huevotes está patrullando la red...")
+    try:
+        bot.infinity_polling()
+    except Exception as e:
+        print(f"❌ Fallo en la patrulla: {e}")
+        
