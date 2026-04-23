@@ -1,51 +1,26 @@
 import os
-import subprocess
-import sys
-
-# --- 0. AUTO-INSTALACIÓN DE HERRAMIENTAS (BÚNKER DE ARRANQUE) ---
-def preparar_entorno():
-    """Instala las librerías necesarias y FFmpeg si no están presentes."""
-    try:
-        import telebot
-        from pydub import AudioSegment
-    except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "pyTelegramBotAPI", "pydub"])
-    
-    # Intenta instalar ffmpeg en el sistema (requerido para procesar audio en Render)
-    if os.system("ffmpeg -version") != 0:
-        os.system("apt-get update && apt-get install -y ffmpeg")
-
-preparar_entorno()
-
 import telebot
 from telebot import types
 from pydub import AudioSegment, effects
 
-# --- 1. IDENTIDAD, SEGURIDAD VPN Y ACCESO VIP ---
+# --- 1. IDENTIDAD Y CONFIGURACIÓN ---
 TOKEN = os.getenv("TOKEN")
 bot = telebot.TeleBot(TOKEN)
-MI_LLAVE = 7949397943  # Tu mando de autor (Acceso VIP)
+MI_LLAVE = 7949397943 
 
 def purgar_archivos():
-    """SEGURIDAD TOTAL: Purga absoluta tras cada ingeniería."""
+    """Purga absoluta tras cada ingeniería."""
     for f in ["input.wav", "output.mp3"]:
         if os.path.exists(f): 
             try: os.remove(f)
             except: pass
 
-# --- 2. INGENIERÍA QUIRÚRGICA DE ALTA CALIDAD ---
+# --- 2. INGENIERÍA QUIRÚRGICA ---
 def master_quirurgico_independiente(audio):
-    """
-    CALIBRACIÓN DE ÉLITE:
-    - Drums: Híbrido Lombardo/Jordison (Punch demoledor).
-    - Platillos: Ingeniería de precisión (Nítidos).
-    - Guitarras: Lead al frente con ataque extremo.
-    """
     audio = effects.normalize(audio)
-    # Masterización limpia: ganancia controlada y headroom de seguridad
     return audio.apply_gain(1.5).normalize(headroom=0.03)
 
-# --- 3. MENÚ DE CASILLAS (GÉNEROS) ---
+# --- 3. MENÚ DE CASILLAS ---
 @bot.message_handler(commands=['start'])
 def inicio(message):
     markup = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
@@ -63,60 +38,44 @@ def inicio(message):
     anuncio = (
         "🚀 **ARSENAL: SOUND METAMORPHOSIS**\n"
         "⚡ *La Metamorfosis del Sonido* ⚡\n\n"
-        "**¿Harto de ingenieros que no dan la talla?** 💸🚫\n"
-        "Aquí recibes **INGENIERÍA QUIRÚRGICA INDEPENDIENTE**:\n"
-        "✅ **AUDIO:** Drums potentes, Platillos precisos y Guitarras Lead.\n"
-        "✅ **SEGURIDAD:** VPN Activa y Purga Total de archivos.\n"
-        "✅ **CALIDAD:** Alta fidelidad 320kbps.\n\n"
-        "✨ **PRUEBA DE 90 SEGUNDOS GRATIS** ✨\n"
-        "Pica tu casilla y sube tu track (WAV/MP3)."
+        "Aquí recibes **INGENIERÍA QUIRÚRGICA INDEPENDIENTE**.\n"
+        "✨ **PRUEBA DE 90 SEGUNDOS GRATIS** ✨"
     )
     bot.send_message(message.chat.id, anuncio, reply_markup=markup, parse_mode='Markdown')
 
-# --- 4. LOGÍSTICA DE PRECIOS ---
+# --- 4. PRECIOS ---
 @bot.message_handler(func=lambda message: message.text and ('TARIFAS' in message.text or 'PRICES' in message.text))
 def precios(message):
     bot.send_message(message.chat.id, (
         "💰 **LOGÍSTICA DE PRECIOS:**\n\n"
-        "🇲🇽 **MÉXICO & LATAM:**\n"
-        "• 1 Rola: $200 | 6 Rolas: $500 | 8 Rolas: $850 MXN\n\n"
-        "🇺🇸 **USA:**\n"
-        "• 1 Song: $20 USD | 6 Songs: $50 USD | 8 Songs: $80 USD"
+        "🇲🇽 **MX:** 1 Rola: $200 | 6: $500\n"
+        "🇺🇸 **USA:** 1 Song: $20 | 6: $50"
     ), parse_mode='Markdown')
 
-# --- 5. PROCESAMIENTO Y METAMORFOSIS ---
+# --- 5. PROCESAMIENTO ---
 @bot.message_handler(content_types=['audio', 'document'])
 def procesar_bunker(message):
     es_jefe = (message.from_user.id == MI_LLAVE)
-    bot.reply_to(message, "⚡ **METAMORFOSIS QUIRÚRGICA ACTIVADA...** Calibrando platillos y guitarras lead.")
+    bot.reply_to(message, "⚡ **METAMORFOSIS QUIRÚRGICA ACTIVADA...**")
     
     try:
         file_id = message.audio.file_id if message.audio else message.document.file_id
         file_info = bot.get_file(file_id)
         downloaded = bot.download_file(file_info.file_path)
         
-        with open("input.wav", "wb") as f: 
-            f.write(downloaded)
+        with open("input.wav", "wb") as f: f.write(downloaded)
         
         audio = AudioSegment.from_file("input.wav")
-        # PRUEBA DE 90 SEGUNDOS
         prueba = audio[:90000] 
         final = master_quirurgico_independiente(prueba)
-        
         final.export("output.mp3", format="mp3", bitrate="320k")
         
-        caption = "👑 **MANDO DE AUTOR.** Acceso VIP." if es_jefe else "✨ **METAMORFOSIS LOGRADA (90s).**\nTrack purgado por seguridad."
-            
+        caption = "👑 **MANDO DE AUTOR.**" if es_jefe else "✨ **METAMORFOSIS LOGRADA.**"
         with open("output.mp3", "rb") as f:
             bot.send_audio(message.chat.id, f, caption=caption)
-        
-        if not es_jefe:
-            bot.send_message(message.chat.id, "💎 **¿QUIERES EL TRACK COMPLETO?**\nAsegura calidad profesional. Pica en **TARIFAS**.", parse_mode='Markdown')
-            
         purgar_archivos()
-        
     except Exception as e:
-        bot.reply_to(message, "⚠️ Error en la ingeniería. Sube un track de alta fidelidad.")
+        bot.reply_to(message, "⚠️ Error. Sube un track válido.")
         purgar_archivos()
 
 if __name__ == "__main__":
