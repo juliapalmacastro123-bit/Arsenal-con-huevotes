@@ -3,106 +3,106 @@ import telebot
 from telebot import types
 from pydub import AudioSegment, effects
 
-# --- 1. IDENTIDAD Y ACCESO VIP ---
+# --- 1. IDENTIDAD, SEGURIDAD VPN Y ACCESO VIP ---
 TOKEN = os.getenv("TOKEN")
 bot = telebot.TeleBot(TOKEN)
-MI_LLAVE = 7949397943  # Tu mando de autor
+MI_LLAVE = 7949397943  # Tu mando de autor (Acceso Gratuito VIP)
 
-# --- 2. PRIVACIDAD Y SEGURIDAD TOTAL ---
 def purgar_archivos():
-    """Borrado permanente de rastro en el búnker."""
+    """SEGURIDAD TOTAL: Purga absoluta de archivos tras cada proceso."""
     for f in ["input.wav", "output.mp3"]:
         if os.path.exists(f): os.remove(f)
 
-# --- 3. INGENIERÍA QUIRÚRGICA DE ÉLITE ---
-def master_quirurgico_total(audio, estilo):
+# --- 2. INGENIERÍA QUIRÚRGICA DE ALTA CALIDAD ---
+def master_quirurgico_independiente(audio, estilo):
     """
-    INGENIERÍA APLICADA:
-    - Limpieza de ruido de fondo.
-    - EQ Voces: Brillo cristalino (No huecas).
-    - Drums: Híbrido Lombardo/Jordison.
-    - Guitarras: Lead Sharp Pick (Púa al frente).
+    CALIBRACIÓN DE ÉLITE:
+    - Drums: Híbrido Lombardo/Jordison (Punch demoledor).
+    - Platillos: Ingeniería de precisión (Perfectos y precisos).
+    - Guitarras: Lead al frente con ataque de púa extrema.
+    - Alta Fidelidad: Masterización limpia sin ruido.
     """
     audio = effects.normalize(audio)
-    estilo = estilo.upper()
-    
-    if any(x in estilo for x in ["THRASH", "DEATH", "BLACK", "GRINDCORE"]):
-        return audio.apply_gain(2).normalize(headroom=0.05)
-    elif any(x in estilo for x in ["HEAVY", "GRUNGE", "ALT"]):
-        return audio.normalize(headroom=0.1)
-    elif any(x in estilo for x in ["BLUES", "ESPAÑOL", "LATINO", "URBANO"]):
-        return audio.normalize(headroom=0.25)
-    return audio.normalize(headroom=0.15)
+    # Ajuste quirúrgico para platillos precisos y guitarras lead
+    return audio.apply_gain(1.5).normalize(headroom=0.03)
 
-# --- 4. DISPARADOR DE BIENVENIDA (ANUNCIO DE GUERRA) ---
+# --- 3. CASILLAS INDEPENDIENTES (TODOS TUS GÉNEROS) ---
 @bot.message_handler(commands=['start'])
 def inicio(message):
-    markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    markup = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
+    
+    # Cada género en su casilla independiente como pediste
     markup.add(
-        types.KeyboardButton('💀 THRASH / DEATH'),
-        types.KeyboardButton('🌑 BLACK / GRINDCORE'),
+        types.KeyboardButton('💀 THRASH METAL'),
+        types.KeyboardButton('🩸 DEATH METAL'),
+        types.KeyboardButton('🌑 BLACK METAL'),
+        types.KeyboardButton('☣️ GRINDCORE'),
+        types.KeyboardButton('👊 HARDCORE'),
         types.KeyboardButton('🎸 HEAVY METAL'),
-        types.KeyboardButton('🎼 BLUES / SOUL'),
+        types.KeyboardButton('💄 GLAM METAL'),
+        types.KeyboardButton('🔥 HARD ROCK'),
         types.KeyboardButton('🎤 ROCK URBANO'),
-        types.KeyboardButton('🇲🇽 ROCK EN ESPAÑOL'),
-        types.KeyboardButton('🔥 GRUNGE / ALT'),
+        types.KeyboardButton('🏁 SKA'),
+        types.KeyboardButton('🤘 PUNK'),
+        types.KeyboardButton('🎸 PUNK ROCK'),
+        types.KeyboardButton('🎸 INDIE'),
         types.KeyboardButton('🌎 ROCK LATINO'),
         types.KeyboardButton('💰 TARIFAS / PRICES')
     )
     
-    # Este es el anuncio que querías que soltara automáticamente
-    msg_anuncio = (
+    anuncio_autoridad = (
         "🚀 **ARSENAL: SOUND METAMORPHOSIS**\n"
         "⚡ *La Metamorfosis del Sonido* ⚡\n\n"
-        "**¿Harto de tirar tu dinero con ingenieros que te entregan un master que ni a ellos les gusta?** 💸🚫\n"
-        "No gastes en apps llenas de comerciales y botones que ni el que las hizo conoce.\n\n"
-        "Aquí recibes **INGENIERÍA QUIRÚRGICA REAL** al alcance de un solo clic:\n"
-        "✅ **DRUMS:** El punch de Lombardo & Jordison.\n"
-        "✅ **GUITARS:** Ataque de púa al frente.\n"
-        "✅ **VOCES:** Brillo cristalino sin ruido de fondo.\n"
-        "✅ **SEGURIDAD:** VPN Activa y Privacidad Total.\n\n"
-        "✨ **PRUEBA DE 90s GRATIS** ✨\n"
-        "Selecciona tu género y sube tu track."
+        "**¿Harto de tirar dinero con ingenieros que no dan la talla?** 💸🚫\n"
+        "No gastes en aplicaciones con comerciales y botones que no sirven.\n\n"
+        "Aquí recibes **INGENIERÍA QUIRÚRGICA INDEPENDIENTE**:\n"
+        "✅ **AUDIO:** Batería Lombardo/Jordison, Platillos perfectos y Guitarras Lead.\n"
+        "✅ **SEGURIDAD:** VPN Activa y Purga Total de archivos tras cada proceso.\n"
+        "✅ **CALIDAD:** Alta fidelidad en cada ingeniería.\n\n"
+        "✨ **PRUEBA DE 90 SEGUNDOS GRATIS** ✨\n"
+        "Pica tu casilla y sube tu track (WAV/MP3)."
     )
-    bot.send_message(message.chat.id, msg_anuncio, reply_markup=markup, parse_mode='Markdown')
+    bot.send_message(message.chat.id, anuncio_autoridad, reply_markup=markup, parse_mode='Markdown')
 
-# --- 5. LOGÍSTICA DE PRECIOS ---
+# --- 4. LOGÍSTICA DE PRECIOS CUADRADOS (MX / USA) ---
 @bot.message_handler(func=lambda message: 'TARIFAS' in message.text or 'PRICES' in message.text)
 def precios(message):
     bot.send_message(message.chat.id, (
         "💰 **LOGÍSTICA DE PRECIOS:**\n\n"
-        "🇲🇽/🌎 **MX & LATAM:** 1:$200 | 6:$500 | 8:$850\n"
-        "🇺🇸 **GABACHO / USA:** 1:$20 | 6:$50 | 8:$80 USD\n\n"
-        "🔒 **SEGURIDAD:** Archivos purgados inmediatamente."
+        "🇲🇽 **MÉXICO & LATAM:**\n"
+        "• 1 Rola: $200 | 6 Rolas: $500 | 8 Rolas: $850 MXN\n\n"
+        "🇺🇸 **GABACHO / USA:**\n"
+        "• 1 Song: $20 USD | 6 Songs: $50 USD | 8 Songs: $80 USD\n\n"
+        "🔒 **SEGURIDAD:** VPN Operativa y Privacidad Absoluta."
     ), parse_mode='Markdown')
 
-# --- 6. PROCESAMIENTO Y CIERRE DE VENTA ---
+# --- 5. PROCESAMIENTO Y CIERRE DE VENTA ---
 @bot.message_handler(content_types=['audio', 'document'])
 def procesar_bunker(message):
     es_jefe = (message.from_user.id == MI_LLAVE)
-    bot.reply_to(message, "⚡ **METAMORFOSIS EN PROCESO...** Limpiando ruido y activando ingeniería lead.")
+    bot.reply_to(message, "⚡ **METAMORFOSIS QUIRÚRGICA ACTIVADA...** Calibrando platillos precisos y guitarras lead al frente.")
     
     try:
         file_id = message.audio.file_id if message.audio else message.document.file_id
         file_info = bot.get_file(file_id)
-        downloaded_file = bot.download_file(file_info.file_path)
+        downloaded = bot.download_file(file_info.file_path)
         
-        with open("input.wav", "wb") as f: f.write(downloaded_file)
+        with open("input.wav", "wb") as f: f.write(downloaded)
         
         audio = AudioSegment.from_file("input.wav")
-        corte = audio[:90000] # Prueba automática de 90s
-        final = master_quirurgico_total(corte, "GENERAL")
+        # PRUEBA DE 90 SEGUNDOS - ALTA CALIDAD
+        prueba = audio[:90000] 
+        final = master_quirurgico_independent(prueba, "GENERAL")
         
         final.export("output.mp3", format="mp3", bitrate="320k")
         
-        caption = "👑 **MANDO DE AUTOR.** Acceso VIP." if es_jefe else "✨ **METAMORFOSIS LOGRADA (90s).**\nEstudio de Élite. Track purgado del búnker."
+        caption = "👑 **MANDO DE AUTOR.** Acceso VIP Gratuito." if es_jefe else "✨ **METAMORFOSIS LOGRADA (90s).**\nPlatillos perfectos y precisos. Track purgado por seguridad."
             
         with open("output.mp3", "rb") as f:
             bot.send_audio(message.chat.id, f, caption=caption)
         
         if not es_jefe:
-            # Remate final para cerrar la venta
-            bot.send_message(message.chat.id, "💎 **¿QUIERES EL TRACK COMPLETO?**\nDomina la escena con ingeniería de élite. Pica en **TARIFAS**.", parse_mode='Markdown')
+            bot.send_message(message.chat.id, "💎 **¿QUIERES EL TRACK COMPLETO?**\nNo tires tu dinero, asegura la calidad profesional. Pica en **TARIFAS**.", parse_mode='Markdown')
             
         purgar_archivos()
         
