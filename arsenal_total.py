@@ -9,7 +9,7 @@ bot = telebot.TeleBot(TOKEN)
 MI_LLAVE = 7949397943  # Tu mando de autor (Acceso Gratuito VIP)
 
 def purgar_archivos():
-    """SEGURIDAD TOTAL: Purga absoluta de archivos tras cada proceso."""
+    """SEGURIDAD TOTAL: Purga absoluta de archivos tras cada proceso. Nada queda en el búnker."""
     for f in ["input.wav", "output.mp3"]:
         if os.path.exists(f): os.remove(f)
 
@@ -23,7 +23,8 @@ def master_quirurgico_independiente(audio, estilo):
     - Alta Fidelidad: Masterización limpia sin ruido.
     """
     audio = effects.normalize(audio)
-    # Ajuste quirúrgico para platillos precisos y guitarras lead
+    # Ajuste quirúrgico para platillos precisos y guitarras lead al frente
+    # Headroom de 0.03 para que los platillos no saturen y suenen nítidos
     return audio.apply_gain(1.5).normalize(headroom=0.03)
 
 # --- 3. CASILLAS INDEPENDIENTES (TODOS TUS GÉNEROS) ---
@@ -31,7 +32,7 @@ def master_quirurgico_independiente(audio, estilo):
 def inicio(message):
     markup = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
     
-    # Cada género en su casilla independiente como pediste
+    # Cada género en su casilla independiente como pediste al microscopio
     markup.add(
         types.KeyboardButton('💀 THRASH METAL'),
         types.KeyboardButton('🩸 DEATH METAL'),
@@ -90,9 +91,9 @@ def procesar_bunker(message):
         with open("input.wav", "wb") as f: f.write(downloaded)
         
         audio = AudioSegment.from_file("input.wav")
-        # PRUEBA DE 90 SEGUNDOS - ALTA CALIDAD
+        # PRUEBA DE 90 SEGUNDOS - ALTA CALIDAD DE ESTUDIO
         prueba = audio[:90000] 
-        final = master_quirurgico_independent(prueba, "GENERAL")
+        final = master_quirurgico_independiente(prueba, "GENERAL")
         
         final.export("output.mp3", format="mp3", bitrate="320k")
         
@@ -106,10 +107,9 @@ def procesar_bunker(message):
             
         purgar_archivos()
         
-    except Exception:
+    except Exception as e:
         bot.reply_to(message, "⚠️ Error. Sube un track de alta fidelidad.")
         purgar_archivos()
 
 if __name__ == "__main__":
     bot.infinity_polling()
-    
