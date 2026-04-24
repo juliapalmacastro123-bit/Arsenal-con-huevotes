@@ -1,4 +1,4 @@
-import os
+noimport os
 import telebot
 from telebot import types
 from pydub import AudioSegment, effects
