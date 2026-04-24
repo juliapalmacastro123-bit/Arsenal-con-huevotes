@@ -1,83 +1,214 @@
 import os
 import telebot
 from telebot import types
-from pydub import AudioSegment, effects
+from pydub import AudioSegment
+import subprocess
 
-# --- 1. IDENTIDAD Y CONFIGURACIÓN ---
+# =========================
+# CONFIG
+# =========================
 TOKEN = os.getenv("TOKEN")
 bot = telebot.TeleBot(TOKEN)
-MI_LLAVE = 7949397943 
 
-def purgar_archivos():
-    """Purga absoluta tras cada ingeniería."""
-    for f in ["input.wav", "output.mp3"]:
-        if os.path.exists(f): 
-            try: os.remove(f)
-            except: pass
+MI_LLAVE = 7949397943  # VIP
 
-# --- 2. INGENIERÍA QUIRÚRGICA ---
-def master_quirurgico_independiente(audio):
-    audio = effects.normalize(audio)
-    return audio.apply_gain(1.5).normalize(headroom=0.03)
+# LINKS DE PAGO (EDITA)
+LINKS = {
+    "MX_1": "https://mpago.la/2dMaFNh",
+    "MX_6": "PON_LINK_500",
+    "MX_8": "PON_LINK_850",
 
-# --- 3. MENÚ DE CASILLAS ---
+    "US_1": "PON_LINK_20",
+    "US_6": "PON_LINK_50",
+    "US_8": "PON_LINK_80"
+}
+
+region_usuario = {}
+genero_usuario = {}
+
+# =========================
+# LIMPIEZA (NO GUARDAS MÚSICA)
+# =========================
+def purgar():
+    for f in ["input.wav", "temp.wav", "output.mp3"]:
+        if os.path.exists(f):
+            os.remove(f)
+
+# =========================
+# UTIL
+# =========================
+def es_internacional(chat_id):
+    return "INTERNACIONAL" in region_usuario.get(chat_id, "")
+
+# =========================
+# DETECTAR GENERO
+# =========================
+def detectar_genero(texto):
+    texto = texto.lower()
+
+    if any(x in texto for x in ["thrash","death","black","grind"]):
+        return "EXTREMO"
+    elif any(x in texto for x in ["heavy","hard rock","glam"]):
+        return "CLASICO"
+    elif any(x in texto for x in ["punk","hardcore"]):
+        return "PUNK"
+    elif any(x in texto for x in ["urbano","latino"]):
+        return "URBANO"
+    elif any(x in texto for x in ["indie","post"]):
+        return "INDIE"
+    elif "ska" in texto:
+        return "SKA"
+    else:
+        return "CLASICO"
+
+# =========================
+# MASTER (FFMPEG)
+# =========================
+def masterizar(input_path, output_path, perfil):
+
+    perfiles = {
+        "EXTREMO": "equalizer=f=120:g=-4,equalizer=f=3000:g=4,acompressor=threshold=-20dB:ratio=3,loudnorm=I=-8:TP=-1.5",
+        "CLASICO": "equalizer=f=200:g=2,equalizer=f=4000:g=2,acompressor=threshold=-18dB:ratio=2,loudnorm=I=-10:TP=-1.5",
+        "PUNK": "equalizer=f=150:g=-2,equalizer=f=3500:g=5,acompressor=threshold=-22dB:ratio=4,loudnorm=I=-7:TP=-1.5",
+        "URBANO": "equalizer=f=100:g=1,equalizer=f=3000:g=3,acompressor=threshold=-18dB:ratio=2,loudnorm=I=-9:TP=-1.5",
+        "INDIE": "equalizer=f=120:g=-1,equalizer=f=8000:g=3,acompressor=threshold=-16dB:ratio=1.5,loudnorm=I=-11:TP=-1.5",
+        "SKA": "equalizer=f=150:g=-3,equalizer=f=2500:g=3,acompressor=threshold=-17dB:ratio=2,loudnorm=I=-10:TP=-1.5"
+    }
+
+    filtro = perfiles.get(perfil, perfiles["CLASICO"])
+
+    subprocess.run([
+        "ffmpeg","-y","-i",input_path,
+        "-af",filtro,
+        "-b:a","320k",
+        output_path
+    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+# =========================
+# ANUNCIO DINÁMICO
+# =========================
+def anuncio(chat_id):
+
+    if es_internacional(chat_id):
+        return (
+            "🔥 ARSENAL AUDIO 🔥\n\n"
+            "Turn your rough demo into a powerful, clean track.\n\n"
+            "• Loud\n• Clear\n• Punchy\n\n"
+            "🧪 FREE 90s preview\n\n"
+            "🔒 Your music is never stored. It is processed and deleted."
+        )
+    else:
+        return (
+            "🔥 ARSENAL AUDIO 🔥\n\n"
+            "Convierte tu demo en un track potente y limpio.\n\n"
+            "• Más volumen\n• Más claridad\n• Más punch\n\n"
+            "🧪 Prueba gratis (90s)\n\n"
+            "🔒 Tu música no se guarda. Se elimina automáticamente."
+        )
+
+# =========================
+# START
+# =========================
 @bot.message_handler(commands=['start'])
-def inicio(message):
-    markup = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
-    markup.add(
-        types.KeyboardButton('💀 THRASH METAL'), types.KeyboardButton('🩸 DEATH METAL'),
-        types.KeyboardButton('🌑 BLACK METAL'), types.KeyboardButton('☣️ GRINDCORE'),
-        types.KeyboardButton('👊 HARDCORE'), types.KeyboardButton('🎸 HEAVY METAL'),
-        types.KeyboardButton('💄 GLAM METAL'), types.KeyboardButton('🔥 HARD ROCK'),
-        types.KeyboardButton('🎤 ROCK URBANO'), types.KeyboardButton('🏁 SKA'),
-        types.KeyboardButton('🤘 PUNK'), types.KeyboardButton('🎸 PUNK ROCK'),
-        types.KeyboardButton('🎸 INDIE'), types.KeyboardButton('🌎 ROCK LATINO'),
-        types.KeyboardButton('💰 TARIFAS / PRICES')
-    )
-    
-    anuncio = (
-        "🚀 **ARSENAL: SOUND METAMORPHOSIS**\n"
-        "⚡ *La Metamorfosis del Sonido* ⚡\n\n"
-        "Aquí recibes **INGENIERÍA QUIRÚRGICA INDEPENDIENTE**.\n"
-        "✨ **PRUEBA DE 90 SEGUNDOS GRATIS** ✨"
-    )
-    bot.send_message(message.chat.id, anuncio, reply_markup=markup, parse_mode='Markdown')
+def start(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add("🇲🇽 MX / LATAM", "🌎 INTERNACIONAL")
 
-# --- 4. PRECIOS ---
-@bot.message_handler(func=lambda message: message.text and ('TARIFAS' in message.text or 'PRICES' in message.text))
-def precios(message):
-    bot.send_message(message.chat.id, (
-        "💰 **LOGÍSTICA DE PRECIOS:**\n\n"
-        "🇲🇽 **MX:** 1 Rola: $200 | 6: $500\n"
-        "🇺🇸 **USA:** 1 Song: $20 | 6: $50"
-    ), parse_mode='Markdown')
+    bot.send_message(message.chat.id, "🌍 Select your region / Selecciona tu región:", reply_markup=markup)
 
-# --- 5. PROCESAMIENTO ---
-@bot.message_handler(content_types=['audio', 'document'])
-def procesar_bunker(message):
-    es_jefe = (message.from_user.id == MI_LLAVE)
-    bot.reply_to(message, "⚡ **METAMORFOSIS QUIRÚRGICA ACTIVADA...**")
-    
+# =========================
+# REGIÓN
+# =========================
+@bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX / LATAM","🌎 INTERNACIONAL"])
+def guardar_region(message):
+
+    region_usuario[message.chat.id] = message.text
+
+    bot.send_message(message.chat.id, anuncio(message.chat.id))
+
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True,row_width=3)
+    botones = [
+        "💀 THRASH","🩸 DEATH","🌑 BLACK",
+        "☣️ GRINDCORE","👊 HARDCORE","🎸 HEAVY",
+        "🔥 HARD ROCK","🎤 URBANO","🏁 SKA",
+        "🤘 PUNK","🎸 INDIE","🌫️ POST-PUNK"
+    ]
+    markup.add(*botones)
+
+    bot.send_message(message.chat.id,"🎸 Choose genre / Elige género y manda tu audio:",reply_markup=markup)
+
+# =========================
+# GENERO
+# =========================
+@bot.message_handler(func=lambda m: True, content_types=['text'])
+def guardar_genero(message):
+    genero_usuario[message.chat.id] = message.text
+    bot.reply_to(message,"🎧 Send your audio / Envía tu audio")
+
+# =========================
+# PAGOS
+# =========================
+def enviar_pagos(chat_id):
+
+    markup = types.InlineKeyboardMarkup()
+
+    if es_internacional(chat_id):
+        markup.add(types.InlineKeyboardButton("1 Track - $20 USD", url=LINKS["US_1"]))
+        markup.add(types.InlineKeyboardButton("6 Tracks - $50 USD", url=LINKS["US_6"]))
+        markup.add(types.InlineKeyboardButton("8 Tracks - $80 USD", url=LINKS["US_8"]))
+
+        bot.send_message(chat_id,"💳 Choose your package (USD only):",reply_markup=markup)
+
+    else:
+        markup.add(types.InlineKeyboardButton("1 Rola - $200 MXN", url=LINKS["MX_1"]))
+        markup.add(types.InlineKeyboardButton("6 Rolas - $500 MXN", url=LINKS["MX_6"]))
+        markup.add(types.InlineKeyboardButton("8 Rolas - $850 MXN", url=LINKS["MX_8"]))
+
+        bot.send_message(chat_id,"💳 Elige tu paquete:",reply_markup=markup)
+
+# =========================
+# AUDIO
+# =========================
+@bot.message_handler(content_types=['audio','document'])
+def procesar(message):
+
+    es_vip = (message.from_user.id == MI_LLAVE)
+    bot.reply_to(message,"⚡ Processing...")
+
     try:
         file_id = message.audio.file_id if message.audio else message.document.file_id
         file_info = bot.get_file(file_id)
-        downloaded = bot.download_file(file_info.file_path)
-        
-        with open("input.wav", "wb") as f: f.write(downloaded)
-        
-        audio = AudioSegment.from_file("input.wav")
-        prueba = audio[:90000] 
-        final = master_quirurgico_independiente(prueba)
-        final.export("output.mp3", format="mp3", bitrate="320k")
-        
-        caption = "👑 **MANDO DE AUTOR.**" if es_jefe else "✨ **METAMORFOSIS LOGRADA.**"
-        with open("output.mp3", "rb") as f:
-            bot.send_audio(message.chat.id, f, caption=caption)
-        purgar_archivos()
-    except Exception as e:
-        bot.reply_to(message, "⚠️ Error. Sube un track válido.")
-        purgar_archivos()
+        data = bot.download_file(file_info.file_path)
 
+        with open("input.wav","wb") as f:
+            f.write(data)
+
+        audio = AudioSegment.from_file("input.wav")
+        preview = audio[:90000]
+        preview.export("temp.wav", format="wav")
+
+        perfil = detectar_genero(genero_usuario.get(message.chat.id,"general"))
+
+        masterizar("temp.wav","output.mp3",perfil)
+
+        with open("output.mp3","rb") as f:
+            bot.send_audio(message.chat.id,f,caption="🎧 Preview 90s")
+
+        if es_vip:
+            masterizar("input.wav","output.mp3",perfil)
+            with open("output.mp3","rb") as f:
+                bot.send_audio(message.chat.id,f,caption="👑 Full VIP Track")
+        else:
+            enviar_pagos(message.chat.id)
+
+        purgar()
+
+    except:
+        bot.reply_to(message,"❌ Error")
+        purgar()
+
+# =========================
+# RUN
+# =========================
 if __name__ == "__main__":
     bot.infinity_polling()
-    
