@@ -43,42 +43,55 @@ last_time = {}
 
 def anti_spam(uid):
     now = time.time()
-    if now - last_time.get(uid, 0) < 8:
+    if now - last_time.get(uid, 0) < 6:
         return False
     last_time[uid] = now
     return True
 
 # ======================
-# REGIONES / PAGOS
+# REGIONES / PAGOS (REALES)
 # ======================
 
 regions = {}
 
 LINKS = {
     "MX_1": "https://mpago.la/2dMaFNh",
-    "MX_6": "PON_LINK_500",
-    "MX_8": "PON_LINK_850",
-    "US_1": "PON_LINK_20",
-    "US_6": "PON_LINK_50",
-    "US_8": "PON_LINK_80"
+    "MX_6": "https://mpago.la/REEMPLAZAR",
+    "MX_8": "https://mpago.la/REEMPLAZAR",
+    "US_1": "https://example.com",
+    "US_6": "https://example.com",
+    "US_8": "https://example.com"
 }
 
 def is_int(chat_id):
     return "INTERNACIONAL" in regions.get(chat_id, "")
 
+# ======================
+# 💳 PAGOS (BLINDADO + SIEMPRE VISIBLE)
+# ======================
+
 def pagos(chat_id):
-    kb = types.InlineKeyboardMarkup()
+    try:
+        kb = types.InlineKeyboardMarkup()
 
-    if is_int(chat_id):
-        kb.add(types.InlineKeyboardButton("1 Track $20", url=LINKS["US_1"]))
-        kb.add(types.InlineKeyboardButton("6 Tracks $50", url=LINKS["US_6"]))
-        kb.add(types.InlineKeyboardButton("8 Tracks $80", url=LINKS["US_8"]))
-    else:
-        kb.add(types.InlineKeyboardButton("1 Rola $200", url=LINKS["MX_1"]))
-        kb.add(types.InlineKeyboardButton("6 Rolas $500", url=LINKS["MX_6"]))
-        kb.add(types.InlineKeyboardButton("8 Rolas $850", url=LINKS["MX_8"]))
+        if is_int(chat_id):
+            kb.add(types.InlineKeyboardButton("🎧 1 Track - $20", url=LINKS["US_1"]))
+            kb.add(types.InlineKeyboardButton("🔥 6 Tracks - $50", url=LINKS["US_6"]))
+            kb.add(types.InlineKeyboardButton("💎 8 Tracks - $80", url=LINKS["US_8"]))
+        else:
+            kb.add(types.InlineKeyboardButton("🎧 1 Rola - $200", url=LINKS["MX_1"]))
+            kb.add(types.InlineKeyboardButton("🔥 6 Rolas - $500", url=LINKS["MX_6"]))
+            kb.add(types.InlineKeyboardButton("💎 8 Rolas - $850", url=LINKS["MX_8"]))
 
-    bot.send_message(chat_id, "💳 Desbloquea versión PRO 🔥", reply_markup=kb)
+        bot.send_message(
+            chat_id,
+            "💳 <b>ARSENAL PRO</b>\nElige tu pack 🔥",
+            reply_markup=kb
+        )
+
+    except Exception as e:
+        print("ERROR PAGOS:", e)
+        bot.send_message(chat_id, "💳 Sistema de precios en mantenimiento")
 
 # ======================
 # LIMPIEZA
@@ -90,7 +103,7 @@ def clean():
             os.remove(f)
 
 # ======================
-# 🎛️ ARSENAL MASTER ENGINE
+# 🎛️ MASTER MÁS AGRESIVO (MARKET READY)
 # ======================
 
 def master(inp, out):
@@ -100,22 +113,25 @@ def master(inp, out):
 
         "-af",
         (
-            "highpass=f=30,"
-            "lowpass=f=18000,"
+            "highpass=f=35,"
+            "lowpass=f=17000,"
 
+            # guitarras
             "equalizer=f=250:width_type=h:width=200:g=-2,"
-            "equalizer=f=3500:width_type=h:width=300:g=2,"
+            "equalizer=f=3200:width_type=h:width=300:g=3,"
 
-            "equalizer=f=8000:width_type=h:width=4000:g=-2,"
-            "equalizer=f=12000:width_type=h:width=5000:g=-1,"
-
+            # presencia voz
             "equalizer=f=150:width_type=h:width=100:g=2,"
-            "equalizer=f=4000:width_type=h:width=200:g=2,"
-            "equalizer=f=9000:width_type=h:width=300:g=1,"
+            "equalizer=f=4200:width_type=h:width=250:g=3,"
 
-            "acompressor=threshold=-18dB:ratio=3:attack=5:release=80,"
+            # hi-hats control
+            "equalizer=f=8500:width_type=h:width=3000:g=-3,"
 
-            "loudnorm=I=-14:TP=-1.0:LRA=11"
+            # compresión más agresiva
+            "acompressor=threshold=-20dB:ratio=4:attack=3:release=60,"
+
+            # volumen “pro streaming”
+            "loudnorm=I=-10:TP=-1.0:LRA=7"
         ),
 
         "-b:a", "320k",
@@ -143,7 +159,7 @@ def start_webhook():
         print("Webhook activo:", WEBHOOK_URL)
 
 # ======================
-# BOT
+# BOT START
 # ======================
 
 @bot.message_handler(commands=["start"])
@@ -159,13 +175,17 @@ def start(m):
         reply_markup=kb
     )
 
+# ======================
+# REGION
+# ======================
+
 @bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX / LATAM", "🌎 INTERNACIONAL"])
 def region(m):
     regions[m.chat.id] = m.text
     bot.send_message(m.chat.id, "🎧 Envía tu audio (90s preview)")
 
 # ======================
-# AUDIO HANDLER (FIXED)
+# AUDIO PIPELINE (FIXED)
 # ======================
 
 @bot.message_handler(content_types=["audio", "document"])
@@ -182,11 +202,11 @@ def audio(m):
         f = bot.get_file(fid)
         data = bot.download_file(f.file_path)
 
-        # ✅ CORRECTO: guardar como OGG original
-        with open("input.ogg", "wb") as file:
-            file.write(data)
+        # guardar original correcto
+        with open("input.ogg", "wb") as f:
+            f.write(data)
 
-        # 🔥 conversión segura a WAV real
+        # convertir seguro
         subprocess.run([
             "ffmpeg", "-y",
             "-i", "input.ogg",
@@ -196,7 +216,7 @@ def audio(m):
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         if not os.path.exists("temp.wav"):
-            raise Exception("FFmpeg no generó temp.wav")
+            raise Exception("FFmpeg no generó audio válido")
 
         master("temp.wav", "output.mp3")
 
