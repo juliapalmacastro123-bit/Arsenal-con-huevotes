@@ -2,9 +2,11 @@ import os
 import time
 import telebot
 from telebot import types
-from pydub import AudioSegment
-import subprocess
 from flask import Flask, request
+import subprocess
+
+# ⚠️ IMPORTANTE: pydub solo funciona bien en Python 3.10–3.11
+from pydub import AudioSegment
 
 # ======================
 # CONFIG
@@ -26,13 +28,12 @@ WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
 BOT_NAME = "ARSENAL: La Metamorfosis del Sonido"
 
-PRIVACY_MSG = f"""
+PRIVACY = f"""
 🔒 <b>{BOT_NAME}</b>
 
-- Tu audio NO se almacena
+- No almacenamos audio
 - Se procesa solo para masterización
 - Se elimina automáticamente
-- No se comparte con terceros
 """
 
 # ======================
@@ -42,30 +43,27 @@ PRIVACY_MSG = f"""
 ADMIN_ID = 7949397943
 vip_users = set()
 
-def es_vip(user_id):
-    return user_id in vip_users or user_id == ADMIN_ID
+def is_vip(uid):
+    return uid in vip_users or uid == ADMIN_ID
 
 # ======================
-# SEGURIDAD
+# ANTI SPAM
 # ======================
 
-user_last_request = {}
+last_time = {}
 
-def anti_spam(user_id):
+def anti_spam(uid):
     now = time.time()
-    last = user_last_request.get(user_id, 0)
-
-    if now - last < 8:
+    if now - last_time.get(uid, 0) < 8:
         return False
-
-    user_last_request[user_id] = now
+    last_time[uid] = now
     return True
 
 # ======================
-# REGIONES + PAGOS
+# PAGOS
 # ======================
 
-region_usuario = {}
+regions = {}
 
 LINKS = {
     "MX_1": "https://mpago.la/2dMaFNh",
@@ -76,48 +74,43 @@ LINKS = {
     "US_8": "PON_LINK_80"
 }
 
-def es_internacional(chat_id):
-    return "INTERNACIONAL" in region_usuario.get(chat_id, "")
+def is_int(chat_id):
+    return "INTERNACIONAL" in regions.get(chat_id, "")
 
 def pagos(chat_id):
     kb = types.InlineKeyboardMarkup()
 
-    if es_internacional(chat_id):
-        kb.add(types.InlineKeyboardButton("🔥 1 Track $20 USD", url=LINKS["US_1"]))
-        kb.add(types.InlineKeyboardButton("⚡ 6 Tracks $50 USD", url=LINKS["US_6"]))
-        kb.add(types.InlineKeyboardButton("👑 8 Tracks $80 USD", url=LINKS["US_8"]))
+    if is_int(chat_id):
+        kb.add(types.InlineKeyboardButton("1 Track $20", url=LINKS["US_1"]))
+        kb.add(types.InlineKeyboardButton("6 Tracks $50", url=LINKS["US_6"]))
+        kb.add(types.InlineKeyboardButton("8 Tracks $80", url=LINKS["US_8"]))
     else:
-        kb.add(types.InlineKeyboardButton("🔥 1 Rola $200 MXN", url=LINKS["MX_1"]))
-        kb.add(types.InlineKeyboardButton("⚡ 6 Rolas $500 MXN", url=LINKS["MX_6"]))
-        kb.add(types.InlineKeyboardButton("👑 8 Rolas $850 MXN", url=LINKS["MX_8"]))
+        kb.add(types.InlineKeyboardButton("1 Rola $200", url=LINKS["MX_1"]))
+        kb.add(types.InlineKeyboardButton("6 Rolas $500", url=LINKS["MX_6"]))
+        kb.add(types.InlineKeyboardButton("8 Rolas $850", url=LINKS["MX_8"]))
 
-    bot.send_message(chat_id,
-        "💳 <b>Desbloquea tu masterización PRO</b>\n"
-        "ARSENAL transforma tu demo en sonido de estudio 🔥",
-        reply_markup=kb
-    )
+    bot.send_message(chat_id, "💳 Desbloquea versión PRO 🔥", reply_markup=kb)
 
 # ======================
-# AUDIO ENGINE (METAL FOCUSED)
+# AUDIO ENGINE (FFMPEG DIRECTO ESTABLE)
 # ======================
 
-def purgar():
+def clean():
     for f in ["input.wav", "temp.wav", "output.mp3"]:
         if os.path.exists(f):
             os.remove(f)
 
-def masterizar(inp, out):
-    filtro = "loudnorm=I=-8,compressor"
-
+def master(inp, out):
     subprocess.run([
-        "ffmpeg", "-y", "-i", inp,
-        "-af", filtro,
+        "ffmpeg", "-y",
+        "-i", inp,
+        "-af", "loudnorm=I=-8,acompressor",
         "-b:a", "320k",
         out
     ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 # ======================
-# FLASK WEBHOOK
+# WEBHOOK
 # ======================
 
 @app.route("/")
@@ -137,28 +130,27 @@ def start_webhook():
         print("Webhook activo:", WEBHOOK_URL)
 
 # ======================
-# BOT FLOW
+# BOT
 # ======================
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=["start"])
 def start(m):
-    bot.send_message(m.chat.id, PRIVACY_MSG)
+    bot.send_message(m.chat.id, PRIVACY)
 
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add("🇲🇽 MX / LATAM", "🌎 INTERNACIONAL")
 
     bot.send_message(m.chat.id,
-        f"🎸 <b>{BOT_NAME}</b>\n"
-        "Sube tu demo y conviértelo en sonido de estudio 🔥",
+        f"🎸 <b>{BOT_NAME}</b>\nSube tu demo 🔥",
         reply_markup=kb
     )
 
 @bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX / LATAM", "🌎 INTERNACIONAL"])
 def region(m):
-    region_usuario[m.chat.id] = m.text
-    bot.send_message(m.chat.id, "🎧 Envía tu audio (máx 90s preview)")
+    regions[m.chat.id] = m.text
+    bot.send_message(m.chat.id, "🎧 Envía tu audio (90s preview)")
 
-@bot.message_handler(content_types=['audio','document'])
+@bot.message_handler(content_types=["audio", "document"])
 def audio(m):
 
     if not anti_spam(m.from_user.id):
@@ -176,23 +168,23 @@ def audio(m):
 
         AudioSegment.from_file("input.wav")[:90000].export("temp.wav", format="wav")
 
-        masterizar("temp.wav", "output.mp3")
+        master("temp.wav", "output.mp3")
 
         bot.send_audio(m.chat.id, open("output.mp3", "rb"), caption="🎧 Preview ARSENAL")
 
-        if es_vip(m.from_user.id):
+        if is_vip(m.from_user.id):
             bot.send_message(m.chat.id, "👑 VIP activo")
         else:
             pagos(m.chat.id)
 
-        purgar()
+        clean()
 
     except:
-        bot.reply_to(m, "❌ Error en procesamiento")
-        purgar()
+        bot.reply_to(m, "❌ Error")
+        clean()
 
 # ======================
-# START
+# RUN
 # ======================
 
 if __name__ == "__main__":
