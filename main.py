@@ -85,12 +85,12 @@ def pagos(chat_id):
 # ======================
 
 def clean():
-    for f in ["input.wav", "temp.wav", "output.mp3"]:
+    for f in ["input.ogg", "temp.wav", "output.mp3"]:
         if os.path.exists(f):
             os.remove(f)
 
 # ======================
-# 🎛️ ARSENAL PRE-MASTER ENGINE (CORE)
+# 🎛️ ARSENAL MASTER ENGINE
 # ======================
 
 def master(inp, out):
@@ -98,41 +98,23 @@ def master(inp, out):
         "ffmpeg", "-y",
         "-i", inp,
 
-        # ======================
-        # 🧹 CLEANUP
-        # ======================
         "-af",
         (
-            "highpass=f=30,"                      # limpieza graves
-            "lowpass=f=18000,"                    # aire controlado
+            "highpass=f=30,"
+            "lowpass=f=18000,"
 
-            # ======================
-            # 🎸 GUITARRAS / MEDIOS
-            # ======================
-            "equalizer=f=250:width_type=h:width=200:g=-2,"   # quitar barro
-            "equalizer=f=3500:width_type=h:width=300:g=2,"   # filo guitarras
+            "equalizer=f=250:width_type=h:width=200:g=-2,"
+            "equalizer=f=3500:width_type=h:width=300:g=2,"
 
-            # ======================
-            # 🥁 HI-HATS / PLATOS CONTROL
-            # ======================
-            "equalizer=f=8000:width_type=h:width=4000:g=-2,"  # hi-hats suaves
-            "equalizer=f=12000:width_type=h:width=5000:g=-1," # cymbals suaves
+            "equalizer=f=8000:width_type=h:width=4000:g=-2,"
+            "equalizer=f=12000:width_type=h:width=5000:g=-1,"
 
-            # ======================
-            # 🎤 VOZ (PRESENCIA)
-            # ======================
-            "equalizer=f=150:width_type=h:width=100:g=2,"     # cuerpo
-            "equalizer=f=4000:width_type=h:width=200:g=2,"    # presencia
-            "equalizer=f=9000:width_type=h:width=300:g=1,"    # brillo
+            "equalizer=f=150:width_type=h:width=100:g=2,"
+            "equalizer=f=4000:width_type=h:width=200:g=2,"
+            "equalizer=f=9000:width_type=h:width=300:g=1,"
 
-            # ======================
-            # 🎛️ DINÁMICA
-            # ======================
             "acompressor=threshold=-18dB:ratio=3:attack=5:release=80,"
 
-            # ======================
-            # 📊 LOUDNESS SPOTIFY-READY
-            # ======================
             "loudnorm=I=-14:TP=-1.0:LRA=11"
         ),
 
@@ -161,7 +143,7 @@ def start_webhook():
         print("Webhook activo:", WEBHOOK_URL)
 
 # ======================
-# BOT FLOW
+# BOT
 # ======================
 
 @bot.message_handler(commands=["start"])
@@ -182,6 +164,10 @@ def region(m):
     regions[m.chat.id] = m.text
     bot.send_message(m.chat.id, "🎧 Envía tu audio (90s preview)")
 
+# ======================
+# AUDIO HANDLER (FIXED)
+# ======================
+
 @bot.message_handler(content_types=["audio", "document"])
 def audio(m):
 
@@ -196,15 +182,21 @@ def audio(m):
         f = bot.get_file(fid)
         data = bot.download_file(f.file_path)
 
-        open("input.wav", "wb").write(data)
+        # ✅ CORRECTO: guardar como OGG original
+        with open("input.ogg", "wb") as file:
+            file.write(data)
 
-        # conversión segura
+        # 🔥 conversión segura a WAV real
         subprocess.run([
             "ffmpeg", "-y",
-            "-i", "input.wav",
-            "-t", "90",
+            "-i", "input.ogg",
+            "-ar", "44100",
+            "-ac", "2",
             "temp.wav"
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+        if not os.path.exists("temp.wav"):
+            raise Exception("FFmpeg no generó temp.wav")
 
         master("temp.wav", "output.mp3")
 
@@ -219,8 +211,9 @@ def audio(m):
 
         clean()
 
-    except:
-        bot.reply_to(m, "❌ Error procesando audio")
+    except Exception as e:
+        print("ERROR REAL:", e)
+        bot.reply_to(m, f"❌ Error procesando audio:\n{e}")
         clean()
 
 # ======================
