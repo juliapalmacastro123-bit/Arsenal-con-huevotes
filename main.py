@@ -5,9 +5,6 @@ from telebot import types
 from flask import Flask, request
 import subprocess
 
-# ⚠️ IMPORTANTE: pydub solo funciona bien en Python 3.10–3.11
-from pydub import AudioSegment
-
 # ======================
 # CONFIG
 # ======================
@@ -32,19 +29,19 @@ PRIVACY = f"""
 🔒 <b>{BOT_NAME}</b>
 
 - No almacenamos audio
-- Se procesa solo para masterización
+- Solo se procesa temporalmente
 - Se elimina automáticamente
 """
 
 # ======================
-# ADMIN / VIP
+# ADMIN
 # ======================
 
 ADMIN_ID = 7949397943
 vip_users = set()
 
 def is_vip(uid):
-    return uid in vip_users or uid == ADMIN_ID
+    return uid == ADMIN_ID or uid in vip_users
 
 # ======================
 # ANTI SPAM
@@ -92,7 +89,7 @@ def pagos(chat_id):
     bot.send_message(chat_id, "💳 Desbloquea versión PRO 🔥", reply_markup=kb)
 
 # ======================
-# AUDIO ENGINE (FFMPEG DIRECTO ESTABLE)
+# AUDIO (FFMPEG DIRECTO)
 # ======================
 
 def clean():
@@ -166,21 +163,25 @@ def audio(m):
 
         open("input.wav", "wb").write(data)
 
-        AudioSegment.from_file("input.wav")[:90000].export("temp.wav", format="wav")
+        # 🔥 SOLO FFMPEG (SIN PYDUB)
+        subprocess.run([
+            "ffmpeg", "-y",
+            "-i", "input.wav",
+            "-t", "90",
+            "temp.wav"
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         master("temp.wav", "output.mp3")
 
         bot.send_audio(m.chat.id, open("output.mp3", "rb"), caption="🎧 Preview ARSENAL")
 
-        if is_vip(m.from_user.id):
-            bot.send_message(m.chat.id, "👑 VIP activo")
-        else:
+        if not is_vip(m.from_user.id):
             pagos(m.chat.id)
 
         clean()
 
     except:
-        bot.reply_to(m, "❌ Error")
+        bot.reply_to(m, "❌ Error procesando audio")
         clean()
 
 # ======================
