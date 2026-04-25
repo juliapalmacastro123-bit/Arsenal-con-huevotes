@@ -19,10 +19,6 @@ app = Flask(__name__)
 BASE_URL = os.getenv("RENDER_EXTERNAL_URL")
 WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
-# ======================
-# IDENTIDAD
-# ======================
-
 BOT_NAME = "ARSENAL: La Metamorfosis del Sonido"
 
 PRIVACY = f"""
@@ -32,10 +28,6 @@ PRIVACY = f"""
 - Solo se procesa temporalmente
 - Se elimina automáticamente
 """
-
-# ======================
-# ADMIN
-# ======================
 
 ADMIN_ID = 7949397943
 vip_users = set()
@@ -57,7 +49,7 @@ def anti_spam(uid):
     return True
 
 # ======================
-# PAGOS
+# REGIONES / PAGOS
 # ======================
 
 regions = {}
@@ -89,7 +81,7 @@ def pagos(chat_id):
     bot.send_message(chat_id, "💳 Desbloquea versión PRO 🔥", reply_markup=kb)
 
 # ======================
-# AUDIO (FFMPEG DIRECTO)
+# LIMPIEZA
 # ======================
 
 def clean():
@@ -97,11 +89,53 @@ def clean():
         if os.path.exists(f):
             os.remove(f)
 
+# ======================
+# 🎛️ ARSENAL PRE-MASTER ENGINE (CORE)
+# ======================
+
 def master(inp, out):
     subprocess.run([
         "ffmpeg", "-y",
         "-i", inp,
-        "-af", "loudnorm=I=-8,acompressor",
+
+        # ======================
+        # 🧹 CLEANUP
+        # ======================
+        "-af",
+        (
+            "highpass=f=30,"                      # limpieza graves
+            "lowpass=f=18000,"                    # aire controlado
+
+            # ======================
+            # 🎸 GUITARRAS / MEDIOS
+            # ======================
+            "equalizer=f=250:width_type=h:width=200:g=-2,"   # quitar barro
+            "equalizer=f=3500:width_type=h:width=300:g=2,"   # filo guitarras
+
+            # ======================
+            # 🥁 HI-HATS / PLATOS CONTROL
+            # ======================
+            "equalizer=f=8000:width_type=h:width=4000:g=-2,"  # hi-hats suaves
+            "equalizer=f=12000:width_type=h:width=5000:g=-1," # cymbals suaves
+
+            # ======================
+            # 🎤 VOZ (PRESENCIA)
+            # ======================
+            "equalizer=f=150:width_type=h:width=100:g=2,"     # cuerpo
+            "equalizer=f=4000:width_type=h:width=200:g=2,"    # presencia
+            "equalizer=f=9000:width_type=h:width=300:g=1,"    # brillo
+
+            # ======================
+            # 🎛️ DINÁMICA
+            # ======================
+            "acompressor=threshold=-18dB:ratio=3:attack=5:release=80,"
+
+            # ======================
+            # 📊 LOUDNESS SPOTIFY-READY
+            # ======================
+            "loudnorm=I=-14:TP=-1.0:LRA=11"
+        ),
+
         "-b:a", "320k",
         out
     ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -127,7 +161,7 @@ def start_webhook():
         print("Webhook activo:", WEBHOOK_URL)
 
 # ======================
-# BOT
+# BOT FLOW
 # ======================
 
 @bot.message_handler(commands=["start"])
@@ -137,7 +171,8 @@ def start(m):
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add("🇲🇽 MX / LATAM", "🌎 INTERNACIONAL")
 
-    bot.send_message(m.chat.id,
+    bot.send_message(
+        m.chat.id,
         f"🎸 <b>{BOT_NAME}</b>\nSube tu demo 🔥",
         reply_markup=kb
     )
@@ -154,7 +189,7 @@ def audio(m):
         bot.reply_to(m, "⛔ Espera unos segundos")
         return
 
-    bot.reply_to(m, "⚡ Procesando...")
+    bot.reply_to(m, "⚡ Procesando ARSENAL...")
 
     try:
         fid = m.audio.file_id if m.audio else m.document.file_id
@@ -163,7 +198,7 @@ def audio(m):
 
         open("input.wav", "wb").write(data)
 
-        # 🔥 SOLO FFMPEG (SIN PYDUB)
+        # conversión segura
         subprocess.run([
             "ffmpeg", "-y",
             "-i", "input.wav",
@@ -173,7 +208,11 @@ def audio(m):
 
         master("temp.wav", "output.mp3")
 
-        bot.send_audio(m.chat.id, open("output.mp3", "rb"), caption="🎧 Preview ARSENAL")
+        bot.send_audio(
+            m.chat.id,
+            open("output.mp3", "rb"),
+            caption="🎧 ARSENAL PRE-MASTER"
+        )
 
         if not is_vip(m.from_user.id):
             pagos(m.chat.id)
