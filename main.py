@@ -1,20 +1,16 @@
 import os
-import time
 import telebot
 from telebot import types
 from flask import Flask, request
 import subprocess
-import shutil
 import traceback
+import shutil
 
 # ======================
 # CONFIG
 # ======================
 
 TOKEN = os.getenv("TOKEN")
-if not TOKEN:
-    raise ValueError("Falta TOKEN")
-
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 app = Flask(__name__)
 
@@ -23,10 +19,15 @@ WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
 PAGO_LINK = "https://mpago.la/2KNKzJp"
 
-ADMIN_ID = 7949397943
+# 👑 TU ID REAL (OBLIGATORIO)
+ADMIN_ID = "7949397943"
 
-def is_admin(uid):
-    return uid == ADMIN_ID
+# ======================
+# ADMIN CHECK (FIX DEFINITIVO)
+# ======================
+
+def is_admin(user_id):
+    return str(user_id) == ADMIN_ID
 
 # ======================
 # SAFE SEND
@@ -44,6 +45,7 @@ def send(chat_id, text, kb=None):
 
 @bot.message_handler(commands=["start"])
 def start(m):
+
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add("🇲🇽 MX", "🌎 INTERNATIONAL")
 
@@ -75,7 +77,7 @@ def pagos(chat_id):
     send(chat_id, "💳 Desbloquea versión completa 🔥", kb)
 
 # ======================
-# AUDIO ENGINE
+# AUDIO FLOW
 # ======================
 
 @bot.message_handler(content_types=["audio", "document"])
@@ -92,7 +94,7 @@ def audio(m):
         open(input_file, "wb").write(data)
 
         # ======================
-        # 👑 ADMIN FLOW (FULL ACCESS)
+        # 👑 ADMIN FULL ACCESS
         # ======================
 
         if is_admin(user_id):
@@ -109,26 +111,26 @@ def audio(m):
             bot.send_audio(
                 m.chat.id,
                 open("admin_final.mp3", "rb"),
-                caption="👑 FULL VERSION (ADMIN)"
+                caption="👑 FULL VERSION ADMIN"
             )
 
             return
 
         # ======================
-        # 👤 USER FLOW
+        # 👤 USER MODE (90s)
         # ======================
 
         send(m.chat.id, "⚡ Procesando ARSENAL...")
 
         subprocess.run([
-            "ffmpeg", "-y",
+            "ffmpeg","-y",
             "-i", input_file,
             "-t", "90",
             "temp.mp3"
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         subprocess.run([
-            "ffmpeg", "-y",
+            "ffmpeg","-y",
             "-i", "temp.mp3",
             "-af", "loudnorm=I=-14:TP=-1.5",
             "final.mp3"
@@ -144,8 +146,7 @@ def audio(m):
         pagos(m.chat.id)
 
     except Exception:
-        err = traceback.format_exc()
-        send(m.chat.id, f"❌ ERROR:\n{err}")
+        send(m.chat.id, f"❌ ERROR:\n{traceback.format_exc()}")
 
 # ======================
 # WEBHOOK
@@ -157,14 +158,10 @@ def home():
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
-    try:
-        update = telebot.types.Update.de_json(
-            request.get_data().decode("utf-8")
-        )
-        bot.process_new_updates([update])
-    except Exception as e:
-        print("WEBHOOK ERROR:", e)
-
+    update = telebot.types.Update.de_json(
+        request.get_data().decode("utf-8")
+    )
+    bot.process_new_updates([update])
     return "OK"
 
 def start_webhook():
