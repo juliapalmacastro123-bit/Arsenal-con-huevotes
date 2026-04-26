@@ -19,19 +19,7 @@ app = Flask(__name__)
 BASE_URL = os.getenv("RENDER_EXTERNAL_URL")
 WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
-BOT_NAME = "ARSENAL: La Metamorfosis del Sonido"
-
-# ======================
-# PRIVACIDAD
-# ======================
-
-PRIVACY = f"""
-🔒 <b>{BOT_NAME}</b>
-
-- No almacenamos audio
-- Solo se procesa temporalmente
-- Se elimina automáticamente
-"""
+BOT_NAME = "ARSENAL: The Sound Metamorphosis"
 
 # ======================
 # ADMIN
@@ -56,32 +44,67 @@ def anti_spam(uid):
     return True
 
 # ======================
-# REGIONES / PAGOS
+# REGIONES
 # ======================
 
 regions = {}
 
+# ======================
+# LINKS
+# ======================
+
 LINKS = {
-    "MX_1": "https://mpago.la/2dMaFNh",
+    # 🇲🇽 NORMAL
+    "MX_1": "https://mpago.la/1MKz4sq",
     "MX_6": "https://mpago.la/TU_LINK_500",
     "MX_8": "https://mpago.la/TU_LINK_850",
 
-    "PRO_1": "https://mpago.la/TU_LINK_450",
-    "PRO_6": "https://mpago.la/TU_LINK_1200",
-    "PRO_8": "https://mpago.la/TU_LINK_1600"
+    # 🇲🇽 PRO
+    "PRO_MX_1": "https://mpago.la/TU_LINK_450",
+    "PRO_MX_6": "https://mpago.la/TU_LINK_1200",
+    "PRO_MX_8": "https://mpago.la/TU_LINK_1600",
+
+    # 🌎 NORMAL
+    "US_1": "https://paypal.me/TU_LINK_12",
+    "US_6": "https://paypal.me/TU_LINK_30",
+    "US_8": "https://paypal.me/TU_LINK_45",
+
+    # 🌎 PRO
+    "PRO_US_1": "https://paypal.me/TU_LINK_25",
+    "PRO_US_6": "https://paypal.me/TU_LINK_70",
+    "PRO_US_8": "https://paypal.me/TU_LINK_90"
 }
+
+def is_int(chat_id):
+    return regions.get(chat_id) == "🌎 INTERNATIONAL"
+
+# ======================
+# PAGOS
+# ======================
 
 def pagos(chat_id):
 
     kb = types.InlineKeyboardMarkup()
 
-    kb.add(types.InlineKeyboardButton("⚡ 1 Rola $200", url=LINKS["MX_1"]))
-    kb.add(types.InlineKeyboardButton("⚡ 6 Rolas $500", url=LINKS["MX_6"]))
-    kb.add(types.InlineKeyboardButton("⚡ 8 Rolas $850", url=LINKS["MX_8"]))
+    if is_int(chat_id):
 
-    kb.add(types.InlineKeyboardButton("💎 PRO 1 Rola $450", url=LINKS["PRO_1"]))
-    kb.add(types.InlineKeyboardButton("💎 PRO 6 Rolas $1200", url=LINKS["PRO_6"]))
-    kb.add(types.InlineKeyboardButton("💎 PRO 8 Rolas $1600", url=LINKS["PRO_8"]))
+        kb.add(types.InlineKeyboardButton("⚡ 1 Track $12", url=LINKS["US_1"]))
+        kb.add(types.InlineKeyboardButton("⚡ 6 Tracks $30", url=LINKS["US_6"]))
+        kb.add(types.InlineKeyboardButton("⚡ 8 Tracks $45", url=LINKS["US_8"]))
+
+        kb.add(types.InlineKeyboardButton("💎 PRO 1 Track $25", url=LINKS["PRO_US_1"]))
+        kb.add(types.InlineKeyboardButton("💎 PRO 6 Tracks $70", url=LINKS["PRO_US_6"]))
+        kb.add(types.InlineKeyboardButton("💎 PRO 8 Tracks $90", url=LINKS["PRO_US_8"]))
+
+    else:
+
+        kb.add(types.InlineKeyboardButton("⚡ 1 Rola $200", url=LINKS["MX_1"]))
+        kb.add(types.InlineKeyboardButton("⚡ 6 Rolas $500", url=LINKS["MX_6"]))
+        kb.add(types.InlineKeyboardButton("⚡ 8 Rolas $850", url=LINKS["MX_8"]))
+
+        kb.add(types.InlineKeyboardButton("💎 PRO 1 Rola $450", url=LINKS["PRO_MX_1"]))
+        kb.add(types.InlineKeyboardButton("💎 PRO 6 Rolas $1200", url=LINKS["PRO_MX_6"]))
+        kb.add(types.InlineKeyboardButton("💎 PRO 8 Rolas $1600", url=LINKS["PRO_MX_8"]))
 
     bot.send_message(chat_id, "💳 Elige tu mejora 🔥", reply_markup=kb)
 
@@ -106,18 +129,13 @@ def master(inp, out):
         (
             "highpass=f=35,"
             "lowpass=f=18000,"
-
             "equalizer=f=2500:width_type=h:width=600:g=2,"
             "equalizer=f=4500:width_type=h:width=800:g=2,"
-
             "equalizer=f=8000:width_type=h:width=4000:g=-3,"
             "equalizer=f=12000:width_type=h:width=5000:g=-2,"
-
             "equalizer=f=150:width_type=h:width=100:g=2,"
             "equalizer=f=4000:width_type=h:width=200:g=2,"
-
             "acompressor=threshold=-18dB:ratio=3:attack=5:release=80,"
-
             "loudnorm=I=-14:TP=-1.0:LRA=11"
         ),
         "-b:a", "320k",
@@ -145,25 +163,25 @@ def start_webhook():
         print("Webhook activo:", WEBHOOK_URL)
 
 # ======================
-# BOT
+# BOT FLOW
 # ======================
 
 @bot.message_handler(commands=["start"])
 def start(m):
-    bot.send_message(m.chat.id, PRIVACY)
 
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add("🔥 EMPEZAR")
+    kb.add("🇲🇽 MX", "🌎 INTERNATIONAL")
 
     bot.send_message(
         m.chat.id,
-        f"🎸 <b>{BOT_NAME}</b>\nSube tu demo 🔥",
+        "🎧 Manda tu demo y escucha cómo mejora en 90s 🔥",
         reply_markup=kb
     )
 
-@bot.message_handler(func=lambda m: m.text == "🔥 EMPEZAR")
-def start2(m):
-    bot.send_message(m.chat.id, "🎧 Envía tu audio (preview 90s)")
+@bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX", "🌎 INTERNATIONAL"])
+def region(m):
+    regions[m.chat.id] = m.text
+    bot.send_message(m.chat.id, "🎧 Envía tu audio")
 
 # ======================
 # AUDIO
@@ -215,9 +233,9 @@ def audio(m):
                 m.chat.id,
                 open("preview.mp3", "rb"),
                 caption=(
-                    "🎧 Preview ARSENAL (90s)\n\n"
+                    "🎧 Preview (90s)\n\n"
                     "🔥 Esto ya suena mejor...\n"
-                    "💎 Con PRO (stems) suena aún más limpio\n\n"
+                    "💎 Con PRO suena más limpio y pro\n\n"
                     "⏳ Se eliminará en breve"
                 )
             )
