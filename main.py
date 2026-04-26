@@ -1,8 +1,10 @@
 import os
+import time
 import telebot
+from telebot import types
 from flask import Flask, request
-from pydub import AudioSegment
-import tempfile
+import subprocess
+import shutil
 
 # ======================
 # CONFIG
@@ -12,79 +14,66 @@ TOKEN = os.getenv("TOKEN")
 if not TOKEN:
     raise ValueError("Falta TOKEN")
 
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 app = Flask(__name__)
 
-# ======================
-# WEBHOOK
-# ======================
+BASE_URL = os.getenv("RENDER_EXTERNAL_URL")
+WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
-@app.route(f"/{TOKEN}", methods=["POST"])
-def webhook():
-    json_str = request.get_data().decode("UTF-8")
-    update = telebot.types.Update.de_json(json_str)
-    bot.process_new_updates([update])
-    return "ok", 200
-
-@app.route("/")
-def home():
-    return "🔥 Arsenal activo"
+BOT_NAME = "ARSENAL: The Sound Metamorphosis"
 
 # ======================
-# FUNCIONES AUDIO
+# CHECK FFMPEG
 # ======================
 
-def procesar_audio(input_path, output_path):
-    audio = AudioSegment.from_file(input_path)
-
-    # 🔥 Cadena básica (puedes tunear después)
-    audio = audio.normalize()
-    audio = audio + 5  # boost leve
-
-    # Exportar
-    audio.export(output_path, format="mp3")
+if not shutil.which("ffmpeg"):
+    raise RuntimeError("FFmpeg no está instalado en el servidor")
 
 # ======================
-# TELEGRAM HANDLERS
+# ADMIN
 # ======================
 
-@bot.message_handler(content_types=["audio", "voice", "document"])
-def handle_audio(message):
-    try:
-        bot.reply_to(message, "🔥 Procesando tu demo...")
+ADMIN_ID = 7949397943
 
-        file_info = bot.get_file(message.audio.file_id if message.audio else message.voice.file_id)
-        downloaded_file = bot.download_file(file_info.file_path)
-
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".ogg") as input_file:
-            input_file.write(downloaded_file)
-            input_path = input_file.name
-
-        output_path = input_path.replace(".ogg", ".mp3")
-
-        procesar_audio(input_path, output_path)
-
-        with open(output_path, "rb") as f:
-            bot.send_audio(message.chat.id, f)
-
-        os.remove(input_path)
-        os.remove(output_path)
-
-    except Exception as e:
-        bot.reply_to(message, f"❌ Error: {e}")
+def is_admin(uid):
+    return uid == ADMIN_ID
 
 # ======================
-# START
+# ANTI SPAM
 # ======================
 
-if __name__ == "__main__":
-    bot.remove_webhook()
+last_time = {}
 
-    RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
-    if not RENDER_URL:
-        raise ValueError("Falta RENDER_EXTERNAL_URL")
+def anti_spam(uid):
+    now = time.time()
+    if now - last_time.get(uid, 0) < 6:
+        return False
+    last_time[uid] = now
+    return True
 
-    bot.set_webhook(url=f"{RENDER_URL}/{TOKEN}")
-    print(f"Webhook activo: {RENDER_URL}/{TOKEN}")
+# ======================
+# REGIONES
+# ======================
 
-    app.run(host="0.0.0.0", port=10000)
+regions = {}
+
+def is_int(chat_id):
+    return regions.get(chat_id) == "🌎 INTERNATIONAL"
+
+# ======================
+# LINK ÚNICO
+# ======================
+
+PAGO_LINK = "https://mpago.la/2KNKzJp"
+
+# ======================
+# PAGOS
+# ======================
+
+def pagos(chat_id):
+
+    kb = types.InlineKeyboardMarkup()
+
+    if is_int(chat_id):
+
+        kb.add(types.InlineKeyboardButton("⚡
