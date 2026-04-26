@@ -21,15 +21,12 @@ app = Flask(__name__)
 BASE_URL = os.getenv("RENDER_EXTERNAL_URL")
 WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
-BOT_NAME = "ARSENAL: Sound Metamorphosis"
-
 PAGO_LINK = "https://mpago.la/2KNKzJp"
 
-# ======================
-# CHECK FFmpeg
-# ======================
+ADMIN_ID = 7949397943
 
-FFMPEG_OK = shutil.which("ffmpeg") is not None
+def is_admin(uid):
+    return uid == ADMIN_ID
 
 # ======================
 # SAFE SEND
@@ -42,12 +39,6 @@ def send(chat_id, text, kb=None):
         print("SEND ERROR:", e)
 
 # ======================
-# REGIONES
-# ======================
-
-regions = {}
-
-# ======================
 # START
 # ======================
 
@@ -56,15 +47,13 @@ def start(m):
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add("🇲🇽 MX", "🌎 INTERNATIONAL")
 
-    send(
-        m.chat.id,
-        "🎧 ARSENAL ACTIVO\nManda tu demo 🔥",
-        kb
-    )
+    send(m.chat.id, "🎧 ARSENAL ACTIVO\nManda tu demo 🔥", kb)
 
 # ======================
 # REGION
 # ======================
+
+regions = {}
 
 @bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX", "🌎 INTERNATIONAL"])
 def region(m):
@@ -81,10 +70,9 @@ def pagos(chat_id):
     kb.add(types.InlineKeyboardButton("⚡ 1 Track $20", url=PAGO_LINK))
     kb.add(types.InlineKeyboardButton("⚡ 6 Tracks $50", url=PAGO_LINK))
     kb.add(types.InlineKeyboardButton("⚡ 8 Tracks $80", url=PAGO_LINK))
-
     kb.add(types.InlineKeyboardButton("💎 PRO Upgrade", url=PAGO_LINK))
 
-    send(chat_id, "💳 Mejora tu sonido 🔥", kb)
+    send(chat_id, "💳 Desbloquea versión completa 🔥", kb)
 
 # ======================
 # AUDIO ENGINE
@@ -94,20 +82,44 @@ def pagos(chat_id):
 def audio(m):
 
     try:
-        send(m.chat.id, "⚡ Procesando ARSENAL...")
+        user_id = m.from_user.id
 
         file_id = m.audio.file_id if m.audio else m.document.file_id
         file = bot.get_file(file_id)
         data = bot.download_file(file.file_path)
 
-        input_file = "input_audio"
+        input_file = "input.mp3"
         open(input_file, "wb").write(data)
 
-        if not FFMPEG_OK:
-            send(m.chat.id, "❌ FFmpeg no instalado en servidor")
+        # ======================
+        # 👑 ADMIN FLOW (FULL ACCESS)
+        # ======================
+
+        if is_admin(user_id):
+
+            send(m.chat.id, "👑 ADMIN MODE - FULL MASTER")
+
+            subprocess.run([
+                "ffmpeg","-y",
+                "-i", input_file,
+                "-af", "loudnorm=I=-14:TP=-1.5",
+                "admin_final.mp3"
+            ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+            bot.send_audio(
+                m.chat.id,
+                open("admin_final.mp3", "rb"),
+                caption="👑 FULL VERSION (ADMIN)"
+            )
+
             return
 
-        # recorte 90s
+        # ======================
+        # 👤 USER FLOW
+        # ======================
+
+        send(m.chat.id, "⚡ Procesando ARSENAL...")
+
         subprocess.run([
             "ffmpeg", "-y",
             "-i", input_file,
@@ -115,7 +127,6 @@ def audio(m):
             "temp.mp3"
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-        # master simple seguro
         subprocess.run([
             "ffmpeg", "-y",
             "-i", "temp.mp3",
@@ -123,7 +134,7 @@ def audio(m):
             "final.mp3"
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-        send(m.chat.id, "🎧 Aquí tu preview mejorado")
+        send(m.chat.id, "🎧 Preview listo")
 
         bot.send_audio(
             m.chat.id,
@@ -142,7 +153,7 @@ def audio(m):
 
 @app.route("/")
 def home():
-    return f"{BOT_NAME} ONLINE"
+    return "ARSENAL ONLINE"
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
