@@ -1,6 +1,17 @@
-""" ARSENAL - BACKEND UNIFICADO (PRODUCCIÓN) Flask + Telegram Bot + Audio Processing (pydub) Listo para Render / producción estable """
+""" ARSENAL - BACKEND PRODUCCIÓN FINAL ESTABLE (NO WEBHOOK / SOLO POLLING) Flask + Telegram Bot + Audio Processing (pydub) Optimizado para Render (sin conflictos de arranque)
 
-import os import threading import logging from flask import Flask, request, jsonify import telebot from pydub import AudioSegment
+OBJETIVO:
+
+Cero conflicto webhook/polling
+
+Inicio estable en Render
+
+Procesamiento seguro de audio
+
+Preview 90s + master completo interno """
+
+
+import os import threading import logging from flask import Flask, jsonify import telebot from pydub import AudioSegment
 
 =========================
 
@@ -10,71 +21,81 @@ CONFIG
 
 TOKEN = os.getenv("TOKEN") if not TOKEN: raise ValueError("Falta TOKEN en variables de entorno")
 
-Logging básico producción
-
 logging.basicConfig(level=logging.INFO)
 
-Flask app
-
-app = Flask(name)
-
-Telegram bot
-
-bot = telebot.TeleBot(TOKEN, parse_mode=None)
+app = Flask(name) bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
 =========================
 
-FLASK ROUTES
+FLASK (SOLO ESTADO)
 
 =========================
 
-@app.route("/") def home(): return "ARSENAL ONLINE"
+@app.route("/") def home(): return "ARSENAL ONLINE - OK"
 
 @app.route("/health") def health(): return jsonify({"status": "ok"})
 
-Webhook opcional (si decides usarlo)
+=========================
 
-@app.route(f"/{TOKEN}", methods=["POST"]) def telegram_webhook(): json_str = request.get_data().decode("UTF-8") update = telebot.types.Update.de_json(json_str) bot.process_new_updates([update]) return "ok"
+AUDIO PROCESSING SEGURO
 
 =========================
 
-AUDIO PROCESSING
+def create_master(audio_path): try: audio = AudioSegment.from_file(audio_path) audio = audio + 5  # master simple base
 
-=========================
+output = audio_path.replace(".ogg", "_master.mp3")
+    audio.export(output, format="mp3")
 
-def process_audio(file_path): """ Procesamiento base seguro """ try: audio = AudioSegment.from_file(file_path)
-
-# Ejemplo básico: normalización ligera
-    audio = audio + 5
-
-    output_path = file_path.replace(".mp3", "_processed.mp3")
-    audio.export(output_path, format="mp3")
-
-    return output_path
+    return output
 
 except Exception as e:
-    logging.error(f"Error procesando audio: {e}")
+    logging.error(f"Error master: {e}")
+    return None
+
+def create_preview(audio_path, seconds=90): try: audio = AudioSegment.from_file(audio_path) preview = audio[:seconds * 1000]
+
+output = audio_path.replace(".ogg", "_preview.mp3")
+    preview.export(output, format="mp3")
+
+    return output
+
+except Exception as e:
+    logging.error(f"Error preview: {e}")
     return None
 
 =========================
 
-TELEGRAM BOT HANDLERS
+BOT HANDLER
 
 =========================
 
-@bot.message_handler(commands=['start']) def start(message): bot.reply_to(message, "ARSENAL ONLINE - Envía tu audio para procesar")
+@bot.message_handler(commands=['start']) def start(message): bot.reply_to( message, "ARSENAL ONLINE 🎧\nEnvía tu audio para preview de 90s masterizado" )
 
-@bot.message_handler(content_types=['audio', 'voice']) def handle_audio(message): try: file_info = bot.get_file(message.audio.file_id if message.content_type == 'audio' else message.voice.file_id) downloaded_file = bot.download_file(file_info.file_path)
+@bot.message_handler(content_types=['audio', 'voice']) def handle_audio(message): try: file_id = message.audio.file_id if message.content_type == 'audio' else message.voice.file_id file_info = bot.get_file(file_id) downloaded = bot.download_file(file_info.file_path)
 
-input_path = "input_audio.ogg"
-    with open(input_path, 'wb') as f:
-        f.write(downloaded_file)
+input_path = "/tmp/input_audio.ogg"
 
-    output = process_audio(input_path)
+    with open(input_path, "wb") as f:
+        f.write(downloaded)
 
-    if output:
-        with open(output, 'rb') as f:
-            bot.send_audio(message.chat.id, f)
+    # MASTER (interno)
+    master = create_master(input_path)
+
+    # PREVIEW (gratis)
+    preview = create_preview(master or input_path)
+
+    if preview:
+        with open(preview, "rb") as f:
+            bot.send_audio(
+                message.chat.id,
+                f,
+                caption="🎧 Preview 90s (versión gratuita)"
+            )
+
+        bot.send_message(
+            message.chat.id,
+            "🔒 Para versión completa contacta versión PRO"
+        )
     else:
         bot.reply_to(message, "Error procesando audio")
 
@@ -84,15 +105,15 @@ except Exception as e:
 
 =========================
 
-THREAD BOT
+BOT THREAD (POLLING SOLO)
 
 =========================
 
-def run_bot(): logging.info("Bot iniciado") bot.infinity_polling(skip_pending=True)
+def run_bot(): logging.info("Bot iniciado en polling seguro") bot.infinity_polling(skip_pending=True)
 
 =========================
 
-MAIN
+MAIN (NO WEBHOOK)
 
 =========================
 
@@ -103,6 +124,6 @@ t = threading.Thread(target=run_bot)
 t.daemon = True
 t.start()
 
-# Flask server (producción con gunicorn recomendado)
+# Flask server
 port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
