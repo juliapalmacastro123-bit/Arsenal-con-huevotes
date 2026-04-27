@@ -1,212 +1,108 @@
-import os
-import telebot
-from telebot import types
-from flask import Flask, request
-import subprocess
-import traceback
+""" ARSENAL - BACKEND UNIFICADO (PRODUCCIÓN) Flask + Telegram Bot + Audio Processing (pydub) Listo para Render / producción estable """
 
-# ======================
-# CONFIG
-# ======================
+import os import threading import logging from flask import Flask, request, jsonify import telebot from pydub import AudioSegment
 
-TOKEN = os.getenv("TOKEN")
-bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
-app = Flask(__name__)
+=========================
 
-BASE_URL = os.getenv("RENDER_EXTERNAL_URL")
-WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
+CONFIG
 
-ADMIN_ID = 7949397943
+=========================
 
-# ======================
-# STATE
-# ======================
+TOKEN = os.getenv("TOKEN") if not TOKEN: raise ValueError("Falta TOKEN en variables de entorno")
 
-users = {}        # {uid: {region, file}}
-paid_users = set()
+Logging básico producción
 
-# ======================
-# ADMIN
-# ======================
+logging.basicConfig(level=logging.INFO)
 
-def is_admin(uid):
-    return int(uid) == ADMIN_ID
+Flask app
 
-# ======================
-# SAFE SEND
-# ======================
+app = Flask(name)
 
-def send(chat_id, text, kb=None):
-    try:
-        bot.send_message(chat_id, text, reply_markup=kb)
-    except:
-        pass
+Telegram bot
 
-# ======================
-# START
-# ======================
+bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
-@bot.message_handler(commands=["start"])
-def start(m):
+=========================
 
-    users[m.chat.id] = {"region": None, "file": None}
+FLASK ROUTES
 
-    kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add("🇲🇽 MX", "🌎 INTERNATIONAL")
+=========================
 
-    send(m.chat.id, "🎧 ARSENAL AUDIO SYSTEM\nSelecciona tu región:", kb)
+@app.route("/") def home(): return "ARSENAL ONLINE"
 
-# ======================
-# REGION
-# ======================
+@app.route("/health") def health(): return jsonify({"status": "ok"})
 
-@bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX", "🌎 INTERNATIONAL"])
-def region(m):
-    users[m.chat.id]["region"] = m.text
-    send(m.chat.id, "🎧 Envía tu audio (máx 90s preview)")
+Webhook opcional (si decides usarlo)
 
-# ======================
-# PAY MENU
-# ======================
+@app.route(f"/{TOKEN}", methods=["POST"]) def telegram_webhook(): json_str = request.get_data().decode("UTF-8") update = telebot.types.Update.de_json(json_str) bot.process_new_updates([update]) return "ok"
 
-def payment_menu(chat_id, region, uid):
+=========================
 
-    kb = types.InlineKeyboardMarkup()
+AUDIO PROCESSING
 
-    if region == "🇲🇽 MX":
+=========================
 
-        kb.add(types.InlineKeyboardButton("PRO 8 - $1600 MXN", url="https://mpago.la/2KNKzJp"))
-        kb.add(types.InlineKeyboardButton("PREMIUM 8 - $1600 MXN", url="https://mpago.la/2KNKzJp"))
+def process_audio(file_path): """ Procesamiento base seguro """ try: audio = AudioSegment.from_file(file_path)
 
+# Ejemplo básico: normalización ligera
+    audio = audio + 5
+
+    output_path = file_path.replace(".mp3", "_processed.mp3")
+    audio.export(output_path, format="mp3")
+
+    return output_path
+
+except Exception as e:
+    logging.error(f"Error procesando audio: {e}")
+    return None
+
+=========================
+
+TELEGRAM BOT HANDLERS
+
+=========================
+
+@bot.message_handler(commands=['start']) def start(message): bot.reply_to(message, "ARSENAL ONLINE - Envía tu audio para procesar")
+
+@bot.message_handler(content_types=['audio', 'voice']) def handle_audio(message): try: file_info = bot.get_file(message.audio.file_id if message.content_type == 'audio' else message.voice.file_id) downloaded_file = bot.download_file(file_info.file_path)
+
+input_path = "input_audio.ogg"
+    with open(input_path, 'wb') as f:
+        f.write(downloaded_file)
+
+    output = process_audio(input_path)
+
+    if output:
+        with open(output, 'rb') as f:
+            bot.send_audio(message.chat.id, f)
     else:
+        bot.reply_to(message, "Error procesando audio")
 
-        kb.add(types.InlineKeyboardButton("PRO 8 - $80 USD", url="https://mpago.la/2KNKzJp"))
-        kb.add(types.InlineKeyboardButton("PREMIUM 8 - $120 USD", url="https://mpago.la/2KNKzJp"))
+except Exception as e:
+    logging.error(e)
+    bot.reply_to(message, "Error interno procesando audio")
 
-    send(chat_id, "💳 Upgrade your audio:", kb)
+=========================
 
-# ======================
-# AUDIO FLOW
-# ======================
+THREAD BOT
 
-@bot.message_handler(content_types=["audio", "document"])
-def audio(m):
+=========================
 
-    try:
+def run_bot(): logging.info("Bot iniciado") bot.infinity_polling(skip_pending=True)
 
-        uid = m.from_user.id
-        region = users.get(uid, {}).get("region", "🌎 INTERNATIONAL")
+=========================
 
-        file_id = m.audio.file_id if m.audio else m.document.file_id
-        file = bot.get_file(file_id)
-        data = bot.download_file(file.file_path)
+MAIN
 
-        input_file = f"{uid}.mp3"
-        open(input_file, "wb").write(data)
+=========================
 
-        users[uid]["file"] = input_file
+if name == "main":
 
-        # ======================
-        # ADMIN
-        # ======================
+# Bot en hilo separado
+t = threading.Thread(target=run_bot)
+t.daemon = True
+t.start()
 
-        if is_admin(uid):
-            send(m.chat.id, "👑 ADMIN MODE")
-            subprocess.run(["demucs", input_file])
-            send(m.chat.id, "🔥 STEMS READY")
-            return
-
-        # ======================
-        # FREE USERS
-        # ======================
-
-        if uid not in paid_users:
-
-            send(m.chat.id, "⚡ Processing preview...")
-
-            subprocess.run([
-                "ffmpeg", "-y",
-                "-i", input_file,
-                "-t", "90",
-                "preview.mp3"
-            ])
-
-            subprocess.run([
-                "ffmpeg", "-y",
-                "-i", "preview.mp3",
-                "-af", "loudnorm=I=-14:TP=-1.5",
-                "final.mp3"
-            ])
-
-            bot.send_audio(m.chat.id, open("final.mp3", "rb"))
-
-            payment_menu(m.chat.id, region, uid)
-            return
-
-        # ======================
-        # PREMIUM AUTO
-        # ======================
-
-        send(m.chat.id, "💎 Processing PREMIUM...")
-
-        subprocess.run(["demucs", input_file])
-
-        send(m.chat.id, "🔥 STEMS DELIVERED")
-
-    except Exception:
-        send(m.chat.id, traceback.format_exc())
-
-# ======================
-# PAYMENT WEBHOOK
-# ======================
-
-@app.route("/payment", methods=["POST"])
-def payment():
-
-    try:
-
-        data = request.json
-        ref = data.get("external_reference", "")
-        status = data.get("status", "")
-
-        if status == "approved" and ref:
-
-            uid = int(ref.split("-")[0])
-            paid_users.add(uid)
-
-            send(uid, "💎 PAYMENT CONFIRMED")
-
-            file = users.get(uid, {}).get("file")
-
-            if file:
-                subprocess.run(["demucs", file])
-                send(uid, "🔥 PREMIUM READY")
-
-    except Exception as e:
-        print(e)
-
-    return "OK"
-
-# ======================
-# TELEGRAM WEBHOOK
-# ======================
-
-@app.route("/")
-def home():
-    return "ARSENAL ONLINE"
-
-@app.route(f"/{TOKEN}", methods=["POST"])
-def telegram():
-    update = telebot.types.Update.de_json(request.get_data().decode("utf-8"))
-    bot.process_new_updates([update])
-    return "OK"
-
-# ======================
-# RUN
-# ======================
-
-if __name__ == "__main__":
-    bot.remove_webhook()
-    bot.set_webhook(url=WEBHOOK_URL)
-
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+# Flask server (producción con gunicorn recomendado)
+port = int(os.environ.get("PORT", 10000))
+app.run(host="0.0.0.0", port=port)
