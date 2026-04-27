@@ -10,9 +10,6 @@ import traceback
 # ======================
 
 TOKEN = os.getenv("TOKEN")
-if not TOKEN:
-    raise ValueError("Falta TOKEN")
-
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 app = Flask(__name__)
 
@@ -30,7 +27,7 @@ ADMIN_ID = "7949397943"
 regions = {}
 
 # ======================
-# ADMIN CHECK
+# ADMIN
 # ======================
 
 def is_admin(user_id):
@@ -58,21 +55,21 @@ def start(m):
 
     send(
         m.chat.id,
-        "🎧 <b>ARSENAL AUDIO</b>\n\nSelecciona tu región:",
+        "🎧 <b>ARSENAL AUDIO SYSTEM</b>\n\nChoose your region:",
         kb
     )
 
 # ======================
-# REGION
+# REGION LOCK
 # ======================
 
 @bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX", "🌎 INTERNATIONAL"])
 def region(m):
     regions[m.chat.id] = m.text
-    send(m.chat.id, "🎧 Envía tu audio (máx 90s)")
+    send(m.chat.id, "🎧 Send your audio (max 90s preview will be generated)")
 
 # ======================
-# PAYMENTS
+# PRICING MENU
 # ======================
 
 def pagos(chat_id, region):
@@ -80,7 +77,7 @@ def pagos(chat_id, region):
     kb = types.InlineKeyboardMarkup()
 
     # ======================
-    # 🇲🇽 MX
+    # 🇲🇽 MEXICO PRICING
     # ======================
 
     if region == "🇲🇽 MX":
@@ -93,8 +90,10 @@ def pagos(chat_id, region):
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 6 - $1200 MXN", url=PAGO_LINK))
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $1999 MXN", url=PAGO_LINK))
 
+        send(chat_id, "💳 Upgrade your audio experience (Mexico pricing):", kb)
+
     # ======================
-    # 🌎 INTERNATIONAL
+    # 🌎 INTERNATIONAL PRICING (ENGLISH)
     # ======================
 
     else:
@@ -107,7 +106,7 @@ def pagos(chat_id, region):
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 6 - $60 USD", url=PAGO_LINK))
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $120 USD", url=PAGO_LINK))
 
-    send(chat_id, "💳 Desbloquea versión completa:", kb)
+        send(chat_id, "💳 Unlock full studio experience (International pricing):", kb)
 
 # ======================
 # AUDIO FLOW
@@ -134,19 +133,19 @@ def audio(m):
 
         if is_admin(user_id):
 
-            send(m.chat.id, "👑 ADMIN MODE - STEMS ACTIVADOS")
+            send(m.chat.id, "👑 ADMIN MODE - FULL STEM SEPARATION")
 
             subprocess.run(["demucs", input_file])
 
-            send(m.chat.id, "🔥 STEMS GENERADOS (ADMIN)")
+            send(m.chat.id, "🔥 STEMS GENERATED")
 
             return
 
         # ======================
-        # USER MODE (PREVIEW 90s)
+        # USER MODE (90s PREVIEW)
         # ======================
 
-        send(m.chat.id, "⚡ Procesando preview...")
+        send(m.chat.id, "⚡ Processing preview...")
 
         subprocess.run([
             "ffmpeg", "-y",
@@ -157,4 +156,47 @@ def audio(m):
 
         subprocess.run([
             "ffmpeg", "-y",
-            "-i", "preview
+            "-i", "preview.mp3",
+            "-af", "loudnorm=I=-14:TP=-1.5",
+            "final.mp3"
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+        bot.send_audio(
+            m.chat.id,
+            open("final.mp3", "rb"),
+            caption="🎧 Preview ready"
+        )
+
+        pagos(m.chat.id, region)
+
+    except Exception:
+        send(m.chat.id, f"❌ ERROR:\n{traceback.format_exc()}")
+
+# ======================
+# WEBHOOK
+# ======================
+
+@app.route("/")
+def home():
+    return "ARSENAL ONLINE"
+
+@app.route(f"/{TOKEN}", methods=["POST"])
+def webhook():
+    update = telebot.types.Update.de_json(
+        request.get_data().decode("utf-8")
+    )
+    bot.process_new_updates([update])
+    return "OK"
+
+def start_webhook():
+    if WEBHOOK_URL:
+        bot.remove_webhook()
+        bot.set_webhook(url=WEBHOOK_URL)
+
+# ======================
+# RUN
+# ======================
+
+if __name__ == "__main__":
+    start_webhook()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
