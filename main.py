@@ -10,6 +10,9 @@ import traceback
 # ======================
 
 TOKEN = os.getenv("TOKEN")
+if not TOKEN:
+    raise ValueError("Falta TOKEN")
+
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 app = Flask(__name__)
 
@@ -18,20 +21,21 @@ WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
 
 PAGO_LINK = "https://mpago.la/2KNKzJp"
 
-ADMIN_ID = "7949397943"
+ADMIN_ID = 7949397943
 
 # ======================
 # STATE
 # ======================
 
 regions = {}
+paid_users = {}  # 🔥 base para futura automatización
 
 # ======================
-# ADMIN
+# ADMIN CHECK
 # ======================
 
 def is_admin(user_id):
-    return str(user_id) == ADMIN_ID
+    return int(user_id) == ADMIN_ID
 
 # ======================
 # SAFE SEND
@@ -55,7 +59,7 @@ def start(m):
 
     send(
         m.chat.id,
-        "🎧 <b>ARSENAL AUDIO SYSTEM</b>\n\nChoose your region:",
+        "🎧 <b>ARSENAL AUDIO SYSTEM</b>\n\nSelecciona tu región:",
         kb
     )
 
@@ -66,19 +70,15 @@ def start(m):
 @bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX", "🌎 INTERNATIONAL"])
 def region(m):
     regions[m.chat.id] = m.text
-    send(m.chat.id, "🎧 Send your audio (max 90s preview will be generated)")
+    send(m.chat.id, "🎧 Envía tu audio (máx 90s preview)")
 
 # ======================
-# PRICING MENU
+# PRICING SYSTEM
 # ======================
 
 def pagos(chat_id, region):
 
     kb = types.InlineKeyboardMarkup()
-
-    # ======================
-    # 🇲🇽 MEXICO PRICING
-    # ======================
 
     if region == "🇲🇽 MX":
 
@@ -88,13 +88,9 @@ def pagos(chat_id, region):
 
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 1 - $500 MXN", url=PAGO_LINK))
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 6 - $1200 MXN", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $1999 MXN", url=PAGO_LINK))
+        kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $1600 MXN", url=PAGO_LINK))
 
-        send(chat_id, "💳 Upgrade your audio experience (Mexico pricing):", kb)
-
-    # ======================
-    # 🌎 INTERNATIONAL PRICING (ENGLISH)
-    # ======================
+        send(chat_id, "💳 Upgrade disponible (MX):", kb)
 
     else:
 
@@ -106,7 +102,7 @@ def pagos(chat_id, region):
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 6 - $60 USD", url=PAGO_LINK))
         kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $120 USD", url=PAGO_LINK))
 
-        send(chat_id, "💳 Unlock full studio experience (International pricing):", kb)
+        send(chat_id, "💳 Upgrade available (International):", kb)
 
 # ======================
 # AUDIO FLOW
@@ -133,19 +129,22 @@ def audio(m):
 
         if is_admin(user_id):
 
-            send(m.chat.id, "👑 ADMIN MODE - FULL STEM SEPARATION")
+            send(m.chat.id, "👑 ADMIN MODE - STEM SEPARATION")
 
-            subprocess.run(["demucs", input_file])
+            subprocess.run([
+                "demucs",
+                input_file
+            ])
 
-            send(m.chat.id, "🔥 STEMS GENERATED")
+            send(m.chat.id, "🔥 STEMS GENERADOS (ADMIN)")
 
             return
 
         # ======================
-        # USER MODE (90s PREVIEW)
+        # USER MODE (PREVIEW)
         # ======================
 
-        send(m.chat.id, "⚡ Processing preview...")
+        send(m.chat.id, "⚡ Procesando preview...")
 
         subprocess.run([
             "ffmpeg", "-y",
@@ -164,7 +163,7 @@ def audio(m):
         bot.send_audio(
             m.chat.id,
             open("final.mp3", "rb"),
-            caption="🎧 Preview ready"
+            caption="🎧 Preview listo"
         )
 
         pagos(m.chat.id, region)
@@ -173,7 +172,7 @@ def audio(m):
         send(m.chat.id, f"❌ ERROR:\n{traceback.format_exc()}")
 
 # ======================
-# WEBHOOK
+# WEBHOOK (BASE PARA FUTURA AUTOMATIZACIÓN)
 # ======================
 
 @app.route("/")
@@ -187,6 +186,11 @@ def webhook():
     )
     bot.process_new_updates([update])
     return "OK"
+
+# ======================
+# FUTURO: AQUÍ VA MERCADO PAGO WEBHOOK
+# ======================
+# Aquí después se conecta confirmación automática de pago
 
 def start_webhook():
     if WEBHOOK_URL:
