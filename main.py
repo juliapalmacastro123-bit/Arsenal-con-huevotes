@@ -10,16 +10,11 @@ import traceback
 # ======================
 
 TOKEN = os.getenv("TOKEN")
-if not TOKEN:
-    raise ValueError("Falta TOKEN")
-
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 app = Flask(__name__)
 
 BASE_URL = os.getenv("RENDER_EXTERNAL_URL")
 WEBHOOK_URL = f"{BASE_URL}/{TOKEN}" if BASE_URL else None
-
-PAGO_LINK = "https://mpago.la/2KNKzJp"
 
 ADMIN_ID = 7949397943
 
@@ -27,15 +22,15 @@ ADMIN_ID = 7949397943
 # STATE
 # ======================
 
-regions = {}
-paid_users = {}  # 🔥 base para futura automatización
+users = {}        # {uid: {region, file}}
+paid_users = set()
 
 # ======================
-# ADMIN CHECK
+# ADMIN
 # ======================
 
-def is_admin(user_id):
-    return int(user_id) == ADMIN_ID
+def is_admin(uid):
+    return int(uid) == ADMIN_ID
 
 # ======================
 # SAFE SEND
@@ -44,8 +39,8 @@ def is_admin(user_id):
 def send(chat_id, text, kb=None):
     try:
         bot.send_message(chat_id, text, reply_markup=kb)
-    except Exception as e:
-        print("SEND ERROR:", e)
+    except:
+        pass
 
 # ======================
 # START
@@ -54,55 +49,41 @@ def send(chat_id, text, kb=None):
 @bot.message_handler(commands=["start"])
 def start(m):
 
+    users[m.chat.id] = {"region": None, "file": None}
+
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add("🇲🇽 MX", "🌎 INTERNATIONAL")
 
-    send(
-        m.chat.id,
-        "🎧 <b>ARSENAL AUDIO SYSTEM</b>\n\nSelecciona tu región:",
-        kb
-    )
+    send(m.chat.id, "🎧 ARSENAL AUDIO SYSTEM\nSelecciona tu región:", kb)
 
 # ======================
-# REGION LOCK
+# REGION
 # ======================
 
 @bot.message_handler(func=lambda m: m.text in ["🇲🇽 MX", "🌎 INTERNATIONAL"])
 def region(m):
-    regions[m.chat.id] = m.text
+    users[m.chat.id]["region"] = m.text
     send(m.chat.id, "🎧 Envía tu audio (máx 90s preview)")
 
 # ======================
-# PRICING SYSTEM
+# PAY MENU
 # ======================
 
-def pagos(chat_id, region):
+def payment_menu(chat_id, region, uid):
 
     kb = types.InlineKeyboardMarkup()
 
     if region == "🇲🇽 MX":
 
-        kb.add(types.InlineKeyboardButton("PRO 1 - $450 MXN", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("PRO 6 - $1200 MXN", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("PRO 8 - $1600 MXN", url=PAGO_LINK))
-
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 1 - $500 MXN", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 6 - $1200 MXN", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $1600 MXN", url=PAGO_LINK))
-
-        send(chat_id, "💳 Upgrade disponible (MX):", kb)
+        kb.add(types.InlineKeyboardButton("PRO 8 - $1600 MXN", url="https://mpago.la/2KNKzJp"))
+        kb.add(types.InlineKeyboardButton("PREMIUM 8 - $1600 MXN", url="https://mpago.la/2KNKzJp"))
 
     else:
 
-        kb.add(types.InlineKeyboardButton("PRO 1 - $20 USD", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("PRO 6 - $50 USD", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("PRO 8 - $80 USD", url=PAGO_LINK))
+        kb.add(types.InlineKeyboardButton("PRO 8 - $80 USD", url="https://mpago.la/2KNKzJp"))
+        kb.add(types.InlineKeyboardButton("PREMIUM 8 - $120 USD", url="https://mpago.la/2KNKzJp"))
 
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 1 - $25 USD", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 6 - $60 USD", url=PAGO_LINK))
-        kb.add(types.InlineKeyboardButton("💎 PREMIUM 8 - $120 USD", url=PAGO_LINK))
-
-        send(chat_id, "💳 Upgrade available (International):", kb)
+    send(chat_id, "💳 Upgrade your audio:", kb)
 
 # ======================
 # AUDIO FLOW
@@ -113,66 +94,101 @@ def audio(m):
 
     try:
 
-        user_id = m.from_user.id
-        region = regions.get(m.chat.id, "🌎 INTERNATIONAL")
+        uid = m.from_user.id
+        region = users.get(uid, {}).get("region", "🌎 INTERNATIONAL")
 
         file_id = m.audio.file_id if m.audio else m.document.file_id
         file = bot.get_file(file_id)
         data = bot.download_file(file.file_path)
 
-        input_file = "input.mp3"
+        input_file = f"{uid}.mp3"
         open(input_file, "wb").write(data)
 
+        users[uid]["file"] = input_file
+
         # ======================
-        # ADMIN MODE (FULL STEMS)
+        # ADMIN
         # ======================
 
-        if is_admin(user_id):
-
-            send(m.chat.id, "👑 ADMIN MODE - STEM SEPARATION")
-
-            subprocess.run([
-                "demucs",
-                input_file
-            ])
-
-            send(m.chat.id, "🔥 STEMS GENERADOS (ADMIN)")
-
+        if is_admin(uid):
+            send(m.chat.id, "👑 ADMIN MODE")
+            subprocess.run(["demucs", input_file])
+            send(m.chat.id, "🔥 STEMS READY")
             return
 
         # ======================
-        # USER MODE (PREVIEW)
+        # FREE USERS
         # ======================
 
-        send(m.chat.id, "⚡ Procesando preview...")
+        if uid not in paid_users:
 
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-i", input_file,
-            "-t", "90",
-            "preview.mp3"
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            send(m.chat.id, "⚡ Processing preview...")
 
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-i", "preview.mp3",
-            "-af", "loudnorm=I=-14:TP=-1.5",
-            "final.mp3"
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run([
+                "ffmpeg", "-y",
+                "-i", input_file,
+                "-t", "90",
+                "preview.mp3"
+            ])
 
-        bot.send_audio(
-            m.chat.id,
-            open("final.mp3", "rb"),
-            caption="🎧 Preview listo"
-        )
+            subprocess.run([
+                "ffmpeg", "-y",
+                "-i", "preview.mp3",
+                "-af", "loudnorm=I=-14:TP=-1.5",
+                "final.mp3"
+            ])
 
-        pagos(m.chat.id, region)
+            bot.send_audio(m.chat.id, open("final.mp3", "rb"))
+
+            payment_menu(m.chat.id, region, uid)
+            return
+
+        # ======================
+        # PREMIUM AUTO
+        # ======================
+
+        send(m.chat.id, "💎 Processing PREMIUM...")
+
+        subprocess.run(["demucs", input_file])
+
+        send(m.chat.id, "🔥 STEMS DELIVERED")
 
     except Exception:
-        send(m.chat.id, f"❌ ERROR:\n{traceback.format_exc()}")
+        send(m.chat.id, traceback.format_exc())
 
 # ======================
-# WEBHOOK (BASE PARA FUTURA AUTOMATIZACIÓN)
+# PAYMENT WEBHOOK
+# ======================
+
+@app.route("/payment", methods=["POST"])
+def payment():
+
+    try:
+
+        data = request.json
+        ref = data.get("external_reference", "")
+        status = data.get("status", "")
+
+        if status == "approved" and ref:
+
+            uid = int(ref.split("-")[0])
+            paid_users.add(uid)
+
+            send(uid, "💎 PAYMENT CONFIRMED")
+
+            file = users.get(uid, {}).get("file")
+
+            if file:
+                subprocess.run(["demucs", file])
+                send(uid, "🔥 PREMIUM READY")
+
+    except Exception as e:
+        print(e)
+
+    return "OK"
+
+# ======================
+# TELEGRAM WEBHOOK
 # ======================
 
 @app.route("/")
@@ -180,27 +196,17 @@ def home():
     return "ARSENAL ONLINE"
 
 @app.route(f"/{TOKEN}", methods=["POST"])
-def webhook():
-    update = telebot.types.Update.de_json(
-        request.get_data().decode("utf-8")
-    )
+def telegram():
+    update = telebot.types.Update.de_json(request.get_data().decode("utf-8"))
     bot.process_new_updates([update])
     return "OK"
-
-# ======================
-# FUTURO: AQUÍ VA MERCADO PAGO WEBHOOK
-# ======================
-# Aquí después se conecta confirmación automática de pago
-
-def start_webhook():
-    if WEBHOOK_URL:
-        bot.remove_webhook()
-        bot.set_webhook(url=WEBHOOK_URL)
 
 # ======================
 # RUN
 # ======================
 
 if __name__ == "__main__":
-    start_webhook()
+    bot.remove_webhook()
+    bot.set_webhook(url=WEBHOOK_URL)
+
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
