@@ -77,4 +77,3 @@ if __name__ == "__main__":
     t.start()
     # Iniciar el bot de Telegram
     bot.infinity_polling()
-        
