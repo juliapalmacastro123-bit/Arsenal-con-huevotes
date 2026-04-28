@@ -1,67 +1,80 @@
 import os
-import threading
 import telebot
+import stripe
+from pedalboard import Pedalboard, Compressor, Gain, HighShelfFilter, LowShelfFilter
+from pedalboard.io import AudioFile
 import numpy as np
 from flask import Flask
-from pedalboard import Pedalboard, Compressor, Gain, HighpassFilter, Limiter, Distortion, Reverb
-from pedalboard.io import AudioFile
+from threading import Thread
 
-# CONFIGURACIÓN
-TOKEN = os.getenv("TOKEN")
+# 1. CONFIGURACIÓN INICIAL (Detección de variables de entorno)
+TOKEN = os.environ.get('TOKEN')
+STRIPE_KEY = os.environ.get('STRIPE_KEY', 'sk_test_tu_llave_aqui') # Opcional por ahora
+
 bot = telebot.TeleBot(TOKEN)
-app = Flask(__name__)
+app = Flask('')
 
-def process_audio(path, is_demo=True):
-    with AudioFile(path) as f:
+# 2. SISTEMA QUIRÚRGICO DE MASTERIZACIÓN (Rack de Efectos Metal)
+def masterizar_audio(input_path, output_path):
+    with AudioFile(input_path) as f:
         audio = f.read(f.frames)
-        sr = f.sample_rate
-    
-    # Si es demo, cortamos a 90 segundos
-    if is_demo:
-        audio = audio[:, :int(sr * 90)]
-    
-    # RACK DE METAMORFOSIS PARA METAL
+        samplerate = f.samplerate
+
+    # Rack de efectos diseñado para potencia y claridad
     board = Pedalboard([
-        HighpassFilter(cutoff_frequency_hz=65),
-        Compressor(threshold_db=-16, ratio=4.5),
-        Distortion(drive_db=2.5),
-        Reverb(room_size=0.4, wet_level=0.1),
-        Gain(gain_db=2),
-        Limiter(threshold_db=-0.1)
+        LowShelfFilter(cutoff_frequency_hz=100, gain_db=-2), # Limpiar lodo
+        HighShelfFilter(cutoff_frequency_hz=3000, gain_db=3), # Brillo metalero
+        Compressor(threshold_db=-15, ratio=4),              # Control de dinámica
+        Gain(gain_db=5)                                     # Volumen final
     ])
-    
-    mastered = board(audio, sr)
-    out_path = f"/tmp/arsenal_{np.random.randint(1000)}.wav"
-    with AudioFile(out_path, 'w', sr, mastered.shape[0]) as f:
-        f.write(mastered)
-    return out_path
 
+    effected = board(audio, samplerate)
+
+    with AudioFile(output_path, 'w', samplerate, effected.shape[0]) as f:
+        f.write(effected)
+
+# 3. COMANDOS DEL BOT
 @bot.message_handler(commands=['start'])
-def start(m):
-    bot.send_message(m.chat.id, "🤘 **ARSENAL BÚNKER ACTIVO**\n\nIngeniería de sonido para Metal. Envía tu archivo de audio (WAV/MP3) y recibe una **Preview GRATIS** de 90 segundos masterizada.")
+def send_welcome(message):
+    bot.reply_to(message, "⚡ ARSENAL BÚNKER ACTIVO ⚡\nEnvíame tu archivo de audio (.wav o .mp3) para aplicarle el proceso quirúrgico.")
 
-@bot.message_handler(content_types=['audio', 'document'])
-def handle_docs(m):
-    uid = m.chat.id
-    bot.send_message(uid, "⚙️ Transformando tu sonido... espera un momento.")
-    
-    file_id = m.audio.file_id if m.audio else m.document.file_id
-    file_info = bot.get_file(file_id)
-    downloaded_file = bot.download_file(file_info.file_path)
-    
-    input_path = f"/tmp/in_{uid}.wav"
-    with open(input_path, 'wb') as new_file:
-        new_file.write(downloaded_file)
-    
-    # Procesar Demo
-    demo_path = process_audio(input_path, is_demo=True)
-    
-    with open(demo_path, 'rb') as audio_demo:
-        bot.send_audio(uid, audio_demo, caption="🎁 **Preview de 90s Lista**\n\n💰 **Costo Full Master:** $200 MXN\n🏦 **CLABE:** `722969028966531373`\n\nManda captura del pago para liberarte la rola completa.")
+@bot.message_handler(content_types=['audio', 'voice', 'document'])
+def handle_audio(message):
+    try:
+        bot.reply_to(message, "⏳ Procesando en el búnker... espera un momento.")
+        
+        file_info = bot.get_file(message.audio.file_id if message.audio else message.document.file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+        
+        input_name = "input.wav"
+        output_name = "master_arsenal.wav"
+        
+        with open(input_name, 'wb') as f:
+            f.write(downloaded_file)
+        
+        # Ejecutar masterización
+        masterizar_audio(input_name, output_name)
+        
+        # Enviar resultado
+        with open(output_name, 'rb') as audio:
+            bot.send_audio(message.chat.id, audio, caption="🔥 Masterización Finalizada - Arsenal Búnker")
+            
+    except Exception as e:
+        bot.reply_to(message, f"❌ Error en el proceso: {str(e)}")
 
-@app.route("/")
-def index(): return "Arsenal Online"
+# 4. MANTENER EL BOT VIVO (Para Render)
+@app.route('/')
+def home():
+    return "Arsenal Búnker está en línea."
+
+def run_flask():
+    app.run(host='0.0.0.0', port=10000)
 
 if __name__ == "__main__":
-    threading.Thread(target=lambda: bot.infinity_polling()).start()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+    print("🚀 Arsenal Búnker Iniciando...")
+    # Iniciar Flask en un hilo separado para que Render no mate el proceso
+    t = Thread(target=run_flask)
+    t.start()
+    # Iniciar el bot de Telegram
+    bot.infinity_polling()
+        
