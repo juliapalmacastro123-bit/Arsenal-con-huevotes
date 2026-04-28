@@ -2,182 +2,155 @@ import os
 import threading
 import logging
 import stripe
-from flask import Flask, request
+import requests
+import numpy as np
 import telebot
-from pydub import AudioSegment
-from pydub.effects import normalize, compress_dynamic_range
+from flask import Flask, request, abort
+from pedalboard import Pedalboard, Compressor, Gain, HighpassFilter, Limiter, Distortion, Reverb
+from pedalboard.io import AudioFile
 
 # ======================
-# CONFIG
+# CONFIGURACIÓN (VARIABLES DE ENTORNO)
 # ======================
-
 TOKEN = os.getenv("TOKEN")
 STRIPE_SECRET = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK = os.getenv("STRIPE_WEBHOOK_SECRET")
 
-if not TOKEN:
-    raise ValueError("Falta TOKEN")
-
 stripe.api_key = STRIPE_SECRET
-
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
-
 sessions = {}
 
 # ======================
-# AUDIO ENGINE (METAL)
+# MOTOR DE AUDIO: LA METAMORFOSIS
 # ======================
+def process_arsenal(tracks_dict, is_demo=True):
+    loaded_tracks = []
+    sr = 44100
+    for path in tracks_dict.values():
+        with AudioFile(path) as f:
+            audio = f.read(f.frames)
+            sr = f.sample_rate
+            loaded_tracks.append(audio)
 
-def metal_master(audio):
-    audio = normalize(audio)
+    # Mezcla Multitrack (Suma de señales)
+    min_len = min(t.shape[1] for t in loaded_tracks)
+    combined = np.zeros((loaded_tracks[0].shape[0], min_len))
+    for t in loaded_tracks:
+        combined += t[:, :min_len]
+    combined /= len(loaded_tracks)
 
-    # compresión agresiva metal
-    audio = compress_dynamic_range(
-        audio,
-        threshold=-18,
-        ratio=5,
-        attack=3,
-        release=40
-    )
+    # Corte de 90s para la prueba gratis
+    if is_demo:
+        combined = combined[:, :int(sr * 90)]
 
-    # limpieza
-    audio = audio.high_pass_filter(50)
-    audio = audio.low_pass_filter(15500)
+    # RACK PROFESIONAL (EQ, Comp, Dist, Reverb, Gain, Limiter)
+    board = Pedalboard([
+        HighpassFilter(cutoff_frequency_hz=65),
+        Compressor(threshold_db=-16, ratio=4.5),
+        Distortion(drive_db=2.5),
+        Reverb(room_size=0.4, wet_level=0.1),
+        Gain(gain_db=2),
+        Limiter(threshold_db=-0.1)
+    ])
 
-    # presencia general
-    audio = audio + 4
-
-    # brillo controlado (voz + guitarras)
-    bright = audio.high_pass_filter(4000) + 2
-    audio = audio.overlay(bright)
-
-    # “kick feel” (simulación)
-    low = audio.low_pass_filter(120) + 2
-    audio = audio.overlay(low)
-
-    # pseudo stereo
-    left = audio.pan(-0.25)
-    right = audio.pan(0.25)
-    audio = left.overlay(right)
-
-    return audio
-
-def mix_metal(tracks):
-    drums = normalize(tracks["drums"])
-    bass = normalize(tracks["bass"])
-    guitar = normalize(tracks["guitar"])
-    vocals = normalize(tracks["vocals"])
-
-    # GUITARRAS AL FRENTE
-    guitar = guitar.high_pass_filter(120) + 6
-    guitar = guitar.pan(-0.4).overlay(guitar.pan(0.4))
-
-    # BAJO
-    bass = bass.low_pass_filter(250) + 2
-
-    # VOZ
-    vocals = vocals.high_pass_filter(100) + 3
-
-    # DRUMS (pegada)
-    drums = compress_dynamic_range(drums, threshold=-18, ratio=4)
-
-    mix = drums.overlay(bass)
-    mix = mix.overlay(guitar)
-    mix = mix.overlay(vocals)
-
-    return metal_master(mix)
-
-def create_preview(audio):
-    preview = audio[:90 * 1000]
-    path = "/tmp/preview.mp3"
-    preview.export(path, format="mp3")
-    return path
+    mastered = board(combined, sr)
+    out_path = f"/tmp/final_{np.random.randint(10000)}.wav"
+    with AudioFile(out_path, 'w', sr, mastered.shape[0]) as f:
+        f.write(mastered)
+    return out_path
 
 # ======================
-# STRIPE
+# SEGURIDAD Y PRECIOS POR PAÍS
 # ======================
+def get_user_region(ip):
+    try:
+        # Detectamos país e IP sospechosa (VPN)
+        res = requests.get(f"http://ip-api.com/json/{ip}?fields=countryCode,proxy").json()
+        return res.get("countryCode", "MX"), res.get("proxy", False)
+    except:
+        return "MX", False
 
-def pay(uid, amount, name, currency):
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{
-            "price_data": {
-                "currency": currency,
-                "product_data": {
-                    "name": name
-                },
-                "unit_amount": int(amount * 100)
-            },
-            "quantity": 1
-        }],
-        mode="payment",
-        client_reference_id=str(uid),
-        success_url="https://example.com/success",
-        cancel_url="https://example.com/cancel"
-    )
-    return session.url
+def send_price_menu(m):
+    uid = m.chat.id
+    # En Render, la IP viene en el header 'X-Forwarded-For'
+    user_ip = request.headers.get('X-Forwarded-For', m.from_user.id)
+    country, is_vpn = get_user_region(user_ip)
+
+    markup = telebot.types.InlineKeyboardMarkup()
+    
+    if country == "US" or is_vpn:
+        # Menú Internacional (USD)
+        markup.add(telebot.types.InlineKeyboardButton("🎧 1 Song ($20 USD)", callback_data="p_usd"))
+        markup.add(telebot.types.InlineKeyboardButton("🔥 PREMIUM MIX ($50 USD)", callback_data="p_usd"))
+        bot.send_message(uid, "🔥 **YOUR MASTER IS READY**\nSelect your package:", reply_markup=markup)
+    else:
+        # Menú México (MXN)
+        markup.add(telebot.types.InlineKeyboardButton("🎧 1 Rola ($200)", url="https://mpago.la/2UYcmn5"))
+        markup.add(telebot.types.InlineKeyboardButton("🎧 6 Rolas ($500)", url="https://mpago.la/2EmSGm8"))
+        markup.add(telebot.types.InlineKeyboardButton("🎧 8 Rolas ($850)", url="https://mpago.la/2AoqQer"))
+        markup.add(telebot.types.InlineKeyboardButton("🏦 TRANSFERENCIA CLABE", callback_data="ver_clabe"))
+        bot.send_message(uid, "🔥 **TU MASTER ESTÁ LISTO**\nElige tu opción de pago:", reply_markup=markup)
 
 # ======================
-# BOT
+# HANDLERS DEL BOT
 # ======================
-
 @bot.message_handler(commands=['start'])
 def start(m):
-    sessions[m.from_user.id] = {"mode": None, "tracks": {}, "step": None}
-    bot.send_message(m.chat.id,
-    "🤘 ARSENAL METAL SYSTEM\n\n1 = DEMO\n2 = PRO MULTITRACK")
+    sessions[m.from_user.id] = {"mode": None, "tracks": {}, "step": None, "full": None}
+    bot.send_message(m.chat.id, "🤘 **EL ARSENAL**\n\n1. Estándar (1 Pista)\n2. Premium (Mezcla Multitrack)\n\n*Respetamos tu arte: No guardamos copias de tu música.*")
 
-@bot.message_handler(func=lambda m: m.text in ["1","2"])
-def mode(m):
+@bot.message_handler(func=lambda m: m.text in ["1", "2"])
+def set_mode(m):
     uid = m.from_user.id
-
     if m.text == "1":
-        sessions[uid]["mode"] = "demo"
-        bot.send_message(m.chat.id, "🎧 Envía tu audio")
-
+        sessions[uid]["mode"] = "single"
+        bot.send_message(m.chat.id, "🎧 Envía tu canción completa.")
     else:
-        sessions[uid]["mode"] = "pro"
+        sessions[uid]["mode"] = "multi"
         sessions[uid]["step"] = "drums"
-        bot.send_message(m.chat.id, "🥁 Envía DRUMS")
+        bot.send_message(m.chat.id, "🥁 **PASO 1:** Envía la BATERÍA.")
 
-@bot.message_handler(content_types=['audio','voice','document'])
-def audio_handler(m):
-    try:
-        uid = m.from_user.id
-        s = sessions.get(uid)
+@bot.message_handler(content_types=['audio', 'document'])
+def handle_audio(m):
+    uid = m.from_user.id
+    s = sessions.get(uid)
+    if not s: return
 
-        if not s:
-            bot.send_message(m.chat.id, "Usa /start")
-            return
+    file_id = m.audio.file_id if m.audio else m.document.file_id
+    file_info = bot.get_file(file_id)
+    data = bot.download_file(file_info.file_path)
+    path = f"/tmp/{uid}_{np.random.randint(100)}.wav"
+    with open(path, "wb") as f: f.write(data)
 
-        file_id = m.audio.file_id if m.audio else \
-                  m.voice.file_id if m.voice else \
-                  m.document.file_id
+    if s["mode"] == "multi":
+        s["tracks"][s["step"]] = path
+        steps = ["drums", "bass", "guitar", "vocals"]
+        idx = steps.index(s["step"])
+        if idx < len(steps) - 1:
+            s["step"] = steps[idx + 1]
+            bot.send_message(uid, f"✅ Recibido. Ahora envía: **{s['step'].upper()}**")
+        else:
+            bot.send_message(uid, "⚙️ Masterizando mezcla multitrack...")
+            demo = process_arsenal(s["tracks"], is_demo=True)
+            s["full"] = process_arsenal(s["tracks"], is_demo=False)
+            with open(demo, "rb") as d: bot.send_audio(uid, d, caption="🎁 Prueba Premium (90s)")
+            send_price_menu(m)
+    else:
+        demo = process_arsenal({"m": path}, is_demo=True)
+        s["full"] = process_arsenal({"m": path}, is_demo=False)
+        with open(demo, "rb") as d: bot.send_audio(uid, d, caption="🎁 Prueba Estándar (90s)")
+        send_price_menu(m)
 
-        file_info = bot.get_file(file_id)
-        data = bot.download_file(file_info.file_path)
+@bot.callback_query_handler(func=lambda call: call.data == "ver_clabe")
+def clabe(call):
+    bot.send_message(call.message.chat.id, "🏦 **CLABE:** `722969028966531373`\nEnvía tu comprobante para recibir el archivo completo.")
 
-        path = f"/tmp/{uid}_{len(os.listdir('/tmp'))}.wav"
-        with open(path, "wb") as f:
-            f.write(data)
-
-        audio = AudioSegment.from_file(path)
-
-        # ======================
-        # DEMO
-        # ======================
-
-        if s["mode"] == "demo":
-            mastered = metal_master(audio)
-            preview = create_preview(mastered)
-
-            with open(preview, "rb") as f:
-                bot.send_audio(m.chat.id, f, "🤘 PREVIEW")
-
-            bot.send_message(m.chat.id,
-            "💳 DEMO\nMX: $200\nUS: $20")
-
-        #
+# ======================
+# INICIO
+# ======================
+if __name__ == "__main__":
+    threading.Thread(target=lambda: bot.infinity_polling()).start()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
