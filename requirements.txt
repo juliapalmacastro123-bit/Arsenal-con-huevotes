@@ -1,4 +1,7 @@
-flask
 pyTelegramBotAPI
-pydub
+pedalboard
+numpy
+requests
 stripe
+flask
+gunicorn
