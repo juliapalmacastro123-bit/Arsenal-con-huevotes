@@ -1,8 +1,9 @@
-telebot
 pyTelegramBotAPI
+telebot
 pedalboard
 numpy
 requests
 stripe
 flask
+
 
