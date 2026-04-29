@@ -1,6 +1,7 @@
-pyTelegramBotAPI==4.14.0
-stripe==7.0.0
-pedalboard==0.8.7
-flask==3.0.3
-pydub==0.25.1
-numpy==1.26.4
+flask
+pyTelegramBotAPI
+telebot
+pedalboard
+numpy
+requests
+stripe
