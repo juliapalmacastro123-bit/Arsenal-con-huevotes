@@ -1,4 +1,6 @@
 pyTelegramBotAPI
+pedalboard
 pydub
-gunicorn
 flask
+stripe
+
