@@ -1,3 +1,14 @@
+# --- PARCHE DE COMPATIBILIDAD (PARA QUE RENDER NO CHILLE) ---
+import sys
+try:
+    import audioop
+except ImportError:
+    try:
+        import pyaudioop as audioop
+        sys.modules['audioop'] = audioop
+    except ImportError:
+        pass
+
 import os
 import telebot
 import stripe
@@ -16,17 +27,16 @@ from pedalboard.io import AudioFile
 # --- CONFIGURACIÓN DE NÚCLEO ---
 TOKEN = os.getenv("TOKEN")
 STRIPE_KEY = os.getenv("STRIPE_KEY")
-MI_LLAVE = 7949397943 
 
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 stripe.api_key = STRIPE_KEY
 
-# Limpieza técnica para evitar errores de conexión (409 Conflict)
+# Limpieza de conexiones previas
 bot.remove_webhook()
 time.sleep(1)
 
-# --- CATÁLOGO DE VENTAS (Tu inventario real) ---
+# --- CATÁLOGO DEL ARSENAL (Tu inventario de ventas) ---
 CATALOGO = {
     "cortadora": "Cortadora Rotte (Restaurada): $800 - $1,200 MXN.",
     "mazo": "Mazo de acero (Pulido): $400 - $600 MXN.",
@@ -67,7 +77,7 @@ def ver_precios(message):
     texto += "\n✨ **PROCESAMIENTO:** 1 Rola $200 | 6 por $500"
     bot.reply_to(message, texto)
 
-# --- PROCESAMIENTO QUIRÚRGICO DE AUDIO ---
+# --- PROCESAMIENTO DE AUDIO ---
 @bot.message_handler(content_types=['audio', 'document'])
 def handle_audio(message):
     bot.reply_to(message, "⚡ **METAMORFOSIS ACTIVADA...**")
@@ -79,15 +89,14 @@ def handle_audio(message):
         
         procesar_master("in.wav", "out.wav")
         
-        # Prueba de 90 segundos a 320kbps
         sound = AudioSegment.from_file("out.wav")
-        final = sound[:90000]
+        final = sound[:90000] # 90 segundos de muestra
         final.export("arsenal.mp3", format="mp3", bitrate="320k")
         
         with open("arsenal.mp3", "rb") as f:
             bot.send_audio(message.chat.id, f, caption="✨ **METAMORFOSIS LOGRADA.**")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error técnico: {e}")
         bot.reply_to(message, "⚠️ Error en la maquinaria.")
 
 # --- RUTA DE SALUD PARA RENDER ---
@@ -95,16 +104,12 @@ def handle_audio(message):
 def health_check():
     return "El Arsenal está rugiendo", 200
 
-# --- DESPLIEGUE FINAL (LA LLAVE MAESTRA) ---
+# --- DESPLIEGUE FINAL (HILOS) ---
 if __name__ == "__main__":
-    print("🚀 EL ARSENAL ESTÁ RUGIENDO EN EL CÉNIT...")
-    
-    # Iniciamos el bot en un hilo separado para que no bloquee a Flask
+    print("🚀 EL ARSENAL ESTÁ RUGIENDO...")
     bot_thread = threading.Thread(target=lambda: bot.infinity_polling(timeout=20, long_polling_timeout=10))
     bot_thread.daemon = True
     bot_thread.start()
     
-    # Flask corre en el hilo principal para que Render vea actividad web
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-        
