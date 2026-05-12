@@ -2,6 +2,7 @@ import os
 import telebot
 import stripe
 import time
+import threading
 from telebot import types
 from flask import Flask
 from pydub import AudioSegment
@@ -25,7 +26,7 @@ stripe.api_key = STRIPE_KEY
 bot.remove_webhook()
 time.sleep(1)
 
-# --- CATÁLOGO DE VENTAS (Tus Precios Definidos) ---
+# --- CATÁLOGO DE VENTAS (Tu inventario real) ---
 CATALOGO = {
     "cortadora": "Cortadora Rotte (Restaurada): $800 - $1,200 MXN.",
     "mazo": "Mazo de acero (Pulido): $400 - $600 MXN.",
@@ -85,9 +86,25 @@ def handle_audio(message):
         
         with open("arsenal.mp3", "rb") as f:
             bot.send_audio(message.chat.id, f, caption="✨ **METAMORFOSIS LOGRADA.**")
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         bot.reply_to(message, "⚠️ Error en la maquinaria.")
 
+# --- RUTA DE SALUD PARA RENDER ---
+@app.route('/')
+def health_check():
+    return "El Arsenal está rugiendo", 200
+
+# --- DESPLIEGUE FINAL (LA LLAVE MAESTRA) ---
 if __name__ == "__main__":
-    print("El Arsenal está rugiendo...")
-    bot.infinity_polling(timeout=20)
+    print("🚀 EL ARSENAL ESTÁ RUGIENDO EN EL CÉNIT...")
+    
+    # Iniciamos el bot en un hilo separado para que no bloquee a Flask
+    bot_thread = threading.Thread(target=lambda: bot.infinity_polling(timeout=20, long_polling_timeout=10))
+    bot_thread.daemon = True
+    bot_thread.start()
+    
+    # Flask corre en el hilo principal para que Render vea actividad web
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+        
